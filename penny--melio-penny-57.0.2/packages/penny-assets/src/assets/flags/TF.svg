@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+  <g clip-path="url(#french-southern-and-antarctic-lands__a)">
+    <mask id="french-southern-and-antarctic-lands__b" width="24" height="24" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:luminance">
+      <path fill="#fff" d="M0 0h24v24H0z"/>
+    </mask>
+    <g mask="url(#french-southern-and-antarctic-lands__b)">
+      <path fill="#2E42A5" fill-rule="evenodd" d="M0 0v24h24V0H0Z" clip-rule="evenodd"/>
+      <mask id="french-southern-and-antarctic-lands__c" width="24" height="24" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:luminance">
+        <path fill="#fff" fill-rule="evenodd" d="M0 0v24h24V0H0Z" clip-rule="evenodd"/>
+      </mask>
+      <g mask="url(#french-southern-and-antarctic-lands__c)">
+        <path fill="#F7FCFF" fill-rule="evenodd" d="M14.092 7.65h6.036l-.588 1.128h-1.832v.606h1.404l-.571 1.05h-.833v2.098l1.37-2.16 1.774 3.072h-.724l-.253-.337H18.27l-1.13 2.086.001.115-.031-.058-.032.058v-.115l-1.128-2.086h-1.605l-.253.337h-.725l1.774-3.071 1.37 2.159V8.778H14.68l-.588-1.128Zm5.022 3.982-.394.606h.746l-.352-.606Zm-4.009 0 .394.606h-.745l.351-.606Zm-2.87-.672.623-.46.624.46-.22-.77.605-.486-.76-.017-.248-.76-.25.76-.759.017.605.486-.22.77Zm9.107-.46-.624.46.22-.77-.605-.486.76-.017.248-.76.25.76.759.017-.605.486.22.77-.623-.46Zm-2.532 5.852.623-.459.623.46-.22-.77.605-.487-.759-.016-.25-.76-.248.76-.76.016.605.486-.22.77Zm-4.043-.459-.623.46.22-.77-.605-.487.759-.016.25-.76.248.76.76.016-.605.486.22.77-.624-.459Zm1.71 2.257.623-.46.623.46-.22-.77.605-.486-.759-.016-.249-.76-.25.76-.759.016.606.486-.22.77Z" clip-rule="evenodd"/>
+        <path fill="#2E42A5" stroke="#fff" stroke-width=".5" d="M-1.25.75h9.5v8h-9.5z"/>
+        <mask id="french-southern-and-antarctic-lands__d" width="11" height="9" x="-2" y="0" maskUnits="userSpaceOnUse" style="mask-type:luminance">
+          <path fill="#fff" stroke="#fff" stroke-width=".5" d="M-1.25.75h9.5v8h-9.5z"/>
+        </mask>
+        <g mask="url(#french-southern-and-antarctic-lands__d)">
+          <path fill="#F50100" fill-rule="evenodd" d="M5 1h3v7.5H5V1Z" clip-rule="evenodd"/>
+          <path fill="#2E42A5" fill-rule="evenodd" d="M-1 1h3v7.5h-3V1Z" clip-rule="evenodd"/>
+          <path fill="#F7FCFF" fill-rule="evenodd" d="M2 1h3v7.5H2V1Z" clip-rule="evenodd"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <defs>
+    <clipPath id="french-southern-and-antarctic-lands__a">
+      <path fill="#fff" d="M0 12C0 5.373 5.373 0 12 0s12 5.373 12 12-5.373 12-12 12S0 18.627 0 12Z"/>
+    </clipPath>
+  </defs>
+</svg>

@@ -1,0 +1,223 @@
+/**
+ * Renovate Configuration for @melio/penny Monorepo
+ *
+ * GROUPING STRATEGY & RISK LEVELS:
+ * ================================
+ * 1. @melio/penny (HIGHEST RISK) - Production UI components used across platform-app
+ *    - Only updates dependencies (NOT peerDependencies - those are manually managed)
+ *    - Requires snapshot release verification with platform-app before merging
+ *
+ * 2. @melio/penny-utils (HIGH RISK) - Utility package
+ *    - Updates production dependencies only (devDependencies auto-merge via global config)
+ *    - Used by @melio/penny — breakage here breaks penny directly
+ *
+ * 3. @melio/penny-mcp (MEDIUM RISK) - AI integration package
+ *    - Updates production dependencies only (devDependencies auto-merge via global config)
+ *    - Verify via: pnpm --filter @melio/penny-mcp inspector
+ *
+ * 4. @melio/penny-testkits (LOW RISK) - Test utility packages
+ *    - Includes penny-testkit-pw, penny-testkit-rtl, penny-testkit-cy
+ *    - Testkit packages only declare peerDependencies (no own deps)
+ *    - No auto-changeset generated — peer dep updates don't change published output
+ *    - Auto-merge enabled: peer dep updates don't affect published output
+ *
+ * 5. @melio/penny-assets (LOW RISK) - Asset package
+ *    - Updates production dependencies only (devDependencies auto-merge via global config)
+ *
+ * 6. Major updates (ALL PACKAGES) - scheduled monthly (1st of each month)
+ *    - Applies across all groups; requires manual review for breaking changes
+ *    - @floating-ui/* minor updates are treated as major (0.x.x versioning — minor = breaking)
+ *
+ * All other dependencies (root devDependencies, CircleCI orbs, etc.) are managed
+ * by Renovate's recommended preset with automatic monorepo grouping.
+ * Auto-merge is enabled globally — groups 1, 2, 3 and major updates opt out explicitly.
+ *
+ * IMPORTANT NOTES:
+ * ================
+ * - Certain packages are manually managed due to peer dependency constraints or known issues
+ *   (see packageRules with enabled: false)
+ * - Security vulnerabilities are handled by Dependabot, not Renovate
+ */
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  // Default schedule for all updates: 1st of each month. Major updates share this schedule
+  // but are kept in a separate rule so they can be configured independently.
+  "schedule": ["* * 1 * *"],
+  "timezone": "Asia/Jerusalem",
+  "minimumReleaseAge": "14 days",
+  "labels": ["dependencies", "patch"],
+  "semanticCommits": "enabled",
+  "semanticCommitType": "chore",
+  "semanticCommitScope": "deps",
+  "vulnerabilityAlerts": {
+    "enabled": false
+  },
+  "packageRules": [
+    {
+      "description": "Disable @chakra-ui/react - peer dependency with platform-app",
+      "matchPackageNames": ["@chakra-ui/react"],
+      "enabled": false
+    },
+    {
+      "description": "Disable react - peer dependency with platform-app",
+      "matchPackageNames": ["react"],
+      "enabled": false
+    },
+    {
+      "description": "Disable react-dom - peer dependency with platform-app",
+      "matchPackageNames": ["react-dom"],
+      "enabled": false
+    },
+    {
+      "description": "Disable react-hook-form - has issues with patch releases",
+      "matchPackageNames": ["react-hook-form"],
+      "enabled": false
+    },
+    {
+      "description": "Pin yup to current major version - allow minor/patch updates only",
+      "matchPackageNames": ["yup"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "description": "Pin downshift - components using this package are deprecated",
+      "matchPackageNames": ["downshift"],
+      "enabled": false
+    },
+    {
+      "description": "Ignore internal @melio/* workspace packages",
+      "matchPackageNames": ["@melio/**"],
+      "enabled": false
+    },
+    {
+      "description": "Ignore private melio CircleCI orbs - Renovate can't look them up without CircleCI API token",
+      "matchManagers": ["circleci"],
+      "matchPackageNames": ["melio/**"],
+      "enabled": false
+    },
+    {
+      "description": "Pin node version - don't auto-update",
+      "matchManagers": ["nvm", "nodenv"],
+      "enabled": false
+    },
+    {
+      "description": "Pin pnpm version - don't auto-update",
+      "matchPackageNames": ["pnpm"],
+      "matchManagers": ["npm"],
+      "enabled": false
+    },
+    {
+      "description": "Group 1: @melio/penny dependencies (HIGHEST RISK) - requires snapshot release verification with platform-app",
+      "groupName": "penny-dependencies",
+      "groupSlug": "penny-dependencies",
+      "matchFileNames": ["packages/penny/package.json"],
+      "matchDepTypes": ["dependencies"],
+      "matchPackageNames": ["!@melio/**"],
+      "prPriority": 10,
+      "commitMessageSuffix": " [penny]",
+      "automerge": false,
+      "prBodyNotes": [
+        "**HIGH RISK**: This package is used in production.",
+        "**REQUIRED**: Verify with snapshot release in platform-app before merging."
+      ]
+    },
+    {
+      "description": "Group 2: @melio/penny-utils dependencies (HIGH RISK) - utility package that penny directly depends on; breakage here breaks penny",
+      "groupName": "penny-utils-dependencies",
+      "groupSlug": "penny-utils-dependencies",
+      "matchFileNames": ["packages/penny-utils/package.json"],
+      "matchDepTypes": ["dependencies"],
+      "matchPackageNames": ["!@melio/**"],
+      "prPriority": 8,
+      "commitMessageSuffix": " [penny-utils]",
+      "automerge": false,
+      "prBodyNotes": [
+        "**HIGH RISK**: Utility package that @melio/penny directly depends on.",
+        "**REQUIRED**: Verify that @melio/penny still works correctly after this update."
+      ]
+    },
+    {
+      "description": "Group 3: @melio/penny-mcp dependencies (MEDIUM RISK) - verify via pnpm --filter @melio/penny-mcp inspector",
+      "groupName": "penny-mcp-dependencies",
+      "groupSlug": "penny-mcp-dependencies",
+      "matchFileNames": ["packages/penny-mcp/package.json"],
+      "matchDepTypes": ["dependencies"],
+      "matchPackageNames": ["!@melio/**"],
+      "prPriority": 5,
+      "commitMessageSuffix": " [penny-mcp]",
+      "automerge": false,
+      "prBodyNotes": [
+        "**MEDIUM RISK**: MCP integration package.",
+        "**VERIFY**: Run `pnpm --filter @melio/penny-mcp inspector` to test."
+      ]
+    },
+    {
+      "description": "Group 4: @melio/penny-testkits dependencies (LOW RISK) - test utility packages (pw, rtl, cy). Testkit packages only declare peerDependencies (no own deps), so no auto-changeset is generated — peer dep updates don't change their published output.",
+      "groupName": "penny-testkits-dependencies",
+      "groupSlug": "penny-testkits-dependencies",
+      "matchFileNames": [
+        "packages/penny-testkit-pw/package.json",
+        "packages/penny-testkit-rtl/package.json",
+        "packages/penny-testkit-cy/package.json"
+      ],
+      "matchDepTypes": ["dependencies"],
+      "matchPackageNames": ["!@melio/**"],
+      "prPriority": 3,
+      "commitMessageSuffix": " [penny-testkits]",
+      // Auto-merge enabled: testkit packages only declare peerDependencies — updates don't
+      // affect published output and don't require a changeset.
+      "automerge": true,
+      "prBodyNotes": [
+        "**LOW RISK**: Test utility packages — peer dep updates don't affect published output.",
+        "**AUTO-MERGE**: Will merge automatically once all required checks pass."
+      ]
+    },
+    {
+      "description": "Group 5: @melio/penny-assets dependencies (LOW RISK) - asset package",
+      "groupName": "penny-assets-dependencies",
+      "groupSlug": "penny-assets-dependencies",
+      "matchFileNames": ["packages/penny-assets/package.json"],
+      "matchDepTypes": ["dependencies"],
+      "matchPackageNames": ["!@melio/**"],
+      "prPriority": 5,
+      "commitMessageSuffix": " [penny-assets]",
+      "prBodyNotes": [
+        "**LOW RISK**: Asset package."
+      ]
+    },
+    {
+      "description": "Treat @floating-ui/* minor updates as major - package uses 0.x.x versioning where minor bumps are breaking changes",
+      "matchPackageNames": ["@floating-ui/**"],
+      "matchUpdateTypes": ["minor"],
+      "automerge": false,
+      "prBodyNotes": [
+        "**TREAT AS MAJOR**: @floating-ui uses 0.x.x versioning — minor bumps may contain breaking changes.",
+        "**REQUIRED**: Manual review and testing required.",
+        "**REMINDER**: Check changelog for breaking changes."
+      ]
+    },
+    {
+      "description": "Group 6: Major updates - scheduled monthly (1st of each month). Requires manual review for breaking changes.",
+      "matchUpdateTypes": ["major"],
+      "schedule": ["* * 1 * *"],
+      "automerge": false,
+      "prBodyNotes": [
+        "**MAJOR UPDATE**: This is a major version bump.",
+        "**REQUIRED**: Manual review and testing required.",
+        "**REMINDER**: Check changelog for breaking changes."
+      ]
+    }
+  ],
+  "prHourlyLimit": 5,
+  // Auto-merge is on by default. Groups 1, 2, 3 and major updates explicitly disable it.
+  "automerge": true,
+  "automergeType": "pr",
+  "branchPrefix": "renovate/",
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/dist/**"
+  ]
+}

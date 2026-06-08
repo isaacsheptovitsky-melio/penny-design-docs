@@ -1,0 +1,128 @@
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,500;0,6..12,600;0,6..12,700;0,6..12,800;1,6..12,400&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /*
+   * Nunito Sans for docs prose UI (headings, paragraphs, tables, controls).
+   * font-family is inherited, so all prose descendants pick it up.
+   * NO !important and NO * selector — Chakra's component classes carry
+   * explicit font-family: Poppins and naturally win via cascade order.
+   */
+  .sbdocs {
+    font-family: 'Nunito Sans', sans-serif;
+  }
+
+  /* ── Consistent 8px corner radius across all canvas/preview boxes ── */
+  .sbdocs-preview,
+  .docs-story {
+    border-radius: 8px !important;
+  }
+
+  /* ── Never scroll inside any story canvas ── */
+  .docs-story {
+    overflow: hidden !important;
+  }
+
+  /* ── Darker canvas tray for Token Architecture — cards are #F8F9FA so
+     the default #F7FAFC tray reads as the same tone; bump it to #EDF2F7 ── */
+  .sbdocs-preview:has(#story--foundations-color-tokens--token-architecture) {
+    background: #EDF2F7 !important;
+  }
+
+  /* ── Grey tray (matches DocTabs links bar) everywhere except component stories ── */
+  .sbdocs-preview:not(:has([id*="-components-"])) {
+    background: #F7FAFC !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* ── Icon button spinner ── */
+  @keyframes icon-button-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /* ── Custom inline tables (MDX prose) — reset Storybook's cell borders ──
+     Storybook's sbdocs CSS adds border to every td/th. With
+     border-collapse:separate + border-spacing:0 the cells' left/top borders
+     sit immediately inside the table's outer border, making edges read as
+     2px. Zero them here; inline styles on each cell handle the internals. */
+  .sbdocs table:not(.docblock-argstable) th,
+  .sbdocs table:not(.docblock-argstable) td {
+    border-top: 0 !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    border-bottom: 0 !important;
+  }
+
+  /* ── ArgTypes / Controls table ── */
+  /* Apply border + radius directly on the table.
+     border-collapse:separate lets border-radius render;
+     border-spacing:0 keeps cells flush with no gaps. */
+  table.docblock-argstable {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+  }
+
+  /* Strip last-row bottom border — table's own outer border handles it */
+  table.docblock-argstable tbody tr:last-child td {
+    border-bottom: none !important;
+  }
+
+  /* Strip any border Storybook adds to the wrapper div above the table */
+  :has(> table.docblock-argstable) {
+    border: none !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+  }
+</style>
+
+<script>
+  /**
+   * Dynamic TOC rebuilder for DocTabs.
+   *
+   * Storybook's bundled tocbot initialises once on page load and doesn't
+   * know about tab switches.  When DocTabs dispatches 'penny-tab-change'
+   * (after React has committed the new tab's content), we re-scan
+   * .sbdocs-content for visible headings and rewrite .toc-wrapper so the
+   * "On this page" sidebar stays in sync.
+   */
+  (function () {
+    function buildToc() {
+      var wrapper = document.querySelector('.toc-wrapper');
+      var content = document.querySelector('.sbdocs-content');
+      if (!wrapper || !content) return;
+
+      // Collect h2/h3 that aren't inside a Canvas preview box or marked skip-toc.
+      var headings = Array.from(
+        content.querySelectorAll('h2, h3')
+      ).filter(function (h) {
+        return h.id && !h.closest('.docs-story') && !h.closest('.skip-toc');
+      });
+
+      if (headings.length === 0) return;
+
+      // Build tocbot-compatible markup so Storybook's existing scroll-spy
+      // styles and active-link logic continue to work on our new nodes.
+      var html = '<ul class="toc-list js-toc">';
+      headings.forEach(function (h) {
+        var level = parseInt(h.tagName[1], 10);
+        var text  = (h.textContent || '').trim();
+        var cls   = 'toc-link node-name--H' + level;
+        var style = level === 3 ? ' style="padding-left:12px"' : '';
+        html += '<li class="toc-list-item">'
+          + '<a href="#' + h.id + '" class="' + cls + '"' + style + '>'
+          + text
+          + '</a></li>';
+      });
+      html += '</ul>';
+
+      wrapper.innerHTML = html;
+    }
+
+    document.addEventListener('penny-tab-change', buildToc);
+  })();
+</script>

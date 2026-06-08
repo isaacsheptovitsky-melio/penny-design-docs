@@ -1,0 +1,59 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Icon/RTL Test Kit" />
+
+# Icon RTL Test Kit
+---
+Testing utilities for the `Icon` component that provide easy access to component interactions, states, and accessibility features for Rtl (React Testing Library).
+
+## Import
+
+```typescript
+import { createIconTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+{`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the DOM element | \`HTMLElement\` |
+| \`getVisible()\` | Checks if the element is visible | \`boolean\` |
+| \`getActive()\` | Checks if the element has a data-active attribute | \`boolean\` |
+| \`getDisabled()\` | Checks if the element has a data-disabled attribute | \`boolean\` |
+| \`getReadOnly()\` | Checks if the element has a data-readonly attribute | \`boolean\` |
+| \`getIsBrandColor()\`| Checks if the element has a data-is-brand-color attribute | \`boolean\` |
+| \`getRole()\` | Gets the element's role attribute | \`string \| null\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createIconTestKit } from '@melio/penny-testkit-rtl';
+
+describe('Icon Component', () => {
+  it('should check if the component exists', () => {
+    const testKit = createIconTestKit({ dataTestId: 'custom-datatestid' });
+    render(<Icon type="calculator" data-testid="custom-datatestid"/>);
+
+    expect(testKit.getElement()).toBeInTheDocument();
+  });
+
+  it('should get aria-label attribute', () => {
+    const testKit = createIconTestKit({ dataTestId: 'custom-datatestid' });
+    render(<Icon type="calculator" aria-label="Calculate" data-testid="custom-datatestid"/>);
+
+    expect(testKit.getElement().getAttribute('aria-label')).toBe('Calculate');
+  });
+
+  it('should be read-only', async () => {
+    const testKit = createIconTestKit({ dataTestId: 'custom-datatestid' });
+    render(<Icon type="calculator" isReadOnly data-testid="custom-datatestid"/>);
+
+    expect(testKit.getReadOnly()).toBe(true);
+  });
+});
+```

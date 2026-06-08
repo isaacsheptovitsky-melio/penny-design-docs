@@ -1,0 +1,74 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Secured Text Field/Playwright Test Kit" />
+
+# SecuredTextField Playwright Test Kit
+---
+
+Testing utilities for the `SecuredTextField` component that provide easy access to component interactions, states, and accessibility features for Playwright testing.
+
+## Import
+
+```typescript
+import { createSecuredTextFieldTestKit } from '@melio/penny-testkit-pw';
+```
+
+## Methods
+
+This testKit extends [TextField TestKit](?path=/docs/selection-inputs-components-text-field-playwright-test-kit--docs) and includes all its methods.
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`maskIconButton\` | TestKit for the visibility toggle icon button | \`IconButtonTestKit\` |
+| \`getIsTextVisible()\` | Checks if the text is currently visible | \`Promise<boolean>\` |
+| \`toggleTextVisibility(isVisible?: boolean)\` | toggles the text masking. Pass true to ensure the text is visible (unmasked), false to ensure it is masked. If no argument is provided, it simply toggles the current state | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { test, expect } from '@playwright/test';
+import { createSecuredTextFieldTestKit } from '@melio/penny-testkit-pw';
+
+test.describe('SecuredTextField Component', () => {
+  test('should mask text by default', async ({ page }) => {
+    const testKit = createSecuredTextFieldTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    expect(await testKit.getIsTextVisible()).toBeFalsy();
+  });
+
+  test('should unmask text when clicking icon button', async ({ page }) => {
+    const testKit = createSecuredTextFieldTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    await testKit.type('password123');
+    await testKit.toggleTextVisibility(false);
+    
+    expect(await testKit.getIsTextVisible()).toBeFalsy();
+    expect(await testKit.getValue()).toBe('password123');
+  });
+
+  test('should mask text when clicking icon button again', async ({ page }) => {
+    const testKit = createSecuredTextFieldTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    await testKit.type('password123');
+    await testKit.toggleTextVisibility();
+    await testKit.toggleTextVisibility();
+    
+    expect(await testKit.getIsTextVisible()).toBeFalsy();
+  });
+
+  test('should get field value', async ({ page }) => {
+    const testKit = createSecuredTextFieldTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    await testKit.type('secret password');
+    expect(await testKit.getValue()).toBe('secret password');
+  });
+});
+```

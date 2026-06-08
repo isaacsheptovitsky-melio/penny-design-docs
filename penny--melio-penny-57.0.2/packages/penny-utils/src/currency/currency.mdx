@@ -1,0 +1,66 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Penny Utils/Currency" />
+
+# Currency utils
+1. [convertCurrencyToNumber](#1-convertcurrencytonumberamount)
+2. [removeNonDigitsFromCurrency](#2-removenondigitsfromcurrencyamount)
+
+
+### 1. `convertCurrencyToNumber(amount)`
+
+**Description:**
+Converts a string value to a number
+
+**Parameter Type:**
+string
+
+**Return Value Type:**
+number
+
+
+**Example:**
+```typescript
+import { convertCurrencyToNumber } from '@melio/penny-utils';
+
+const result1 = convertCurrencyToNumber('$123.45');
+console.log(result1); // 123.45
+
+const result2 = convertCurrencyToNumber('-$1,234.56');
+console.log(result2); // -1234.56
+
+const result3 = convertCurrencyToNumber('');
+console.log(result3); // NaN
+
+const result4 = convertCurrencyToNumber('abc');
+console.log(result4); // NaN
+```
+
+### 2. `removeNonDigitsFromCurrency(amount)`
+
+**Description:**
+Removes non-digits from a value
+
+**Parameter Type:**
+string
+
+**Return Value Type:**
+string
+
+
+**Example:**
+```typescript
+import { convertCurrencyToNumber } from '@melio/penny-utils';
+
+const result1 = convertCurrencyToNumber('$123.45');
+console.log(result1); // '123.45'
+
+const result2 = convertCurrencyToNumber('-$1,234.56');
+console.log(result2); // '-1234.56'
+
+const result3 = convertCurrencyToNumber('');
+console.log(result3); // Error: Amount is invalid
+
+const result4 = convertCurrencyToNumber('abc');
+console.log(result4); // Error: Amount is invalid
+```

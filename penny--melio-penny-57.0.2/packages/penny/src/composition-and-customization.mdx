@@ -1,0 +1,161 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Storybook } from 'storybook-utils';
+import { chakra } from '@chakra-ui/react';
+
+import { SectionBannerRoot, SectionBannerIcon, SectionBannerContent, SectionBannerDescription } from '@/components/dataDisplay/SectionBanner'
+import { LinearProgressRoot, LinearProgressTrack, LinearProgressIndicator } from '@/components/feedback/LinearProgress'
+
+<Meta title="Composition & Customization" />
+
+# Composition & Customization
+
+Penny components are designed as small UI building blocks that can assemble many product requirements. They follow a 1-to-1 strategy, where a single component only renders a single DOM element to provide full control and flexibility.<br/>
+This guide demonstrates few technics for different manipulations and control on the components.
+This API and principles are inspired by modern libraries like Radix UI and Base UI. For more reading:
+- [Radix UI Philosophy](https://github.com/csdiehl/radix-primitives/blob/main/philosophy.md)
+- [Composition (Chakra)](https://chakra-ui.com/docs/components/concepts/composition)
+- [Composition (Vercel)](https://www.components.build/composition)
+
+<div style={{ marginTop: 60 }} />
+
+## Ref Forwarding
+
+Component supports ref forwarding, allowing you to access the underlying DOM element directly.<br />
+This is useful for imperative operations like measuring element dimensions, scrolling to elements, or integrating with third-party libraries.
+
+### Example
+
+```tsx
+import { useRef } from 'react';
+import { Text } from '@melio/penny';
+
+const MyComponent = () => {
+  const ref = useRef(null);
+
+  const handleClick = () => {
+    console.log('Element:', ref.current);
+  };
+
+  return (
+    <Text ref={rootRef} >
+      some text
+    </Text>
+  );
+};
+```
+
+## `as` Prop Support
+
+Component supports the <Storybook.Code label="as" /> prop, allowing you to change the rendered HTML element.<br />
+This provides flexibility for semantic HTML and accessibility requirements.
+
+### Example
+
+```tsx
+import { Text } from '@melio/penny';
+
+<Text as="h1">
+  Title
+</Text>
+```
+<SectionBannerRoot variant="warning">
+    <SectionBannerIcon />
+    <SectionBannerContent>
+        <SectionBannerDescription>
+            <span>When changing the <Storybook.Code label="as" /> prop, ensure the new element is appropriate for the component's purpose and maintains accessibility.</span>
+        </SectionBannerDescription>
+    </SectionBannerContent>
+</SectionBannerRoot>
+
+<div style={{ marginTop: 60 }} />
+
+## Styling Customization
+
+There are multiple ways to customize the styling of composable components to fit your design needs.
+For detailed information about Chakra UI's styling system, refer to the [Chakra UI Styling Documentation](https://v2.chakra-ui.com/docs/styled-system/style-props).
+
+### 1. Chakra Factory
+
+You can use Chakra's <Storybook.Code label="chakra()" /> factory function to create styled variants of components with full access to Chakra's styling system.
+
+```tsx
+import { chakra } from '@chakra-ui/react';
+import { LinearProgressTrack } from '@melio/penny';
+
+const CustomStyledTrack = chakra(LinearProgressTrack);
+```
+
+Once you've wrapped a component with <Storybook.Code label="chakra()" />, you can style it using several different approaches:
+
+#### Using `sx` Prop
+
+```tsx
+  <CustomStyledTrack sx={{ width: '50%', borderRadius: 'global.50', bg: 'semantic.bg.secondary' }}>
+```
+
+#### Using Inline Props
+
+```tsx
+  <CustomStyledTrack width="50%" borderRadius="global.50" bg="semantic.bg.secondary">
+```
+### 2. Using Box with `as` Prop
+
+```tsx
+import { Box } from '@chakra-ui/react';
+import { LinearProgressTrack } from '@melio/penny';
+
+<Box as={LinearProgressTrack} width="50%" bg="semantic.bg.secondary" borderRadius="global.50">
+```
+
+### 3. `style` Prop
+
+```tsx
+  <LinearProgressTrack style={{ width: '50%', borderRadius: '8px', backgroundColor: '#f0f0f0' }}>
+```
+
+<SectionBannerRoot variant="warning">
+    <SectionBannerIcon />
+    <SectionBannerContent>
+        <SectionBannerDescription>
+            <span>The <Storybook.Code label="style" /> prop does <strong>not</strong> support theme tokens. Use <Storybook.Code label="sx" /> or inline props when you need access to theme tokens.</span>
+        </SectionBannerDescription>
+    </SectionBannerContent>
+</SectionBannerRoot>
+
+### 4. `className` Prop
+
+Component accepts a <Storybook.Code label="className" /> prop, allowing you to pass custom CSS classes for styling.
+
+```tsx
+import { LinearProgressRoot, LinearProgressTrack, LinearProgressIndicator } from '@melio/penny';
+
+<LinearProgressRoot className="my-custom-root" value={50} max={100}>
+  <LinearProgressTrack className="my-custom-track">
+    <LinearProgressIndicator className="my-custom-indicator" />
+  </LinearProgressTrack>
+</LinearProgressRoot>
+```
+
+You can then style these classes using your CSS or CSS-in-JS solution:
+
+```css
+.my-custom-track {
+  border-radius: 8px;
+  background-color: #f0f0f0;
+}
+
+.my-custom-indicator {
+  transition: width 0.3s ease-in-out;
+}
+```
+
+<div style={{ marginTop: 60 }} />
+
+## Supported Components
+
+The following components support composition and customization:
+
+- [Dropzone](?path=/docs/selection-inputs-components-dropzone-composable--docs)
+- [LinearProgress](?path=/docs/feedback-components-linear-progress-composable--docs)
+- [SectionBanner](?path=/docs/data-display-components-section-banner-composable--docs)
+- [Accordion](?path=/docs/containers-accordion-composable--docs)

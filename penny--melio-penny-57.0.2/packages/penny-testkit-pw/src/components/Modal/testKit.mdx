@@ -1,0 +1,73 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Containers/Modals/Modal [pattern]/Playwright Test Kit" />
+
+# Modal Playwright Test Kit
+---
+
+Testing utilities for the `Modal` component that provide easy access to component interactions, states, and accessibility features for Playwright.
+
+The `Modal` test kit extends the [BaseModal test kit](?path=/docs/containers-modals-base-modal-playwright-test-kit--docs) and adds test kits for interacting with the modal's primary and secondary buttons.
+
+## Import
+
+```typescript
+import { createModalTestKit } from '@melio/penny-testkit-pw';
+```
+
+## Methods
+
+The `Modal` test kit inherits all methods from the [BaseModal test kit](?path=/docs/containers-modals-base-modal-playwright-test-kit--docs).
+
+### Additional Properties
+
+<Markdown>
+  {`
+| Property | Description | Return value |
+|----------|-------------|--------------|
+| \`primaryButton\` | The test kit for the primary button | [ButtonTestKit](?path=/docs/action-components-button-playwright-test-kit--docs) |
+| \`secondaryButton\` | The test kit for the secondary button | [ButtonTestKit](?path=/docs/action-components-button-playwright-test-kit--docs) |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createModalTestKit } from '@melio/penny-testkit-pw';
+
+test.describe('Modal Component', () => {
+  test('should close the modal when clicking the overlay while not loading', async () => {
+     const modalTestKit = createModalTestKit(page, { dataTestId: 'custom-datatestid' });
+
+     await page.goto('/some-page');
+     expect(await modalTestKit.getVisible()).toBe(true);
+     await modalTestKit.clickOverlay();
+     expect(await modalTestKit.getVisible()).toBe(false);
+  });
+
+  test("should click on primary button", async () => {
+    const modalTestKit = createModalTestKit(page, { dataTestId: 'custom-datatestid' });
+
+    await page.goto('/some-page');
+    expect(await modalTestKit.getVisible()).toBe(true);
+    await modalTestKit.primaryButton.click();
+    expect(await modalTestKit.getVisible()).toBe(false);
+  });
+
+  test("should select modal header, body, and footer elements", async () => {
+      const modalTestKit = createModalTestKit(page, { dataTestId: 'custom-datatestid' });
+
+      await page.goto('/some-page');
+      expect(await modalTestKit.getVisible()).toBe(true);
+
+      const modalHeader = page.getByTestId('custom-datatestid-header');
+      await expect(modalHeader).toBeVisible();
+
+      const modalBody = page.getByTestId('custom-datatestid-body');
+      await expect(modalBody).toBeVisible();
+
+      const modalFooter = page.getByTestId('custom-datatestid-footer');
+      await expect(modalFooter).toBeVisible();
+    });
+});
+```

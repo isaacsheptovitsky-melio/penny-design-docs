@@ -1,0 +1,22 @@
+{
+  "name": "storybook-utils",
+  "type": "module",
+  "main": "index.ts",
+  "version": "1.0.0",
+  "author": "Naama Weber <naama.weber@melio.com>",
+  "license": "ISC",
+  "private": true,
+  "scripts": {
+    "lint": "eslint . --cache",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@chakra-ui/react": "^2.10.4",
+    "@emotion/react": ">=11",
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@melio/eslint-config-penny": "workspace:*"
+  }
+}

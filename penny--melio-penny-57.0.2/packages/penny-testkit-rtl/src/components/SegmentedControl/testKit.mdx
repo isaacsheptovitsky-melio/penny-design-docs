@@ -1,0 +1,106 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Segmented Control [new]/Segmented Control/RTL Test Kit" />
+
+# SegmentedControl RTL Test Kit
+---
+
+Testing utilities for the `SegmentedControl` component that provide easy access to component interactions, states, and accessibility features for RTL (React Testing Library).
+
+## Import
+
+```typescript
+import { createSegmentedControlTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Main Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Returns the container element | \`HTMLDivElement\` |
+| \`getRole()\` | Returns the ARIA role (radiogroup or group) | \`string\` |
+| \`getIsMulti()\` | Checks if the control is in multi-select mode | \`boolean\` |
+| \`getSegment(dataTestId)\` | Returns a testkit for a specific segment item | \`SegmentItemTestKit\` |
+`}
+</Markdown>
+
+## Segment Item Methods
+
+Methods available on the object returned by `getSegment(dataTestId)`:
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`getInputElement()\` | Returns the input element | \`HTMLInputElement\` |
+| \`getLabelElement()\` | Returns the label element | \`HTMLLabelElement\` |
+| \`getIsChecked()\` | Checks if the segment is selected | \`boolean\` |
+| \`getIsDisabled()\` | Checks if the segment is disabled | \`boolean\` |
+| \`getIsReadOnly()\` | Checks if the segment is read-only | \`boolean\` |
+| \`getValue()\` | Gets the segment value | \`string\` |
+| \`click()\` | Clicks the segment input | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createSegmentedControlTestKit } from '@melio/penny-testkit-rtl';
+
+describe('SegmentedControl Component', () => {
+  it('should select a segment on click', async () => {
+    const testKit = createSegmentedControlTestKit({ dataTestId: 'my-control' });
+    render(
+      <SegmentedControl data-testid="my-control">
+        <SegmentedControlItem value="1" data-testid="my-control.segment-1">Option 1</SegmentedControlItem>
+        <SegmentedControlItem value="2" data-testid="my-control.segment-2">Option 2</SegmentedControlItem>
+      </SegmentedControl>
+    );
+
+    const segment = testKit.getSegment('my-control.segment-1');
+    await segment.click();
+
+    expect(segment.getIsChecked()).toBe(true);
+  });
+
+  it('should be in single select mode by default', () => {
+    const testKit = createSegmentedControlTestKit({ dataTestId: 'my-control' });
+    render(
+      <SegmentedControl data-testid="my-control">
+        <SegmentedControlItem value="1" data-testid="my-control.segment-1">Option 1</SegmentedControlItem>
+      </SegmentedControl>
+    );
+
+    expect(testKit.getIsMulti()).toBe(false);
+    expect(testKit.getRole()).toBe('radiogroup');
+  });
+
+  it('should support multi-select mode', () => {
+    const testKit = createSegmentedControlTestKit({ dataTestId: 'my-control' });
+    render(
+      <SegmentedControl data-testid="my-control" isMulti>
+        <SegmentedControlItem value="1" data-testid="my-control.segment-1">Option 1</SegmentedControlItem>
+      </SegmentedControl>
+    );
+
+    expect(testKit.getIsMulti()).toBe(true);
+    expect(testKit.getRole()).toBe('group');
+  });
+
+  it('should get segment value', () => {
+    const testKit = createSegmentedControlTestKit({ dataTestId: 'my-control' });
+    render(
+      <SegmentedControl data-testid="my-control">
+        <SegmentedControlItem value="option-1" data-testid="my-control.segment-1">Option 1</SegmentedControlItem>
+      </SegmentedControl>
+    );
+
+    const segment = testKit.getSegment('my-control.segment-1');
+    expect(segment.getValue()).toBe('option-1');
+  });
+});
+```
+

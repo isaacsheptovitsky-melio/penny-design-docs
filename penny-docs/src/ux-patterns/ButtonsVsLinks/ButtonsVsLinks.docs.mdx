@@ -1,0 +1,231 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as BvLStories from './ButtonsVsLinks.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { Do, Dont } from '@/storybook-utils/RuleItem';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={BvLStories} />
+
+<PageHero
+  category="UX Patterns"
+  title="Buttons vs. Links"
+  badge="Healthy"
+  description="Buttons trigger actions that change application state. Links navigate to a new location. Choosing the right element keeps the UI semantically correct, accessible, and predictable."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/47242c-buttons-vs-links"
+    />
+    <ShortcutTile
+      label="Button component"
+      url="/?path=/docs/components-action-button--docs"
+    />
+    <ShortcutTile
+      label="Link component"
+      url="/?path=/docs/components-navigation-link--docs"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+## Core principle
+
+**Buttons perform actions. Links navigate.**
+
+Every interactive element in the UI should map to exactly one of these roles:
+
+- **Button** (`<button>`) — the user is doing something that changes state: submitting a payment, confirming a deletion, saving a draft, activating a feature. The result is a mutation.
+- **Link** (`<a>`) — the user is going somewhere: a different page, a drawer, an external resource, a modal that merely shows information. The result is navigation.
+
+This distinction is not visual — it is semantic. A link styled to look like a button is still a link. A button styled as underlined text is still a button. The element type drives screen reader announcements, keyboard behavior, and browser affordances.
+
+<Canvas of={BvLStories.CorePrinciple} />
+
+## Decision table
+
+Use this table when unsure which element to reach for. If the click **changes data or triggers a flow**, it is a Button. If the click **changes what the user sees without mutating data**, it is a Link.
+
+<Canvas of={BvLStories.DecisionTable} />
+
+<Callout variant="note">
+
+When in doubt, ask: "If JavaScript were disabled, what should happen?" A link should still navigate. A button should do nothing (until the form it belongs to can submit). This mental model catches most misuses.
+
+</Callout>
+
+## Live component comparison
+
+The story below places Penny `Button` components alongside raw `<a>` link elements so you can see both in context.
+
+<Canvas of={BvLStories.LiveComparison} />
+
+## Usage rules
+
+### Correct usage
+
+<Canvas of={BvLStories.DoExamples} />
+
+<Do>use a Button for "Confirm payment" — it commits a financial transaction and changes application state.</Do>
+
+<Do>use a Button for "Activate Get paid" inside an info banner — it starts a multi-step activation flow that modifies account settings.</Do>
+
+<Do>use a Button for "Cancel" — it dismisses or discards an in-progress flow. Use `variant="tertiary"` so it reads as a neutral, non-advancing action.</Do>
+
+<Do>use a Link for any text embedded in a sentence: "Review and compare each user role and their associated permissions. <u>View roles</u>."</Do>
+
+### Incorrect usage
+
+<Canvas of={BvLStories.DontExamples} />
+
+<Dont>use a Button for "View roles" when the destination is a different page. This bloats the action hierarchy and misleads screen readers into announcing it as a button ("View roles, button") when users expect to navigate.</Dont>
+
+<Dont>use two Buttons side by side when one of them is navigational. "View plans" should be a Link so "Upgrade" stands out as the only call-to-action.</Dont>
+
+<Dont>style a link to visually resemble a Button and then wire it to `onClick` without `href`. This breaks right-click → Open in new tab, keyboard navigation, and screen reader semantics.</Dont>
+
+<Dont>use a Button for "Learn more", "Read the docs", or any external URL. These are always links and should open in a new tab (`target="_blank"`  with `rel="noopener noreferrer"`).</Dont>
+
+## Visual distinction
+
+Links in Penny body copy render in Melio purple (`#5C3EC5`) with underline. They should feel like natural parts of a sentence — not call-to-action elements.
+
+Buttons, by contrast, have a visible bounding box (pill or rectangle) and carry a hierarchy signal through their variant:
+
+- **`primary`** — The single dominant action on a page or modal
+- **`secondary`** — Alternative important action, or primary in low-emphasis contexts
+- **`tertiary`** — Neutral actions — Cancel, Go back, Dismiss
+- **`critical`** — Destructive actions — Delete, Remove, Revoke
+
+None of these Button variants should be used for navigation. If the action leads somewhere rather than doing something, reach for a link element.
+
+</DocTab>
+
+<DocTab label="Development">
+
+## Semantic HTML rules
+
+Use the native HTML element that matches the role. Never swap element type for visual reasons.
+
+```tsx
+// Correct — action → button element
+<Button label="Confirm payment" variant="primary" onClick={handleConfirm} />
+
+// Correct — navigation → anchor element
+<a href="/settings/roles">View roles</a>
+
+// Correct — mixed context: link for info, button for action
+<p>
+  Learn about plans. <a href="/plans">View plans</a>
+</p>
+<Button label="Upgrade" variant="primary" onClick={handleUpgrade} />
+```
+
+```tsx
+// Wrong — navigation rendered as a Button
+<Button label="View roles" variant="secondary" onClick={() => navigate('/roles')} />
+
+// Wrong — action rendered as a naked anchor
+<a href="#" onClick={handleDelete}>Delete vendor</a>
+```
+
+## Router integration
+
+When using React Router (or Next.js `<Link>`), the underlying element must still render as `<a>`. Wrap Penny's link styles or use the router's link component directly — do not use `<Button>` with `onClick={() => navigate(...)}`.
+
+```tsx
+import { Link } from 'react-router-dom';
+
+// Correct — router Link renders an <a>
+<Link to="/vendors/123">View vendor</Link>
+
+// Avoid — imperative navigation via a button
+<Button label="View vendor" onClick={() => navigate('/vendors/123')} />
+```
+
+The router `Link` approach preserves browser history, middle-click → new tab, and screen reader "link" role. An `onClick`-driven Button loses all of these.
+
+## Implementation checklist
+
+When adding a new interactive element:
+
+- [ ] Does clicking it **change data or trigger a flow**? → use `<Button>` (Penny `Button` component)
+- [ ] Does clicking it **navigate to a URL or route**? → use `<a>` or router `<Link>`
+- [ ] Is it inside a sentence as inline text? → it is a Link; do not wrap in a Button
+- [ ] Is it the sole CTA in an empty state, banner, or form footer? → it is a Button
+- [ ] Does it open an external URL? → it is a Link with `target="_blank" rel="noopener noreferrer"`
+- [ ] Is it "Cancel" or "Go back" in a flow? → it is a Button with `variant="tertiary"`
+- [ ] Verify the rendered HTML element in DevTools — `<button>` or `<a>`, never `<div>` or `<span>`
+
+</DocTab>
+
+<DocTab label="ADA">
+
+## Accessibility
+
+### Why element choice matters for screen readers
+
+Screen readers announce interactive elements by their role. A `<button>` is announced as "button" and users expect it to trigger an action. An `<a>` is announced as "link" and users expect it to navigate. Swapping these roles breaks the contract screen reader users rely on.
+
+- A Button styled as underlined text announces "button" — the user expects an action, not navigation.
+- A Link styled as a pill button announces "link" — the user may try to right-click or middle-click to open in a new tab, and an action will fire instead.
+
+### Keyboard interaction differences
+
+<table style={{ borderCollapse: 'separate', borderSpacing: 0, width: '100%', fontSize: '13px', border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden', marginTop: '8px' }}>
+  <thead>
+    <tr>
+      {['Behavior', 'Button (<button>)', 'Link (<a href>)'].map((h, i, arr) => (
+        <th key={h} style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC', borderRight: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined }}>{h}</th>
+      ))}
+    </tr>
+  </thead>
+  <tbody>
+    {[
+      { behavior: 'Activation key', button: 'Enter or Space', link: 'Enter only' },
+      { behavior: 'Right-click → Open in new tab', button: 'No', link: 'Yes' },
+      { behavior: 'Rotor/landmark navigation', button: 'Not included', link: 'Included in Links list' },
+      { behavior: 'Focus indicator', button: 'Focus ring', link: 'Focus ring' },
+      { behavior: 'Escape in a modal', button: 'Closes modal (if wired)', link: 'Does not close modal' },
+    ].map(({ behavior, button, link }, i, arr) => (
+      <tr key={behavior}>
+        <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined, fontWeight: 600, color: '#1A202C' }}>{behavior}</td>
+        <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined, color: '#4A5568' }}>{button}</td>
+        <td style={{ padding: '8px 16px', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined, color: '#4A5568' }}>{link}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+The `Space` key difference is the most common source of bugs. Users who rely on `Space` to activate links will be surprised when nothing happens. Use `<button>` for anything that should respond to `Space`.
+
+### Accessible labels
+
+- Buttons must have a visible label or `aria-label` that describes the **action**: "Confirm payment", not "Submit".
+- Links must have a label that describes the **destination**: "View roles and permissions page", not "click here" or "learn more" (bare, without context).
+- When the visible label is ambiguous (e.g., "Delete" appears multiple times in a table), add `aria-label="Delete Acme Corp"` to scope the label to the row.
+
+### External links
+
+Always add `target="_blank"` with `rel="noopener noreferrer"` for external URLs. Also notify screen reader users that the link opens in a new tab:
+
+```tsx
+<a href="https://melio.com/terms" target="_blank" rel="noopener noreferrer">
+  Terms of Service
+  <span className="sr-only"> (opens in a new tab)</span>
+</a>
+```
+
+### Focus management
+
+- After a Button fires a navigation-like side effect (e.g., opening a modal), focus must move into the newly opened content.
+- After a Link navigates to a new route in a SPA, focus must move to the main content region or the page `<h1>` so screen reader users know the page has changed.
+
+</DocTab>
+
+</DocTabs>

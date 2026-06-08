@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+  <g clip-path="url(#czech-republic__a)">
+    <path fill="#EDEDED" d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12Z"/>
+    <path fill="#D80027" d="M10.957 12s-7.435 8.487-7.442 8.485A11.963 11.963 0 0 0 12 24c6.627 0 12-5.373 12-12H10.957Z"/>
+    <path fill="#0052B4" d="M3.515 3.515c-4.687 4.686-4.687 12.284 0 16.97L12 12 3.515 3.515Z"/>
+  </g>
+  <defs>
+    <clipPath id="czech-republic__a">
+      <path fill="#fff" d="M0 12C0 5.373 5.373 0 12 0s12 5.373 12 12-5.373 12-12 12S0 18.627 0 12Z"/>
+    </clipPath>
+  </defs>
+</svg>

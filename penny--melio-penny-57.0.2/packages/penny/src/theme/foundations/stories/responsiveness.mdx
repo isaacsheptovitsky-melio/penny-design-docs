@@ -1,0 +1,89 @@
+import { Markdown, Meta } from '@storybook/addon-docs/blocks';
+import { Storybook } from 'storybook-utils';
+
+<Meta title="Responsiveness" />
+
+# Responsiveness
+
+## Hooks for Responsiveness
+
+We provide three hooks to simplify managing responsiveness in your app. These hooks are designed to handle different aspects of responsive behavior:
+
+<Markdown>
+  {`
+| Hook                     | When to Use                                                                                                                                                                                |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [**useBreakpoint**](#usebreakpoint-hook)         | When you need to determine the current screen size and apply conditional rendering or logic based on the breakpoint.                                                                       |
+| [**useBreakpointValue** ](#usebreakpointvaluet-hook)   | When you need to return a responsive value that adapts to breakpoints (e.g., CSS properties, sizes).                                                                                       |
+`}
+</Markdown>
+
+Each of these hooks serves a unique purpose, and understanding when to use each one will help you streamline the process of building a responsive design.
+
+---
+
+### `useBreakpoint` Hook
+
+The `useBreakpoint` hook determines the current screen breakpoint based on the window's width and provides boolean flags for each breakpoint size.
+
+#### Parameters
+
+- `defaultBreakpoint` (optional): Default breakpoint key to use if the window size is not available or needs to be calculated. Defaults to `'xs'`.
+- `debounce` (optional): Debounce time in milliseconds for resizing events. Default is `500ms`.
+
+#### Return Value
+
+This hook returns an object with the following properties:
+
+```ts
+{
+  breakpoint: ThemeBreakpointsKey; // Current breakpoint (e.g., 'xs', 's', 'm', 'l', 'xl')
+  isExtraSmallScreen: boolean; // True if 'xs'
+  isSmallScreen: boolean; // True if 's'
+  isMediumScreen: boolean; // True if 'm'
+  isLargeScreen: boolean; // True if 'l'
+  isExtraLargeScreen: boolean; // True if 'xl'
+}
+```
+
+#### How It Works
+
+- The hook calculates the screen size based on the window width and compares it with predefined breakpoints.
+- Supports **debouncing** to reduce recalculations on rapid window resizing.
+
+#### Example
+
+```tsx
+import { Button } from './Button';
+
+const { isExtraSmallScreen } = useBreakpoint();
+<Button isFullWidth={isExtraSmallScreen} label="click" />;
+```
+
+---
+
+### `useBreakpointValue<T>` Hook
+
+The `useBreakpointValue<T>` hook returns the value corresponding to the current screen breakpoint from the provided responsive values object. It returns the value that matches the smallest defined value.
+
+#### Parameters
+
+- `values` (required): An object containing breakpoint-specific values. At least one breakpoint value must be provided.<br />For example: `{ xs: '150px', s: '250px' }`.
+- `defaultBreakpoint` (optional): Default breakpoint key to use if the window size is not available or needs to be calculated. Defaults to `'xs'`.
+
+#### Return Value
+
+The hook returns the value that matches the smallest defined value.
+
+#### How It Works
+
+- The hook sorts the provided values based on the theme breakpoints (`xs`, `s`, `m`, `l`, `xl`).
+- It uses the [**useBreakpoint**](#usebreakpoint-hook) hook to determine the current breakpoint.
+- The hook returns the value corresponding to the current breakpoint, falling back to the smallest defined value if the current breakpoint does not have a defined value.
+
+#### Example
+
+```tsx
+const buttonSize = useBreakpointValue<ButtonSizes>({ xs: 'small', s: 'medium' });
+<Button size={buttonSize} label="click" />;
+```

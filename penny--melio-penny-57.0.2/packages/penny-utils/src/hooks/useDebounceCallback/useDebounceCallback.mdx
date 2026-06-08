@@ -1,0 +1,91 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Penny Utils/Hooks/useDebounceCallback" />
+
+# `useDebounceCallback`
+
+The `useDebounceCallback` hook returns a debounced version of a callback function that delays invoking the callback until after a specified delay has elapsed since the last time the debounced function was invoked.
+
+This is useful for scenarios like search input handling, API calls, or any operation where you want to limit the rate of execution.
+
+## Parameters
+
+<Markdown>
+  {`
+| Parameter | Type     | Description                              | Default |
+|-----------|----------|------------------------------------------|---------|
+| callback  | function | The function to debounce                 | -       |
+| delay     | number   | The number of milliseconds to delay      | 500     |
+`}
+</Markdown>
+
+## Return Value
+
+Returns a debounced version of the provided callback function that accepts the same parameters as the original function.
+
+## Usage
+
+### Basic Usage
+
+Debounce a search function to avoid excessive API calls:
+
+```tsx
+import { useState } from 'react';
+import { useDebounceCallback } from '@melio/penny-utils';
+
+const SearchComponent = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [results, setResults] = useState([]);
+
+  const performSearch = (query: string) => {
+    // Simulate API call
+    console.log('Searching for:', query);
+    // setResults(await searchAPI(query));
+  };
+
+  const debouncedSearch = useDebounceCallback(performSearch, 300);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    debouncedSearch(value);
+  };
+
+  return (
+    <div>
+      <input type="text" value={searchTerm} onChange={handleInputChange} placeholder="Search..." />
+      {/* Search results */}
+    </div>
+  );
+};
+```
+
+### Custom Delay
+
+Use a different delay for different use cases:
+
+```tsx
+import { useDebounceCallback } from '@melio/penny-utils';
+
+const AutoSaveComponent = () => {
+  const [content, setContent] = useState('');
+
+  const saveContent = (text: string) => {
+    // Auto-save logic
+    console.log('Auto-saving:', text);
+  };
+
+  // Use a longer delay for auto-save (2 seconds)
+  const debouncedSave = useDebounceCallback(saveContent, 2000);
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setContent(value);
+    debouncedSave(value);
+  };
+
+  return (
+    <textarea value={content} onChange={handleContentChange} placeholder="Start typing to see auto-save in action..." />
+  );
+};
+```

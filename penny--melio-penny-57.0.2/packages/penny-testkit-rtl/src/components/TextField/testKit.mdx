@@ -1,0 +1,76 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Text Field/RTL Test Kit" />
+
+# TextField RTL Test Kit
+---
+
+Testing utilities for the `TextField` component that provide easy access to component interactions, states, and accessibility features for Rtl (React Testing Library).
+
+## Import
+
+```typescript
+import { createTextFieldTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the DOM element | \`HTMLInputElement\` |
+| \`getIsViewMode()\` | Checks if the field is in view mode | \`boolean\` |
+| \`getIsLoading()\` | Checks if the field is in loading state | \`boolean\` |
+| \`getIsReadOnly()\` | Checks if the field is read-only | \`boolean\` |
+| \`getIsDisabled()\` | Checks if the field is disabled | \`boolean\` |
+| \`getIsInvalid()\` | Checks if the field is invalid | \`boolean\` |
+| \`getIsRequired()\` | Checks if the field is required | \`boolean\` |
+| \`getMaxChars()\` | Gets the maximum character limit | \`number\` |
+| \`getValue()\` | Gets the current value of the field | \`string \| null\` |
+| \`getPlaceholder()\` | Gets the placeholder text | \`string \| null\` |
+| \`getIsPlaceholderVisible()\` | Checks if placeholder is visible | \`boolean\` |
+| \`type(text, options?)\` | Types text into the field | \`Promise<void>\` |
+| \`click()\` | Clicks on the field | \`Promise<void>\` |
+| \`clear()\` | Clear the field | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createTextFieldTestKit } from '@melio/penny-testkit-rtl';
+
+describe('TextField Component', () => {
+  it('should render the value', async () => {
+    const testKit = createTextFieldTestKit({ dataTestId: 'custom-datatestid' });
+    render(<TextField aria-label="text field" data-testid="custom-datatestid" />);
+    
+    await testKit.type('test value');
+    
+    expect(testKit.getValue()).toBe('test value');
+  });
+
+  it('should be disabled', () => {
+    const testKit = createTextFieldTestKit({ dataTestId: 'custom-datatestid' });
+    render(<TextField isDisabled aria-label="text field" data-testid="custom-datatestid" />);
+
+    expect(testKit.getIsDisabled()).toBeTruthy();
+  });
+
+  it('should show placeholder when empty', () => {
+    const testKit = createTextFieldTestKit({ dataTestId: 'custom-datatestid' });
+    render(<TextField placeholder="Enter text" aria-label="text field" data-testid="custom-datatestid" />);
+
+    expect(testKit.getPlaceholder()).toBe('Enter text');
+  });
+
+  it('should be in loading state', () => {
+    const testKit = createTextFieldTestKit({ dataTestId: 'custom-datatestid' });
+    render(<TextField isLoading aria-label="text field" data-testid="custom-datatestid" />);
+
+    expect(testKit.getIsLoading()).toBeTruthy();
+  });
+});
+```

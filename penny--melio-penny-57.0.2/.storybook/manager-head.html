@@ -1,0 +1,67 @@
+<link rel="shortcut icon" href="./favicon.svg" />
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+  }
+  /* Enlarge the category headings */
+  .sidebar-subheading [data-component='SidebarItem'] {
+    font-size: 13px !important;
+  }
+
+  /* Enlarge the search field */
+  #storybook-explorer-searchfield {
+    height: 30px;
+    font-size: 16px;
+  }
+
+  /* Enlarge the `+` button next to the search field*/
+  #downshift-0-label + div button {
+    height: 32px;
+    width: 32px;
+  }
+
+  .search-field {
+    justify-content: center;
+
+    code {
+      top: initial;
+      font-size: 16px;
+    }
+  }
+
+  /* Fix the dropdown menus' hover color */
+  [id^='list-item-'] {
+    &:hover {
+      background-color: rgba(148, 112, 255, 0.07) !important;
+    }
+  }
+
+  /* Fix the dropdown menus' opacity that reduces visibility */
+  [data-testid='tooltip'] {
+    background-color: inherit !important;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    /* Fix the dropdown menus' right element text color in dark mode */
+    [id^='list-item-'] {
+      color: #c9cdcf !important;
+    }
+
+    /* Override the selected item bg color in dark mode - to keep it accessible and contrasted. */
+    .sidebar-item[data-selected='true'] {
+      background-color: #9470ff !important;
+    }
+
+    /* Lighten the search field background color to be more bold on the screen */
+    #storybook-explorer-searchfield,
+    #storybook-explorer-searchfield:focus,
+    #storybook-explorer-searchfield:active {
+      background-color: transparent;
+    }
+
+    /* Lighten the `+` button text color in dark mode */
+    .search-field + div button {
+      color: #ccdde6;
+    }
+  }
+</style>

@@ -1,0 +1,109 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Amount Field/RTL Test Kit" />
+
+# AmountField RTL Test Kit
+---
+
+Testing utilities for the `AmountField` component that provide easy access to component interactions, states, and accessibility features for Rtl (React Testing Library).
+
+## Import
+
+```typescript
+import { createAmountFieldTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the DOM element | \`HTMLInputElement\` |
+| \`getIsViewMode()\` | Checks if the field is in view mode | \`boolean\` |
+| \`getIsLoading()\` | Checks if the field is in loading state | \`boolean\` |
+| \`getIsReadOnly()\` | Checks if the field is read-only | \`boolean\` |
+| \`getIsDisabled()\` | Checks if the field is disabled | \`boolean\` |
+| \`getIsInvalid()\` | Checks if the field is invalid | \`boolean\` |
+| \`getIsRequired()\` | Checks if the field is required | \`boolean\` |
+| \`getValue()\` | Gets the current value of the field (includes currency sign in edit mode) | \`string \| null\` |
+| \`getPlaceholder()\` | Gets the placeholder text | \`string \| null\` |
+| \`getIsPlaceholderVisible()\` | Checks if placeholder is visible | \`boolean\` |
+| \`type(text, options?)\` | Types text into the field | \`Promise<void>\` |
+| \`click()\` | Clicks on the field | \`Promise<void>\` |
+| \`clear()\` | Clear the field | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createAmountFieldTestKit } from '@melio/penny-testkit-rtl';
+
+describe('AmountField Component', () => {
+  it('should render the value with currency sign', async () => {
+    const testKit = createAmountFieldTestKit({ dataTestId: 'custom-datatestid' });
+    render(
+      <AmountField
+        aria-label="amount field"
+        data-testid="custom-datatestid"
+        currencySign="$"
+        locale="en-US"
+        currency="USD"
+      />
+    );
+
+    await testKit.type('1000');
+
+    expect(testKit.getValue()).toBe('$1,000');
+  });
+
+  it('should be disabled', () => {
+    const testKit = createAmountFieldTestKit({ dataTestId: 'custom-datatestid' });
+    render(
+      <AmountField
+        isDisabled
+        aria-label="amount field"
+        data-testid="custom-datatestid"
+        currencySign="$"
+        locale="en-US"
+        currency="USD"
+      />
+    );
+
+    expect(testKit.getIsDisabled()).toBeTruthy();
+  });
+
+  it('should show placeholder when empty', () => {
+    const testKit = createAmountFieldTestKit({ dataTestId: 'custom-datatestid' });
+    render(
+      <AmountField
+        aria-label="amount field"
+        data-testid="custom-datatestid"
+        currencySign="$"
+        locale="en-US"
+        currency="USD"
+      />
+    );
+
+    expect(testKit.getPlaceholder()).toBe('$0.00');
+  });
+
+  it('should be in loading state', () => {
+    const testKit = createAmountFieldTestKit({ dataTestId: 'custom-datatestid' });
+    render(
+      <AmountField
+        isLoading
+        aria-label="amount field"
+        data-testid="custom-datatestid"
+        currencySign="$"
+        locale="en-US"
+        currency="USD"
+      />
+    );
+
+    expect(testKit.getIsLoading()).toBeTruthy();
+  });
+});
+```

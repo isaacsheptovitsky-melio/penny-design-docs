@@ -1,0 +1,79 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { tableBorderStyles, tableHeaderStyles, tableRowBackgroundStyles } from 'storybook-utils';
+
+<Meta title="Foundations/Breakpoints" />
+
+# Breakpoints
+
+Breakpoints represent how the screen resolution is broken down so we could support the responsiveness of the application across different devices.
+
+### Values
+
+<table style={tableBorderStyles}>
+    <thead style={tableHeaderStyles}>
+        <tr>
+            <th>Name</th>
+            <th>Range</th>
+            <th>Comments</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style={tableRowBackgroundStyles}>
+            <td>`xs`</td>
+            <td>`0px - 599px`</td>
+            <td>Mobile device</td>
+        </tr>
+        <tr style={tableRowBackgroundStyles}>
+            <td>`s`</td>
+            <td>`600px - 904px`</td>
+            <td>Mobile in landscape mode</td>
+        </tr>
+        <tr style={tableRowBackgroundStyles}>
+            <td>`m`</td>
+            <td>`905px - 1239px`</td>
+            <td>Tablet device</td>
+        </tr>
+        <tr style={tableRowBackgroundStyles}>
+            <td>`l`</td>
+            <td>`1240px - 1439px`</td>
+            <td>Laptop device</td>
+        </tr>
+        <tr style={tableRowBackgroundStyles}>
+            <td>`xl`</td>
+            <td>`1440px+`</td>
+            <td>Desktop device</td>
+        </tr>
+    </tbody>
+</table>
+
+### Access the Current Breakpoint
+
+In order to get the current breakpoint the application is rendered in - use the `useBreakpoint` hook.
+
+Link to the doc page - TBD
+
+```tsx
+import { useBreakpoint } from '@melio/penny';
+
+const MyComp = () => {
+  const { isExtraSmallScreen } = useBreakpoint();
+
+  return isExtraSmallScreen ? <div>I am on mobile!</div> : <div>I am on desktop!</div>;
+};
+```
+
+### Get a Value Matching a Breakpoint
+
+You can also "ask us" which value should be used for the current breakpoint using the `useBreakpointValue` hook.
+
+Link to the doc page - TBD
+
+```tsx
+import { useBreakpointValue } from '@melio/penny';
+
+const MyComp = () => {
+  const deviceName = useBreakpointValue({ xs: 'mobile', xl: 'desktop' });
+
+  return <div>I am on {deviceName}!</div>;
+};
+```

@@ -1,0 +1,937 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as DesignGuidelinesStories from './DesignGuidelines.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { Do, Dont } from '@/storybook-utils/RuleItem';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+import { VariantCard, VariantCards } from '@/storybook-utils/VariantCard';
+import { DoDont } from '@/storybook-utils/DoDont';
+import { SectionBox } from '@/storybook-utils/SectionBox';
+import { Label } from '@/storybook-utils/Label';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { PartCallout } from '@/storybook-utils/PartCallout';
+import { CascadeDiagram } from '@/storybook-utils/CascadeDiagram';
+
+<Meta title="✦ Design Guidelines" />
+
+<PageHero
+  category="Internal"
+  title="Design Guidelines"
+  badge="Design Only"
+  description="Visual language, component patterns, and UI conventions for this Storybook documentation site. Use this page as a reference when building new component docs."
+/>
+
+---
+
+## Typography
+
+Type scale used across all doc pages. All text inherits **Nunito Sans** via the global `preview-head.html` injection.
+
+### Heading levels
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+  <div style={{ padding: '20px 24px', border: '1px solid #E2E8F0', borderBottom: 'none', borderRadius: '8px 8px 0 0', background: '#F7FAFC' }}>
+    <span style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280' }}>H1 — Page title (PageHero only)</span>
+    <div style={{ marginTop: '8px', fontSize: '40px', fontWeight: 800, lineHeight: 1.15, color: '#111827', letterSpacing: '-0.02em' }}>Icon Button</div>
+  </div>
+  <div style={{ padding: '20px 24px', border: '1px solid #E2E8F0', borderBottom: 'none', background: '#fff' }}>
+    <span style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280' }}>H2 — Section heading</span>
+    <div style={{ marginTop: '8px', fontSize: '24px', fontWeight: 700, color: '#1A202C', lineHeight: 1.3, paddingBottom: '10px', borderBottom: '1px solid #E2E8F0' }}>Variants</div>
+  </div>
+  <div style={{ padding: '20px 24px', border: '1px solid #E2E8F0', borderBottom: 'none', background: '#fff' }}>
+    <span style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280' }}>H3 — Sub-section heading</span>
+    <div style={{ marginTop: '8px', fontSize: '17px', fontWeight: 700, color: '#1A202C', lineHeight: 1.4 }}>Hierarchy</div>
+  </div>
+  <div style={{ padding: '20px 24px', border: '1px solid #E2E8F0', borderBottom: 'none', background: '#fff' }}>
+    <span style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280' }}>Body — Default paragraph text</span>
+    <div style={{ marginTop: '8px', fontSize: '14px', lineHeight: 1.5, color: '#1A202C' }}>
+      The Button component is used to trigger actions or events, such as form submissions and navigation.
+    </div>
+  </div>
+  <div style={{ padding: '20px 24px', border: '1px solid #E2E8F0', borderBottom: 'none', background: '#fff' }}>
+    <span style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280' }}>Label — Uppercase metadata tag</span>
+    <div style={{ marginTop: '8px', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280' }}>Action Components</div>
+  </div>
+  <div style={{ padding: '20px 24px', border: '1px solid #E2E8F0', borderRadius: '0 0 8px 8px', background: '#fff' }}>
+    <span style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280' }}>Code — Inline prop or token name</span>
+    <div style={{ marginTop: '8px' }}>
+      Pass <code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>isLoading</code> to show a spinner. The default is{' '}
+      <code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>false</code>.
+    </div>
+  </div>
+</div>
+
+---
+
+## Color Palette
+
+The UI chrome colors used across all doc pages — not Penny design tokens.
+
+<table style={{ borderCollapse: 'separate', borderSpacing: 0, width: '100%', fontSize: '13px', border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden', marginTop: '8px' }}>
+  <thead>
+    <tr>
+      <th style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC', borderRight: '1px solid #E2E8F0' }}>Swatch</th>
+      <th style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC', borderRight: '1px solid #E2E8F0' }}>Value</th>
+      <th style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC' }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    {[
+      { hex: '#7849ff', label: 'Brand Purple',  usage: 'Inline code bg tint, tip callout border, links' },
+      { hex: '#111827', label: 'Text Primary',   usage: 'Headings, bold body text' },
+      { hex: '#1A202C', label: 'Text Body',      usage: 'Default paragraph text, table cell text' },
+      { hex: '#4A5568', label: 'Text Secondary', usage: 'VariantCard description text' },
+      { hex: '#6B7280', label: 'Text Muted',     usage: 'Labels, column headers, sub-labels' },
+      { hex: '#E2E8F0', label: 'Border Default', usage: 'All table & container borders' },
+      { hex: '#F7FAFC', label: 'Surface Subtle', usage: 'Table headers, playground wrapper bg' },
+      { hex: '#F8F9FA', label: 'Surface Preview',usage: 'VariantCard preview column bg' },
+      { hex: '#0F0728', label: 'Surface Dark',   usage: 'Inverse variant preview bg' },
+      { hex: '#F1F0FF', label: 'Code Chip Bg',   usage: 'Inline code chip background' },
+    ].map(({ hex, label, usage }, i, arr) => (
+      <tr key={hex}>
+        <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: hex, border: '1px solid #E2E8F0', flexShrink: 0 }} />
+            <span style={{ color: '#1A202C' }}>{label}</span>
+          </div>
+        </td>
+        <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined }}>
+          <code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>{hex}</code>
+        </td>
+        <td style={{ padding: '8px 16px', color: '#4A5568', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined }}>{usage}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+---
+
+## Corner Radius
+
+**Rule: 8px everywhere, no exceptions.**
+
+Every container, badge, banner, image, table, chip, and preview box uses `border-radius: 8px`. Pill shapes (like Do/Don't badges) use `border-radius: 9999px`.
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginTop: '16px' }}>
+  <div style={{ border: '1px solid #E2E8F0', borderRadius: '8px', padding: '24px', background: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+    <div style={{ width: '48px', height: '48px', borderRadius: '8px', background: '#F1F0FF', border: '2px solid #7849ff' }} />
+    <span style={{ fontSize: '12px', color: '#6B7280', fontWeight: 600 }}>Containers</span>
+    <code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>8px</code>
+  </div>
+  <div style={{ border: '1px solid #E2E8F0', borderRadius: '8px', padding: '24px', background: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+    <div style={{ padding: '4px 12px', borderRadius: '8px', background: '#DCFCE7', color: '#16A34A', fontSize: '13px', fontWeight: 600 }}>Healthy</div>
+    <span style={{ fontSize: '12px', color: '#6B7280', fontWeight: 600 }}>Status badges</span>
+    <code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>8px</code>
+  </div>
+  <div style={{ border: '1px solid #E2E8F0', borderRadius: '8px', padding: '24px', background: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+    <div style={{ padding: '2px 8px', borderRadius: '8px', background: '#F1F0FF', color: '#7849ff', fontSize: '13px', fontWeight: 500 }}>isLoading</div>
+    <span style={{ fontSize: '12px', color: '#6B7280', fontWeight: 600 }}>Code chips</span>
+    <code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>8px</code>
+  </div>
+  <div style={{ border: '1px solid #E2E8F0', borderRadius: '8px', padding: '24px', background: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+    <div style={{ width: '100%', height: '32px', borderRadius: '8px', background: '#F5F3FF', border: '1px solid #7849ff' }} />
+    <span style={{ fontSize: '12px', color: '#6B7280', fontWeight: 600 }}>Callout banners</span>
+    <code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>8px</code>
+  </div>
+  <div style={{ border: '1px solid #E2E8F0', borderRadius: '8px', padding: '24px', background: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+    <div style={{ width: '100%', height: '32px', borderRadius: '8px', background: '#E4E8EE', overflow: 'hidden' }}>
+      <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, #e0e7ef 0%, #c9d4e0 100%)' }} />
+    </div>
+    <span style={{ fontSize: '12px', color: '#6B7280', fontWeight: 600 }}>Images</span>
+    <code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>8px</code>
+  </div>
+  <div style={{ border: '1px solid #E2E8F0', borderRadius: '8px', padding: '24px', background: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+    <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+      <span style={{ background: '#DCFCE7', color: '#16A34A', fontSize: '12px', fontWeight: 600, padding: '3px 10px', borderRadius: '9999px' }}>✓ Do</span>
+      <span style={{ background: '#FEE2E2', color: '#DC2626', fontSize: '12px', fontWeight: 600, padding: '3px 10px', borderRadius: '9999px' }}>✗ Don't</span>
+    </div>
+    <span style={{ fontSize: '12px', color: '#6B7280', fontWeight: 600 }}>Pill badges only</span>
+    <code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>9999px</code>
+  </div>
+</div>
+
+---
+
+## PageHero
+
+Used at the top of every component page. Accepts `category`, `title`, `description`, and an optional `badge`.
+
+<table style={{ borderCollapse: 'separate', borderSpacing: 0, width: '100%', fontSize: '13px', border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden', marginTop: '8px' }}>
+  <thead>
+    <tr>
+      <th style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC', borderRight: '1px solid #E2E8F0' }}>Prop</th>
+      <th style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC', borderRight: '1px solid #E2E8F0' }}>Type</th>
+      <th style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC' }}>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', color: '#1A202C' }}><code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>category</code></td>
+      <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', color: '#4A5568' }}>string</td>
+      <td style={{ padding: '8px 16px', borderBottom: '1px solid #E2E8F0', color: '#4A5568' }}>Orange breadcrumb shown above the title — e.g. "Action"</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', color: '#1A202C' }}><code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>title</code></td>
+      <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', color: '#4A5568' }}>string</td>
+      <td style={{ padding: '8px 16px', borderBottom: '1px solid #E2E8F0', color: '#4A5568' }}>Large H1 — the component name</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', color: '#1A202C' }}><code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>description</code></td>
+      <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', color: '#4A5568' }}>string</td>
+      <td style={{ padding: '8px 16px', borderBottom: '1px solid #E2E8F0', color: '#4A5568' }}>One-sentence component purpose shown in body-lg</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', color: '#1A202C' }}><code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>badge</code></td>
+      <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', color: '#4A5568' }}>string?</td>
+      <td style={{ padding: '8px 16px', color: '#4A5568' }}>Optional status pill — Healthy, Beta, Deprecated, Experimental</td>
+    </tr>
+  </tbody>
+</table>
+
+<div style={{ marginTop: '16px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+  {['Healthy', 'Beta', 'Deprecated', 'Experimental', 'Design Only'].map(badge => {
+    const colors = {
+      Healthy:      ['#DCFCE7', '#15803D'],
+      Beta:         ['#FEF9C3', '#A16207'],
+      Deprecated:   ['#FEE2E2', '#B91C1C'],
+      Experimental: ['#F3E8FF', '#7C3AED'],
+      'Design Only':['#F1F0FF', '#7849ff'],
+    };
+    const [bg, text] = colors[badge] ?? ['#F1F5F9', '#475569'];
+    return (
+      <span key={badge} style={{ background: bg, color: text, fontSize: '13px', fontWeight: 600, padding: '3px 10px', borderRadius: '9999px' }}>{badge}</span>
+    );
+  })}
+</div>
+
+---
+
+## Containers
+
+### SectionBox
+
+A titled container used for grouping related content within a page section.
+
+<SectionBox title="Example Section">
+  <div style={{ padding: '20px 16px', fontSize: '14px', color: '#4A5568' }}>
+    Content inside a SectionBox. The header bar uses the same uppercase label style as table column headers.
+  </div>
+</SectionBox>
+
+### Component canvas wrapper
+
+The labelled "Component" header + Canvas pattern used at the top of every component's Design tab.
+
+<div style={{ marginTop: '8px' }}>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <div style={{ border: '1px solid #E2E8F0', borderTop: 'none', borderRadius: '0 0 8px 8px', padding: '40px 24px', background: '#F8F9FA', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100px' }}>
+    <span style={{ fontSize: '13px', color: '#9CA3AF' }}>← Canvas component renders here</span>
+  </div>
+</div>
+
+---
+
+## Callouts
+
+Four variants cover every tone of documentation annotation. Use the right one to set the correct reader expectation.
+
+<Callout variant="note">**Note / Tip** — A neutral informational annotation or usage suggestion. Friendly and constructive. `variant="note"` and `variant="tip"` are aliases — both work identically.</Callout>
+
+<Callout variant="success">**Success** — Reinforces correct usage or a recommended pattern. Use `variant="success"`.</Callout>
+
+<Callout variant="warning">**Warning / Caution** — Something to watch out for. Non-blocking but important. `variant="warning"` and `variant="caution"` are aliases — both work identically.</Callout>
+
+<Callout variant="critical">**Critical** — Signals danger or an irreversible consequence. Use sparingly. Use `variant="critical"`.</Callout>
+
+Icons are inline SVGs in each variant's semantic color. **Never use emojis inside Callouts** — the component renders Penny-style SVG icons automatically.
+
+---
+
+## Labels
+
+The `Label` component renders an uppercase muted tag — used above component groups, preview areas, or any section that needs a descriptor without heading weight.
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '8px' }}>
+  <div>
+    <Label>Section label</Label>
+    <div style={{ padding: '16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px', fontSize: '14px', color: '#4A5568' }}>
+      Content below a label
+    </div>
+  </div>
+</div>
+
+---
+
+## Shortcut Tiles
+
+Used in the links bar at the top of doc tabs to link to Figma, ZeroHeight, or other external resources. The icon is chosen automatically based on the URL type — external links show the site favicon, internal links (`/?path=…` or `#anchor`) show the Penny black symbol.
+
+<ShortcutTiles>
+  <ShortcutTile label="DS Components" url="https://www.figma.com" />
+  <ShortcutTile label="ZeroHeight" url="https://zeroheight.com" />
+  <ShortcutTile label="GitHub" url="https://github.com" />
+  <ShortcutTile label="Button docs" url="/?path=/docs/components-action-button--docs" />
+</ShortcutTiles>
+
+---
+
+## Logos
+
+All logo assets live in `src/assets/`. Use the variant that matches the background — never modify, recolor, or stretch any logo.
+
+<Canvas of={DesignGuidelinesStories.LogosShowcase} />
+
+### Penny
+
+Three color variants × two layouts. Use **Black** by default on light backgrounds.
+
+- **Black** (`penny-symbol-black` / `penny-logo-black-*`) — White and light backgrounds (default)
+- **Lylac** (`penny-symbol-lylac` / `penny-logo-lylac-*`) — Light grey surfaces where brand color adds warmth
+- **White** (`penny-symbol-white` / `penny-logo-white-*`) — Dark (`#18191b`) or brand purple (`#7849FF`) backgrounds
+
+Two layout options:
+- **Symbol only** (`40px`) — use in tight spaces: favicons, shortcut tiles, avatar slots.
+- **Logo + tagline** — use in headers, marketing sections, and onboarding. Available in **horizontal** and **vertical** stacks.
+
+### Melio
+
+Two logo types are available:
+
+- **Full Logo** (wordmark) — variants: Black · Purple · White — Marketing, headers, onboarding; use whenever the Melio name should be visible
+- **App Symbol** (rounded square) — variants: Black · Purple · White — Product icons, app launchers, tight spaces
+
+Color rules:
+- **Black** — on white or light backgrounds
+- **Purple** — on light grey surfaces for a branded feel
+- **White** — on dark (`#18191b`) or brand-colored backgrounds
+
+### Usage rules
+
+- **Never** recolor, rotate, scale non-uniformly, or add effects to any logo.
+- **Never** place the Penny or Melio logo on a background with insufficient contrast. Test visually — the symbol must be clearly legible.
+- **Minimum size** — the Penny symbol must not be rendered below 24px. Below that size, substitute with a text label.
+- **Clear space** — maintain at least 1× the symbol height as whitespace around any logo in composed layouts.
+- **Shortcut tiles** — the black Penny symbol is used automatically for all internal (`/?path=…`) links. External links show the site favicon.
+
+---
+
+## Tables
+
+Tables use `border-collapse: separate; border-spacing: 0` so `border-radius` renders correctly directly on the `<table>` element. Never wrap a table in a container div.
+
+<table style={{ borderCollapse: 'separate', borderSpacing: 0, width: '100%', fontSize: '13px', border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden', marginTop: '8px' }}>
+  <thead>
+    <tr>
+      <th style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC', borderRight: '1px solid #E2E8F0' }}>Prop</th>
+      <th style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC', borderRight: '1px solid #E2E8F0' }}>Type</th>
+      <th style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC' }}>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', color: '#1A202C' }}><code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>borderCollapse</code></td>
+      <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', color: '#1A202C' }}><code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>separate</code></td>
+      <td style={{ padding: '8px 16px', borderBottom: '1px solid #E2E8F0', color: '#4A5568' }}>Required for border-radius to work on the table element</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', color: '#1A202C' }}><code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>borderSpacing</code></td>
+      <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', color: '#1A202C' }}><code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>0</code></td>
+      <td style={{ padding: '8px 16px', borderBottom: '1px solid #E2E8F0', color: '#4A5568' }}>Keeps cells flush — no gaps between rows/columns</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', color: '#1A202C' }}>Last row <code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>borderBottom</code></td>
+      <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0', color: '#1A202C' }}>None</td>
+      <td style={{ padding: '8px 16px', borderBottom: '1px solid #E2E8F0', color: '#4A5568' }}>Prevents a double-line at the bottom edge</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', color: '#1A202C' }}>Wrapper div</td>
+      <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', color: '#DC2626', fontWeight: 600 }}>Never</td>
+      <td style={{ padding: '8px 16px', color: '#4A5568' }}>Do not wrap tables in a container — radius goes on the table itself</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## VariantCards
+
+Used in the **Variants → Hierarchy** section of component pages. Left column = live preview, right column = description.
+
+<VariantCards>
+  <VariantCard preview={<div style={{ width: '40px', height: '40px', borderRadius: '8px', background: '#7849ff' }} />} title="Primary">
+    The highest-emphasis action.
+    <ul style={{ margin: '8px 0 0', paddingLeft: '16px' }}>
+      <li><strong>Logic</strong> — most important action on the screen</li>
+      <li><strong>Constraints</strong> — use sparingly, one per context</li>
+      <li><strong>Examples</strong> — Save, Submit, Confirm</li>
+    </ul>
+  </VariantCard>
+  <VariantCard preview={<div style={{ width: '40px', height: '40px', borderRadius: '8px', background: 'transparent', border: '2px solid #7849ff' }} />} title="Secondary">
+    Supporting actions that complement a primary.
+    <ul style={{ margin: '8px 0 0', paddingLeft: '16px' }}>
+      <li><strong>Logic</strong> — reinforces without competing</li>
+      <li><strong>Constraints</strong> — pair alongside a primary</li>
+      <li><strong>Examples</strong> — Edit, Duplicate</li>
+    </ul>
+  </VariantCard>
+  <VariantCard preview={<div style={{ width: '40px', height: '40px', borderRadius: '8px', background: '#FFF1F2', border: '2px solid #F43F5E' }} />} title="Critical" dark={false}>
+    Irreversible, high-stakes actions.
+    <ul style={{ margin: '8px 0 0', paddingLeft: '16px' }}>
+      <li><strong>Logic</strong> — communicates destructive intent</li>
+      <li><strong>Constraints</strong> — always use two-step confirmation</li>
+      <li><strong>Examples</strong> — Delete, Remove</li>
+    </ul>
+  </VariantCard>
+  <VariantCard preview={<div style={{ width: '40px', height: '40px', borderRadius: '8px', background: '#7849ff' }} />} title="Inverse variant" dark>
+    On dark/brand backgrounds — use the `dark` prop.
+  </VariantCard>
+</VariantCards>
+
+---
+
+## Do / Don't
+
+Used to contrast recommended vs. discouraged patterns. Always provide a `preview` node, a `title`, and a `description` for each item.
+
+<DoDont items={[
+  {
+    type: 'do',
+    title: 'One primary action per context',
+    description: 'Limit to a single primary button per view so the most important action is always clear.',
+    preview: <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+      <div style={{ padding: '8px 16px', borderRadius: '8px', background: '#7849ff', color: '#fff', fontSize: '13px', fontWeight: 600 }}>Save</div>
+      <div style={{ padding: '8px 16px', borderRadius: '8px', background: '#F7FAFC', border: '1px solid #E2E8F0', color: '#1A202C', fontSize: '13px', fontWeight: 600 }}>Cancel</div>
+    </div>,
+  },
+  {
+    type: 'dont',
+    title: 'Multiple primary buttons',
+    description: 'Using two primary buttons removes hierarchy and confuses users about what to do next.',
+    preview: <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+      <div style={{ padding: '8px 16px', borderRadius: '8px', background: '#7849ff', color: '#fff', fontSize: '13px', fontWeight: 600 }}>Save</div>
+      <div style={{ padding: '8px 16px', borderRadius: '8px', background: '#7849ff', color: '#fff', fontSize: '13px', fontWeight: 600 }}>Publish</div>
+    </div>,
+  },
+]} />
+
+---
+
+## Section Tabs
+
+A tab strip used to switch between top-level content sections within a bordered container. Used in the Token Explorer. Tabs use H2 headings so they read as section titles, not navigation controls.
+
+<div style={{ border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden', marginTop: '8px' }}>
+  <div style={{ display: 'flex', borderBottom: '2px solid #E2E8F0', background: '#fff' }}>
+    {[
+      { label: 'Global',    active: true  },
+      { label: 'Semantic',  active: false },
+      { label: 'Component', active: false },
+    ].map(({ label, active }) => (
+      <div
+        key={label}
+        style={{
+          padding: '14px 28px',
+          borderBottom: `2px solid ${active ? '#7849ff' : 'transparent'}`,
+          marginBottom: '-2px',
+          cursor: 'pointer',
+        }}
+      >
+        <h2 style={{
+          margin: 0,
+          fontSize: '18px',
+          fontWeight: active ? 700 : 400,
+          color: active ? '#111827' : '#6B7280',
+          lineHeight: 1.2,
+          fontFamily: "'Nunito Sans', sans-serif",
+          borderBottom: 'none',
+          paddingBottom: 0,
+        }}>
+          {label}
+        </h2>
+      </div>
+    ))}
+  </div>
+  <div style={{ padding: '16px 24px', fontSize: '13px', color: '#4A5568', fontFamily: "'Nunito Sans', sans-serif", borderBottom: '1px solid #E2E8F0' }}>
+    Description bar — one sentence describing the active section's content.
+  </div>
+  <div style={{ padding: '24px', background: '#F7FAFC', fontSize: '13px', color: '#9CA3AF', fontFamily: "'Nunito Sans', sans-serif" }}>
+    Content area
+  </div>
+</div>
+
+- **Strip** — `display: flex`, `borderBottom: 2px solid #E2E8F0`, `background: #fff`
+- **Active tab** — H2 18px/700/`#111827`, `borderBottom: 2px solid #7849ff`, `marginBottom: -2px` (overlaps the strip's bottom border), `padding: 14px 28px`
+- **Inactive tab** — H2 18px/400/`#6B7280`, `borderBottom: 2px solid transparent`
+- **Description bar** — 13px/`#4A5568`, `padding: 10px 24px`, `borderBottom: 1px solid #E2E8F0`, `background: #fff`
+- **Container** — `border: 1px solid #E2E8F0`, `borderRadius: 8px`, `overflow: hidden`
+
+---
+
+## PartCallout
+
+A vertical annotation connecting a rendered element to its token path or part name. Used in architecture diagrams and anatomy callouts to spatially tie a label to a specific point on a component.
+
+<Canvas of={DesignGuidelinesStories.PartCalloutExample} />
+
+Three parts stacked vertically, centred on the annotated element:
+
+- **Dot** — 3×3 px, `#9CA3AF`, 1 px solid `panelBg` halo. `marginTop: -2px` centres it on the element's bottom edge.
+- **Line** — 1 px wide, default 16 px tall, `#D1D5DB`.
+- **Label** — 10 px SFMono, `#6B7280`, centred. Use token-path format: `component.part.property`.
+
+**When to use** — Pointing at one named part in an anatomy diagram, or showing which token drives a specific visual property on a rendered element.
+
+**When not to use** — Multiple parts simultaneously (use a numbered anatomy diagram instead), or for general contextual labels not tied to a specific visual point (use a `<Callout>` or prose caption instead).
+
+<table style={{ borderCollapse: 'separate', borderSpacing: 0, width: '100%', fontSize: '13px', border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden', marginTop: '16px' }}>
+  <thead>
+    <tr>
+      {['Prop', 'Type', 'Default', 'Description'].map((h, i, arr) => (
+        <th key={h} style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC', borderRight: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined }}>{h}</th>
+      ))}
+    </tr>
+  </thead>
+  <tbody>
+    {[
+      { prop: 'label',      type: 'string',    def: '—',          desc: 'Token path or part name shown as the annotation label' },
+      { prop: 'lineHeight', type: 'number',    def: '16',         desc: 'Height of the connecting line in px' },
+      { prop: 'panelBg',    type: 'string',    def: "'#F8F9FA'",  desc: "Background of the panel the callout sits on — used for the dot's halo border" },
+      { prop: 'children',   type: 'ReactNode', def: '—',          desc: 'The element being annotated' },
+    ].map(({ prop, type, def, desc }, i, arr) => (
+      <tr key={prop}>
+        <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined }}><code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>{prop}</code></td>
+        <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined, color: '#4A5568' }}>{type}</td>
+        <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined, color: '#6B7280', fontFamily: '"SFMono-Regular", Consolas, monospace', fontSize: '12px' }}>{def}</td>
+        <td style={{ padding: '8px 16px', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined, color: '#4A5568' }}>{desc}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+---
+
+## Inline Overlay Annotations
+
+A positioning pattern for annotating specific points in a rendered UI mockup — prop values, placement conventions, visual states — without distorting the layout. The visual is the back layer; the annotation is a transparent front layer.
+
+**When to use** — Labelling a specific element inside a live Canvas story (a button variant, a layout rule, a token reference). Use when you need the dot to point *at* something in context, and `<PartCallout>` would change the visual layout.
+
+**When not to use** — Wrapping a standalone element you own entirely (use `<PartCallout>` instead). Never annotate something you can explain just as well with a prose caption or `<Callout>`.
+
+<Canvas of={DesignGuidelinesStories.OverlayAnnotationExample} />
+
+### Core pattern
+
+Wrap the card and the annotation together in a `position: relative` container. The card uses `overflow: hidden` to clip its own children — but the annotation is a **sibling**, not a child, so it is never clipped by the card. Set `pointer-events: none` so the annotation never blocks interaction.
+
+```tsx
+<div style={{ position: 'relative' }}>
+
+  {/* Visual card — overflow:hidden clips only its own children */}
+  <div style={{ background: '#fff', border: '1px solid #E2E8F0', overflow: 'hidden' }}>
+    {/* your UI mockup */}
+  </div>
+
+  {/* Annotation sibling — never clipped, always on top */}
+  <div style={{
+    position: 'absolute',
+    top: `${buttonCenterY}px`,
+    /* left or right — see patterns below */
+    transform: 'translateY(-50%)',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+    pointerEvents: 'none',
+  }}>
+    {/* dot → line → label  (or  label → line → dot) */}
+  </div>
+
+</div>
+```
+
+### Dot placement rule
+
+**Always place the dot in whitespace — never over text or interactive content.**
+
+The dot marks where the annotation *points*, not where the label lives. Safe whitespace locations:
+
+- **Right padding strip** — The gap between a right-aligned button and the card's right border
+- **Left padding strip** — The gap between the card's left border and a left-aligned button
+- **Space-between gap** — Empty area between two `justifyContent: space-between` siblings
+
+### Right-side annotation
+
+Use when the annotated element is near the **right edge** of the card. DOM order `[dot][line][label]` — elements flow left-to-right so the label exits the card on the right.
+
+`left: 'calc(100% - Xpx)'` anchors the dot's left edge inside the right padding strip. Set X to half the card's right padding (e.g. `10px` for a `20px` right pad).
+
+```tsx
+{/* Dot in right padding, line + label extend outward to the right */}
+<div style={{
+  position: 'absolute',
+  top: `${elementCenterY}px`,
+  left: 'calc(100% - 10px)',   // 10px = half of 20px right padding
+  transform: 'translateY(-50%)',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4px',
+  pointerEvents: 'none',
+}}>
+  <div style={{ width: '3px', height: '3px', borderRadius: '50%', background: '#9CA3AF', border: '1px solid white', flexShrink: 0 }} />
+  <div style={{ width: '32px', height: '1px', background: '#D1D5DB', flexShrink: 0 }} />
+  <span style={{ fontFamily: '"SFMono-Regular", Consolas, monospace', fontSize: '10px', color: '#6B7280', whiteSpace: 'nowrap' }}>
+    label text
+  </span>
+</div>
+```
+
+### Left-side annotation
+
+Use when the annotated element is near the **left edge** of the card. DOM order `[label][line][dot]` — dot is the rightmost element, so it lands in the left padding strip while the label exits the card on the left.
+
+`right: 'calc(100% - Xpx)'` anchors the container's right edge inside the left padding strip. Set X to half the card's left padding (e.g. `14px` for a `24px` left pad).
+
+```tsx
+{/* Label extends outward to the left, line + dot land in left padding */}
+<div style={{
+  position: 'absolute',
+  top: `${elementCenterY}px`,
+  right: 'calc(100% - 14px)',  // 14px = ~half of 24px left padding
+  transform: 'translateY(-50%)',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4px',
+  pointerEvents: 'none',
+}}>
+  <span style={{ fontFamily: '"SFMono-Regular", Consolas, monospace', fontSize: '10px', color: '#6B7280', whiteSpace: 'nowrap' }}>
+    label text
+  </span>
+  <div style={{ width: '32px', height: '1px', background: '#D1D5DB', flexShrink: 0 }} />
+  <div style={{ width: '3px', height: '3px', borderRadius: '50%', background: '#9CA3AF', border: '1px solid white', flexShrink: 0 }} />
+</div>
+```
+
+### Calculating `top`
+
+`top` should land at the vertical centre of the element being annotated, measured from the relative wrapper's top edge (= the card's top border).
+
+```
+top = (sum of heights of all elements above the target row)
+    + target row top-padding
+    + (target element height / 2)
+```
+
+Common reference heights for Penny components:
+
+<table style={{ borderCollapse: 'separate', borderSpacing: 0, width: '100%', fontSize: '13px', border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden', marginTop: '8px' }}>
+  <thead>
+    <tr>
+      {['Element', 'Height'].map((h, i, arr) => (
+        <th key={h} style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC', borderRight: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined }}>{h}</th>
+      ))}
+    </tr>
+  </thead>
+  <tbody>
+    {[
+      { el: "Table header (padding: '10px 20px', 11px text)", h: '≈ 36px' },
+      { el: "Table row (padding: '12px 20px', 32px avatar)",  h: '≈ 57px' },
+      { el: 'Button size="small"',                            h: '32px'   },
+      { el: 'Button size="medium"',                           h: '40px'   },
+      { el: "Drawer header (padding: '20px 24px 16px', 40px avatar)", h: '≈ 77px' },
+    ].map(({ el, h }, i, arr) => (
+      <tr key={el}>
+        <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined, color: '#1A202C', fontFamily: '"SFMono-Regular", Consolas, monospace', fontSize: '12px' }}>{el}</td>
+        <td style={{ padding: '8px 16px', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined, color: '#4A5568', fontFamily: '"SFMono-Regular", Consolas, monospace', fontSize: '12px' }}>{h}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+### Visual spec
+
+<table style={{ borderCollapse: 'separate', borderSpacing: 0, width: '100%', fontSize: '13px', border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden', marginTop: '8px' }}>
+  <thead>
+    <tr>
+      {['Element', 'Value'].map((h, i, arr) => (
+        <th key={h} style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC', borderRight: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined }}>{h}</th>
+      ))}
+    </tr>
+  </thead>
+  <tbody>
+    {[
+      { el: 'Dot',   val: "3×3 px · border-radius: 50% · fill #9CA3AF · 1px solid white halo" },
+      { el: 'Line',  val: "width: 32px · height: 1px · #D1D5DB · flexShrink: 0" },
+      { el: 'Label', val: "10px SFMono-Regular · #6B7280 · whiteSpace: nowrap" },
+      { el: 'Gap',   val: "gap: '4px' between every element" },
+    ].map(({ el, val }, i, arr) => (
+      <tr key={el}>
+        <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined, color: '#1A202C', fontWeight: 600 }}>{el}</td>
+        <td style={{ padding: '8px 16px', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined, color: '#4A5568', fontFamily: '"SFMono-Regular", Consolas, monospace', fontSize: '12px' }}>{val}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+---
+
+## Cascade Diagram
+
+A horizontal sequence of level cards that visualises a multi-level resolution chain. Each card represents one layer of abstraction; arrow connectors show the direction of resolution. Designed for Penny's three-level token hierarchy and applicable to any layered system.
+
+<div style={{ background: '#EDF2F7', borderRadius: '8px', marginTop: '8px' }}>
+  <CascadeDiagram
+    connectorLabel="resolves to"
+    levels={[
+      {
+        label: 'Semantic',
+        sublabel: 'Intent mapping',
+        description: "Gives a raw hex value a purpose — names what it's for without locking in a specific value.",
+        visual: (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#7849ff', flexShrink: 0 }} />
+              <span style={{ fontFamily: '"SFMono-Regular", Consolas, monospace', fontSize: '10px', color: '#6B7280' }}>action.primary.rest</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#18191b', flexShrink: 0 }} />
+              <span style={{ fontFamily: '"SFMono-Regular", Consolas, monospace', fontSize: '10px', color: '#6B7280' }}>text.primary</span>
+            </div>
+          </div>
+        ),
+      },
+      {
+        label: 'Global',
+        sublabel: 'Raw palette',
+        description: 'The raw hex values behind every colour in the system. Never reference these directly in component themes.',
+        visual: (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+            <div style={{ display: 'flex', gap: '4px' }}>
+              {['#f6f2fd','#e4dbff','#b79eff','#9470ff','#7849ff','#5f33e6','#4315cb'].map(c => (
+                <div key={c} style={{ width: '20px', height: '20px', borderRadius: '4px', background: c, border: '1px solid rgba(0,0,0,0.07)', flexShrink: 0 }} />
+              ))}
+            </div>
+            <span style={{ fontFamily: '"SFMono-Regular", Consolas, monospace', fontSize: '10px', color: '#9CA3AF' }}>global.brand.100 → 1000</span>
+          </div>
+        ),
+      },
+    ]}
+    trace={{ tokens: ['semantic.action.primary.rest', 'global.brand.700'], resolvedHex: '#7849ff' }}
+  />
+</div>
+
+**When to use** — Explaining a hierarchy where each level builds on the previous. Best for 2–5 levels; more than 5 → switch to a vertical list.
+
+**When not to use** — Independent levels with no resolution chain (use separate VariantCards instead), or when only the end result matters (use a code block or table).
+
+### Visual spec
+
+- **Canvas bg** — `#EDF2F7`. One step darker than the card visual panels (`#F8F9FA`) so cards lift off the tray. Set per-story in `preview-head.html` using a `:has()` scoped rule.
+- **Card** — `1px solid #E2E8F0`, `border-radius: 8px`, `box-shadow: rgba(0,0,0,0.1) 0px 1px 3px 0px`.
+- **Visual panel** (top) — `#F8F9FA`, fixed `height: 120px`. The fixed height keeps all text panels starting at the same Y across cards.
+- **Text panel** (bottom) — `#fff`, `padding: 20px 24px`. Level name: 18px/700/`#111827`. Sublabel: 11px/`#9CA3AF`. Description: 13px/`#4A5568`/line-height 1.65.
+- **Connector** — `→` 20px `#9CA3AF`, 10px italic label below; default label "resolves to".
+- **Resolution trace** — optional pill row below the cards, `marginTop: 32px`, `#fff` bg, no border, `gap: 20px`. Token paths render as Token Pills; the resolved value renders as a Hex Pill (see Token Pills below).
+- **Fonts** — Nunito Sans for all text, SFMono for token paths and hex values. Never set Poppins — Chakra injects it globally; always override explicitly with Nunito Sans.
+
+<table style={{ borderCollapse: 'separate', borderSpacing: 0, width: '100%', fontSize: '13px', border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden', marginTop: '16px' }}>
+  <thead>
+    <tr>
+      {['Prop', 'Type', 'Default', 'Description'].map((h, i, arr) => (
+        <th key={h} style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC', borderRight: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined }}>{h}</th>
+      ))}
+    </tr>
+  </thead>
+  <tbody>
+    {[
+      { prop: 'levels',         type: 'CascadeDiagramLevel[]', def: '—',             desc: 'Ordered list of levels — rendered left to right. Each has label, sublabel?, description, visual (ReactNode).' },
+      { prop: 'connectorLabel', type: 'string',                def: '"resolves to"', desc: 'Label on the connector arrows between cards' },
+      { prop: 'trace',          type: 'CascadeDiagramTrace?',  def: 'undefined',     desc: 'Optional resolution trace bar below the cards. Takes tokens (string[]) and resolvedHex (string?).' },
+    ].map(({ prop, type, def, desc }, i, arr) => (
+      <tr key={prop}>
+        <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined }}><code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>{prop}</code></td>
+        <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined, color: '#4A5568', fontFamily: '"SFMono-Regular", Consolas, monospace', fontSize: '12px' }}>{type}</td>
+        <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined, color: '#6B7280', fontFamily: '"SFMono-Regular", Consolas, monospace', fontSize: '12px' }}>{def}</td>
+        <td style={{ padding: '8px 16px', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined, color: '#4A5568' }}>{desc}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+---
+
+## Token Pills
+
+Pill-shaped chips used in `CascadeDiagram` resolution trace bars. Two variants: a branded **token pill** for token path references, and a neutral **hex pill** for the final resolved value.
+
+<div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '20px 24px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px', marginTop: '8px', flexWrap: 'wrap' }}>
+  <span style={{ fontFamily: '"SFMono-Regular", Consolas, monospace', fontSize: '11px', color: '#7849ff', background: '#F6F2FD', border: '1px solid #E4DBFF', borderRadius: '4px', padding: '2px 6px', whiteSpace: 'nowrap' }}>semantic.action.primary.rest</span>
+  <span style={{ fontSize: '12px', color: '#9CA3AF' }}>→</span>
+  <span style={{ fontFamily: '"SFMono-Regular", Consolas, monospace', fontSize: '11px', color: '#7849ff', background: '#F6F2FD', border: '1px solid #E4DBFF', borderRadius: '4px', padding: '2px 6px', whiteSpace: 'nowrap' }}>global.brand.700</span>
+  <span style={{ fontSize: '12px', color: '#9CA3AF' }}>→</span>
+  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', fontFamily: '"SFMono-Regular", Consolas, monospace', fontSize: '11px', color: '#374151', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '4px', padding: '2px 6px', whiteSpace: 'nowrap' }}>
+    <span style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '2px', background: '#7849ff', border: '1px solid rgba(0,0,0,0.12)', flexShrink: 0 }} />
+    #7849ff
+  </span>
+</div>
+
+<table style={{ borderCollapse: 'separate', borderSpacing: 0, width: '100%', fontSize: '13px', border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden', marginTop: '16px' }}>
+  <thead>
+    <tr>
+      {['Variant', 'Background', 'Border', 'Text', 'Use for'].map((h, i, arr) => (
+        <th key={h} style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC', borderRight: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined }}>{h}</th>
+      ))}
+    </tr>
+  </thead>
+  <tbody>
+    {[
+      { variant: 'Token pill', bg: '#F6F2FD', border: '#E4DBFF', text: '#7849ff', use: 'Token path references in trace bars' },
+      { variant: 'Hex pill',   bg: '#F7FAFC', border: '#E2E8F0', text: '#374151', use: 'Final resolved value — includes a 10×10 px inline colour swatch (border-radius 2px)' },
+    ].map(({ variant, bg, border, text, use }, i, arr) => (
+      <tr key={variant}>
+        <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined, color: '#1A202C', fontWeight: 600 }}>{variant}</td>
+        <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: bg, border: `1px solid ${border}`, flexShrink: 0 }} />
+            <code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>{bg}</code>
+          </div>
+        </td>
+        <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined }}>
+          <code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>{border}</code>
+        </td>
+        <td style={{ padding: '8px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ width: '16px', height: '16px', borderRadius: '4px', background: text, flexShrink: 0, border: '1px solid rgba(0,0,0,0.1)' }} />
+            <code style={{ background: '#F1F0FF', color: '#7849ff', borderRadius: '8px', padding: '1px 5px', fontSize: '0.875em' }}>{text}</code>
+          </div>
+        </td>
+        <td style={{ padding: '8px 16px', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : undefined, color: '#4A5568' }}>{use}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+Both variants use **11px SFMono-Regular**, `border-radius: 4px`, `padding: 2px 6px`. Arrows between pills are `12px →` in `#9CA3AF` with `gap: 20px`.
+
+---
+
+## DocTabs
+
+The three-tab wrapper used on every component page. Wraps all content below the `<PageHero>`. Always use exactly three tabs in this order: **Design**, **Development**, **ADA**.
+
+```tsx
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<DocTabs links={<ShortcutTiles>…</ShortcutTiles>}>
+  <DocTab label="Design">
+    {/* Canvas, Controls, Usage, Variants, Sizes, patterns */}
+  </DocTab>
+  <DocTab label="Development">
+    {/* Anatomy (if needed), Component as link, Props */}
+  </DocTab>
+  <DocTab label="ADA">
+    {/* Accessibility */}
+  </DocTab>
+</DocTabs>
+```
+
+- The `links` prop renders a `<ShortcutTiles>` bar pinned above the tab strip.
+- Non-props Controls categories (accessibility, events, tests) auto-collapse via the `preview-head.html` MutationObserver — no per-story config needed.
+- All markdown content (headings, bullets, `<Canvas>`, `<Callout>`, etc.) works inside `<DocTab>` as long as there are blank lines between the JSX tag and the markdown.
+- Do **not** use `---` horizontal rules inside `<DocTab>` — section spacing is sufficient.
+
+### Tab content order (Design tab)
+
+The canonical section order inside the Design tab:
+
+1. `<Canvas of={Stories.Playground} />` — interactive hero story
+2. `<Controls of={Stories.Playground} />` — props table directly below, **no heading**
+3. `## Usage` — bullet list of do/don't rules
+4. `## Variants` — variant table + hierarchy cards + states grid
+5. `## Sizes` — if the component has sizes
+6. `## [Feature]` — one section per significant feature
+7. `## Desktop usage` / `## Mobile usage` — layout rules if applicable
+
+---
+
+## Inline Rules — `<Do>` and `<Dont>`
+
+Used for concise do/don't rules inside prose — distinct from `<DoDont>` image cards. These render an inline SVG check (green `#028838`) or cross (red `#D80E25`) icon before the rule text.
+
+```tsx
+import { Do, Dont } from '@/storybook-utils/RuleItem';
+
+<Do>place the delete action at the row level so it's always scoped to a single item.</Do>
+
+<Dont>place a bulk "Delete all" action unless the user has first selected specific items.</Dont>
+```
+
+**Rules:**
+- Group related do/don'ts under a `###` subheading. At most 3 per subheading.
+- **Never use emoji** (✅ / ❌) — always use `<Do>` and `<Dont>` so the visual stays consistent with the Penny icon system.
+- `<Do>` / `<Dont>` = prose rules in the **Usage** or **Trigger placement** sections.
+- `<DoDont>` = image cards showing product UI mockups in **Desktop/Mobile usage** sections.
+
+---
+
+## Font rules
+
+Two completely separate font contexts govern this Storybook:
+
+### Docs UI (MDX prose, storybook-utils components)
+
+Inherits **Nunito Sans** from `.sbdocs { font-family: 'Nunito Sans', sans-serif }` in `preview-head.html`. This uses CSS inheritance — **no `!important`, no `*` selector** — so Penny component themes (Poppins) win naturally.
+
+**Rule: Never set `fontFamily` in any inline style** on docs-UI elements (MDX headings, body text, `<Callout>`, `<VariantCard>` description text, table cells, `<SectionBox>` headers). They inherit Nunito Sans automatically.
+
+### Story render() mockups
+
+The outer `<div>` wrapper of every story's `render()` function **must** set `fontFamily: 'Poppins, sans-serif'` so all mockup text (simulated UI labels, card text, drawer headers) inherits Poppins instead of the docs Nunito Sans.
+
+```tsx
+// Correct — Poppins flows into all mockup children
+render: () => (
+  <div style={{ padding: '32px', fontFamily: 'Poppins, sans-serif' }}>
+    <p style={{ ... }}>This text inherits Poppins ✓</p>
+    <Button label="Penny component — already Poppins from theme" />
+  </div>
+)
+
+// Wrong — mockup text picks up Nunito Sans from .sbdocs
+render: () => (
+  <div style={{ padding: '32px' }}>
+    <p style={{ ... }}>This text is Nunito Sans ✗</p>
+  </div>
+)
+```
+
+Penny components inside the render already receive Poppins through their Chakra theme — the `fontFamily` on the outer div is only for your surrounding mockup HTML.
+
+---
+
+## Canvas usage
+
+**Playground story** — `<Canvas of={Stories.Playground} />` followed immediately by `<Controls of={Stories.Playground} />` with no heading between them. The `Playground` story's `parameters.controls.include` lists only prop-category argTypes so the Controls table stays focused.
+
+**Layout stories** (Hierarchy, States, Inverse) — set `parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } }` in the story. Reference with `<Canvas of={…} />` or `<Story of={…} />` from MDX.
+
+**Feature demos** (Sizes, Elements, FullWidth) — use default `sourceState` (shows "Show code" button). Reference with `<Canvas of={…} />`.
+
+```tsx
+// Layout story — no controls, no source
+export const VariantHierarchy: Story = {
+  parameters: {
+    controls: { disable: true },
+    docs: { canvas: { sourceState: 'none' } },
+  },
+  render: () => ( /* … */ ),
+};
+
+// Playground — controls scoped to props only
+export const Playground: Story = {
+  parameters: {
+    controls: {
+      include: ['label', 'variant', 'size', 'isDisabled'],
+    },
+  },
+};
+```

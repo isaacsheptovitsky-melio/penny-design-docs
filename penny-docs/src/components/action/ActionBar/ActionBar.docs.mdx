@@ -1,0 +1,86 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as ActionBarStories from './ActionBar.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={ActionBarStories} />
+
+<PageHero
+  category="Action"
+  title="Action Bar"
+  badge="Healthy"
+  description="The Action Bar is a pattern, based on the Panel component, used for managing bulk actions. It appears at the bottom of the screen when items are selected, showing a summary on the left and actions on the right."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="DS Components"
+      url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=2-88"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/722aae-action-bar"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={ActionBarStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={ActionBarStories.Playground} />
+</div>
+
+## Usage
+
+- Use the Action Bar when a user **selects multiple items** and needs to apply a single action to all of them.
+- Only show the bar when **selections are made** — hide it when nothing is selected.
+- Display a **clear summary** of the selected items on the left (e.g. a count and a running total).
+- Place the **primary action on the right**, with neutral actions (like Cancel) to its left.
+
+## Variants
+
+### Max width
+
+The bar's `maxWidth` constrains its content column. It supports the fixed widths `480px`, `600px`, `800px`, `1200px`, and `1600px`; `full` to span the entire container; or a custom pixel number.
+
+<Canvas of={ActionBarStories.MaxWidth} />
+
+<Callout variant="tip">Align the Action Bar's max width with the Layout grid (e.g. `1600px`) to maintain visual consistency with the page content.</Callout>
+
+### Loading state
+
+Set `isLoading` to replace the summary and actions with the Penny **Loader** and a `loadingText` message — use it while waiting for an async response after the user submits a bulk action.
+
+<Canvas of={ActionBarStories.LoadingState} />
+
+### Background color
+
+The background defaults to `semantic.surface.inverse` (near-black) and accepts any Penny color token — for example `global.brand.700` for a brand-purple surface.
+
+<Canvas of={ActionBarStories.BackgroundColor} />
+
+## Mobile usage
+
+<Callout variant="note">The Action Bar is **not available on mobile** — bulk actions are not supported in mobile views, so the pattern is desktop-only.</Callout>
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>

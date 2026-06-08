@@ -1,0 +1,30 @@
+{
+  "name": "@melio/eslint-config-penny",
+  "version": "0.1.1",
+  "description": "Shared ESLint configuration for Penny monorepo",
+  "private": true,
+  "main": "eslint.config.mjs",
+  "exports": {
+    ".": "./eslint.config.mjs"
+  },
+  "scripts": {
+    "lint": "echo 'No files to lint in eslint-config-penny'"
+  },
+  "dependencies": {
+    "@eslint/js": "^9.39.1",
+    "@typescript-eslint/eslint-plugin": "^8.49.0",
+    "@typescript-eslint/parser": "^8.49.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-vitest": "^0.5.4",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-monorepo": "^0.3.2",
+    "globals": "^16.5.0"
+  },
+  "devDependencies": {},
+  "peerDependencies": {
+    "eslint": "^9.39.1"
+  }
+}

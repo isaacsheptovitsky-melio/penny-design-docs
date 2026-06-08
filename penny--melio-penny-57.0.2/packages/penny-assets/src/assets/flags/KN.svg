@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+  <g clip-path="url(#saint-kitts-and-nevis__a)">
+    <mask id="saint-kitts-and-nevis__b" width="24" height="24" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:luminance">
+      <rect width="24" height="24" fill="#fff" rx="-1"/>
+    </mask>
+    <g mask="url(#saint-kitts-and-nevis__b)">
+      <path fill="#C51918" fill-rule="evenodd" d="M0 0v24h24V0H0Z" clip-rule="evenodd"/>
+      <path fill="#5EAA22" fill-rule="evenodd" d="M0 0v21L24 0H0Z" clip-rule="evenodd"/>
+      <path fill="#272727" stroke="#FFD018" stroke-width="1.25" d="m.71 23.756.361.403.451-.3L28.718 5.705l.6-.4-.482-.537-3.99-4.452-.362-.404-.45.301-27.197 18.153-.6.4.482.537 3.99 4.452Z"/>
+      <path fill="#F7FCFF" fill-rule="evenodd" d="m9.066 15.689-.816 1.42-.521-1.6-1.622-.516 1.351-.825-.163-1.674 1.334 1.025 1.381-.766-.387 1.706 1.108 1.275-1.665-.045Zm7.501-4.915-.817 1.42-.521-1.6-1.622-.515 1.351-.826-.162-1.674 1.333 1.025 1.381-.765-.387 1.705 1.108 1.275-1.665-.045Z" clip-rule="evenodd"/>
+    </g>
+  </g>
+  <defs>
+    <clipPath id="saint-kitts-and-nevis__a">
+      <path fill="#fff" d="M0 12C0 5.373 5.373 0 12 0s12 5.373 12 12-5.373 12-12 12S0 18.627 0 12Z"/>
+    </clipPath>
+  </defs>
+</svg>

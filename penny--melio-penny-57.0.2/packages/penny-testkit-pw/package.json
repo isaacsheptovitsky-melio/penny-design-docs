@@ -1,0 +1,46 @@
+{
+  "name": "@melio/penny-testkit-pw",
+  "version": "57.0.2",
+  "description": "Playwright testkits for Penny components",
+  "keywords": [
+    "penny",
+    "testkit",
+    "test",
+    "pw",
+    "playwright",
+    "playwright-testkit"
+  ],
+  "author": "or.oz <or.oz@melio.com>",
+  "license": "UNLICENSED",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "sideEffects": false,
+  "publishConfig": {
+    "main": "dist/penny-testkit-pw.js",
+    "module": "dist/penny-testkit-pw.mjs",
+    "types": "dist/index.d.ts",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:melio/penny.git",
+    "directory": "packages/penny-testkit-pw"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest -c vite.config.ts --passWithNoTests",
+    "lint": "eslint . --cache",
+    "build": "vite build",
+    "prepack": "dev-scripts prepack",
+    "package": "dev-scripts package",
+    "postpack": "dev-scripts postpack",
+    "analyze": "ANALYZE_BUNDLE=true vite build"
+  },
+  "peerDependencies": {
+    "@playwright/test": "^1.48.2"
+  },
+  "devDependencies": {
+    "@melio/eslint-config-penny": "workspace:*"
+  }
+}

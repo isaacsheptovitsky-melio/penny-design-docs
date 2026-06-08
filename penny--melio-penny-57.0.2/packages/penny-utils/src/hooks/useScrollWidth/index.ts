@@ -1,0 +1,1 @@
+export { useScrollWidth } from './useScrollWidth';

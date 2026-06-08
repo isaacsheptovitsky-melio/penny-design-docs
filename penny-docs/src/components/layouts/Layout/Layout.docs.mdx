@@ -1,0 +1,106 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as LayoutStories from './Layout.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={LayoutStories} />
+
+<PageHero
+  category="Layouts"
+  title="Layout"
+  badge="Healthy"
+  description="The Layout component creates the foundational structure for a page, defining Header, Content, and Footer areas. Use it to control the main content's maximum width."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="DS Layouts"
+      url="https://www.figma.com/file/GiHqIZlAdki88gha423JZ7/%F0%9F%A4%8D-DS-Layouts-%F0%9F%A4%8D?node-id=1150-11053"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/77e418-layout"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={LayoutStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={LayoutStories.Playground} />
+</div>
+
+## Usage
+
+- Use **Layout** as the top-level container for **every page** in the application.
+- Choose a `maxWidth` for the content area to **prevent content from stretching too wide** on large desktop screens.
+- Use the `isLoading` state to give **visual feedback** while the page fetches data.
+- The Content area is **always centered horizontally** within the container.
+
+<Callout variant="tip">Use narrower widths like `600px` for focused-task pages (such as forms) to improve user focus. Reserve wide widths for dense, data-heavy screens.</Callout>
+
+## Structure
+
+The layout is divided into three distinct slots:
+
+- **Header** — a slot at the top of the page. Can be set to `isSticky` to remain visible while the user scrolls.
+- **Content** — the main body where your primary components live. This is the area constrained by `maxWidth`.
+- **Footer** — a slot at the bottom of the page. Can also be set to `isSticky`.
+
+## Max width
+
+`maxWidth` controls the maximum width of the centered Content section. It supports the fixed widths `480px`, `600px`, `800px`, `900px`, `1200px`, and `1600px`; `full` to span the entire container; or a custom pixel number.
+
+<Canvas of={LayoutStories.MaxWidth} />
+
+<Callout variant="note">You can pass a custom max width (e.g. `'1140px'`), but avoid it where possible — sticking to the standard widths keeps the layout consistent across the platform.</Callout>
+
+## Background color
+
+Set the background color of the Content area to separate it from surrounding sections.
+
+- **default** — the standard, slightly off-white background for most pages.
+- **white** — a pure white background.
+- **lightest** — a very light gray, useful for subtle separation between page sections.
+
+<Canvas of={LayoutStories.BackgroundColor} />
+
+<Callout variant="warning">For accessibility, ensure the background you choose provides sufficient contrast with the text on top of it. Avoid combinations that are hard to read.</Callout>
+
+## Sticky header and footer
+
+Set `isSticky` on the header and/or footer to pin them while the Content scrolls — useful for persistent page titles and action footers.
+
+<Canvas of={LayoutStories.StickyHeaderAndFooter} />
+
+## Loading state
+
+In its loading state, a Loader is displayed over the Content area. This blocks interaction until loading is complete.
+
+<Canvas of={LayoutStories.LoadingState} />
+
+## Mobile usage
+
+<Callout variant="note">On mobile, `maxWidth` has little effect — the screen is usually narrower than the available widths. The layout adapts to fit the screen and the content reflows vertically.</Callout>
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>

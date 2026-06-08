@@ -1,0 +1,162 @@
+name: Sync All Assets From S3 With Penny Types
+
+on:
+  schedule:
+    # Every Sunday through Thursday at 9:00 (no real reason for the specific timing)
+    - cron: '0 9 * * 0-4'
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  sync-all-assets-with-s3:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          audience: sts.amazonaws.com
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::563186419109:role/penny-github-action-role
+
+      - name: Get penny-assets version
+        id: get-version
+        run: |
+          VERSION=$(jq -r '.version' packages/penny-assets/package.json)
+          if [ "$VERSION" = "null" ] || [ -z "$VERSION" ]; then
+            echo "❌ ERROR: Could not find valid version in packages/penny-assets/package.json"
+            echo "Please ensure the package.json exists and has a valid 'version' field."
+            exit 1
+          fi
+          echo "📦 Using penny-assets version: $VERSION"
+          echo "ASSETS_VERSION=$VERSION" >> "$GITHUB_OUTPUT"
+
+      # --- Brand Symbols ---
+      - name: Fetch Current Brand Symbols Names from S3
+        id: fetch-brand-symbols
+        run: |
+          BRAND_SYMBOLS_NAMES_STRING=$(aws s3 ls s3://penny-static/assets/${{ steps.get-version.outputs.ASSETS_VERSION }}/brand-symbols/ | awk '{print $4}' | grep -v '\-inverse\.' | awk -F'.' '{print $1}' | tr '\n' ','| sed 's/,$//')
+          echo "BRAND_SYMBOLS_NAMES=$BRAND_SYMBOLS_NAMES_STRING" >> "$GITHUB_OUTPUT"
+
+      - name: Update brandSymbol.generated.types.ts
+        run: |
+          node .github/workflows/sync-brand-symbols-templates/generate-types.js ${{ steps.fetch-brand-symbols.outputs.BRAND_SYMBOLS_NAMES }}
+
+      - name: Update brandSymbol.generated.ts
+        run: |
+          node .github/workflows/sync-brand-symbols-templates/generate-mapping.js ${{ steps.fetch-brand-symbols.outputs.BRAND_SYMBOLS_NAMES }} ${{ steps.get-version.outputs.ASSETS_VERSION }}
+
+      # --- Flags ---
+      - name: Fetch Current Flag Names from S3
+        id: fetch-flags
+        run: |
+          FLAG_NAMES_STRING=$(aws s3 ls s3://penny-static/assets/${{ steps.get-version.outputs.ASSETS_VERSION }}/flags/ | awk '{print $4}' | awk -F'.' '{print $1}' | tr '\n' ',' | sed 's/,$//')
+          echo "FLAG_NAMES=$FLAG_NAMES_STRING" >> "$GITHUB_OUTPUT"
+
+      - name: Update flags.generated.types.ts
+        run: |
+          node .github/workflows/sync-flags-templates/generate-types.js ${{ steps.fetch-flags.outputs.FLAG_NAMES }}
+
+      - name: Update flags.generated.ts
+        run: |
+          node .github/workflows/sync-flags-templates/generate-mapping.js ${{ steps.fetch-flags.outputs.FLAG_NAMES }} ${{ steps.get-version.outputs.ASSETS_VERSION }}
+
+      # --- Icons ---
+      - name: Fetch Current Icon Names from S3
+        id: fetch-icons
+        run: |
+          ICONS_NAMES_STRING=$(aws s3 ls s3://penny-static/assets/${{ steps.get-version.outputs.ASSETS_VERSION }}/icons/medium/ | awk '{print $4}' | awk -F'.' '{print $1}' | tr '\n' ',' | sed 's/,$//')
+          echo "ICONS_NAMES=$ICONS_NAMES_STRING" >> "$GITHUB_OUTPUT"
+
+      - name: Generate icons.generated.types.ts
+        run: |
+          node .github/workflows/sync-icons-templates/generate-types.js ${{ steps.fetch-icons.outputs.ICONS_NAMES }}
+
+      - name: Update icons.generated.ts
+        run: |
+          node .github/workflows/sync-icons-templates/generate-mapping.js ${{ steps.fetch-icons.outputs.ICONS_NAMES }} ${{ steps.get-version.outputs.ASSETS_VERSION }}
+
+      # --- Brands ---
+      - name: Fetch Current Brand Names from S3
+        id: fetch-brands
+        run: |
+          BRAND_NAMES_STRING=$(aws s3 ls s3://penny-static/assets/${{ steps.get-version.outputs.ASSETS_VERSION }}/brands/ | awk '{print $4}' | grep -v '\-inverse\|\-neutral' | awk -F'.' '{print $1}' | tr '\n' ',' | sed 's/,$//')
+          echo "BRAND_NAMES=$BRAND_NAMES_STRING" >> "$GITHUB_OUTPUT"
+
+      - name: Update brand.generated.types.ts
+        run: |
+          node .github/workflows/sync-brands-templates/generate-types.js ${{ steps.fetch-brands.outputs.BRAND_NAMES }}
+
+      - name: Update brand.generated.ts
+        run: |
+          node .github/workflows/sync-brands-templates/generate-mapping.js ${{ steps.fetch-brands.outputs.BRAND_NAMES }} ${{ steps.get-version.outputs.ASSETS_VERSION }}
+
+      # --- Illustrations ---
+      - name: Fetch Current Illustration Names from S3
+        id: fetch-illustrations
+        run: |
+          ILLUSTRATION_NAMES_STRING=$(aws s3 ls s3://penny-static/assets/${{ steps.get-version.outputs.ASSETS_VERSION }}/illustrations/ | awk '{print $4}' | awk -F'.' '{print $1}' | tr '\n' ',' | sed 's/,$//')
+          echo "ILLUSTRATION_NAMES=$ILLUSTRATION_NAMES_STRING" >> "$GITHUB_OUTPUT"
+
+      - name: Update defaultIllustrations.generated.types.ts
+        run: |
+          node .github/workflows/sync-illustrations-templates/generate-types.js ${{ steps.fetch-illustrations.outputs.ILLUSTRATION_NAMES }}
+
+      - name: Update defaultIllustrations.generated.ts
+        run: |
+          node .github/workflows/sync-illustrations-templates/generate-mapping.js ${{ steps.fetch-illustrations.outputs.ILLUSTRATION_NAMES }} ${{ steps.get-version.outputs.ASSETS_VERSION }}
+
+      # --- Prettify all generated files ---
+      - name: Prettify the files
+        run: |
+          npx prettier --write \
+            packages/penny/src/theme/icons/brandSymbol.generated.ts \
+            packages/penny/src/theme/icons/brandSymbol.generated.types.ts \
+            packages/penny/src/theme/icons/assets/flags/flags.generated.ts \
+            packages/penny/src/theme/icons/assets/flags/flags.generated.types.ts \
+            packages/penny/src/theme/icons/icons.generated.ts \
+            packages/penny/src/theme/icons/icons.generated.types.ts \
+            packages/penny/src/theme/icons/brand.generated.ts \
+            packages/penny/src/theme/icons/brand.generated.types.ts \
+            packages/penny/src/theme/defaultIllustrations/defaultIllustrations.generated.ts \
+            packages/penny/src/theme/defaultIllustrations/defaultIllustrations.generated.types.ts
+
+      - name: Exit If There Are No Changes
+        id: check-diff
+        run: |
+          if git diff --quiet; then
+            echo "No changes detected. Exiting..."
+            echo "HAS_DIFF=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - id: now
+        if: steps.check-diff.outputs.HAS_DIFF != 'false'
+        run: |
+          echo "NOW=$(date +'%Y-%m-%d_%H-%M')" >> $GITHUB_OUTPUT
+
+      - name: Create Pull Request
+        if: steps.check-diff.outputs.HAS_DIFF != 'false'
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: 'sync-assets-with-s3-${{steps.now.outputs.NOW}}'
+          title: 'feat: Sync all asset types (auto-generated)'
+          body: "This is an automatic synchronization between the asset files in S3 and the types in Penny repo.\nThe sync job happens via this [GitHub action](https://github.com/melio/penny/actions/workflows/sync-assets.yml)"
+          labels: 'auto-pr,no tests required'
+          author: Melio-Dependabot <actions@github.com>
+          commit-message: 'Assets - sync'
+          base: 'main'
+          token: ${{ secrets.PACKAGES_RELEASE_TOKEN }}
+          delete-branch: true
+
+      - name: Auto-approve PR
+        if: steps.check-diff.outputs.HAS_DIFF != 'false'
+        uses: hmarr/auto-approve-action@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}

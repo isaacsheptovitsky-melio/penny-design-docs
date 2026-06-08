@@ -1,0 +1,43 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Penny Utils/Hooks/useBoolean" />
+
+# `useBoolean`
+
+The `useBoolean` hook returns a stateful boolean value and an object with the following function to update it.
+
+## Return Value
+
+<Markdown>
+{`
+|   Name    |     Type       |   Description                            |
+|-----------|----------------|------------------------------------------|
+| on        | () => void      | A function to set the boolean value to true. |
+| off       | () => void      | A function to set the boolean value to false. |
+| toggle    | () => void      | A function to negate the boolean state.     |
+`}
+</Markdown>
+
+## Parameters
+The hook `useBoolean` accepts the initial boolean value, by default is false.
+
+## Usage
+
+```tsx
+import { useBoolean } from '@melio/penny-utils';
+
+const ExampleComponent = () => {
+  const [isOpen, setIsOpen] = useBoolean(false);
+
+  return (
+    <>
+      <button onClick={setIsOpen.on}>Open Drawer</button>
+      {isOpen && (
+        <div>
+          <p>Drawer Content</p>
+          <button onClick={setIsOpen.off}>Close Drawer</button>
+        </div>
+      )}
+    </>
+  )
+};

@@ -1,0 +1,82 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Penny Utils/Hooks/useRefCallback" />
+
+# `useRefCallback`
+
+The `useRefCallback` hook provides a way to create stable callback refs that can perform side effects when a DOM node is attached or detached.
+This is particularly useful for avoiding `useEffect` when you need to interact with DOM nodes immediately after they render.
+This hook is based on React's callback ref pattern and provides a more ergonomic API.
+
+## Hook Parameters
+
+<Markdown>
+  {`
+| Parameter    | Type                 | Description                                                    | Default |
+|--------------|----------------------|----------------------------------------------------------------|---------|
+| rawCallback  | \`RefCallback<T>\`   | A function that receives the DOM node and optionally returns a cleanup function | -       |
+`}
+</Markdown>
+
+## Return Value
+
+Returns a stable callback ref function that can be passed to the `ref` prop of React elements.
+
+## Usage Example
+
+```tsx
+import { useRefCallback } from '@melio/penny-utils';
+
+const AutoFocusInput = () => {
+  const focusRef = useRefCallback<HTMLInputElement>((node) => {
+    // Focus the input when it's attached to the DOM
+    node?.focus();
+
+    // Optional: return a cleanup function
+    return () => {
+      console.log('Input unmounted');
+    };
+  });
+
+  return <input ref={focusRef} placeholder="I will be focused automatically" />;
+};
+```
+
+## Advanced Usage
+
+```tsx
+import { useRefCallback } from '@melio/penny-utils';
+
+const MeasuredComponent = () => {
+  const [height, setHeight] = useState(0);
+
+  const measureRef = useRefCallback<HTMLDivElement>((node) => {
+    if (node) {
+      const resizeObserver = new ResizeObserver(() => {
+        setHeight(node.getBoundingClientRect().height);
+      });
+
+      resizeObserver.observe(node);
+
+      // Return cleanup function
+      return () => {
+        resizeObserver.disconnect();
+      };
+    }
+  });
+
+  return (
+    <div>
+      <div ref={measureRef}>Content to measure</div>
+      <p>Height: {height}px</p>
+    </div>
+  );
+};
+```
+
+## Notes
+
+- The callback function runs every time the DOM node is attached or detached
+- If your callback returns a function, it will be called when the node is unmounted or before the callback runs again
+- This hook is based on React's callback ref pattern and provides a more ergonomic API
+- Perfect for focus management, DOM measurements, setting up observers, and other DOM-related side effects

@@ -1,0 +1,46 @@
+{
+  "name": "penny-docs",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Storybook documentation for the Penny design system (migrated from ZeroHeight).",
+  "scripts": {
+    "storybook": "storybook dev --port 6006",
+    "build-storybook": "storybook build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^2.10.9",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@floating-ui/react": "^0.27.19",
+    "es-toolkit": "^1.46.1",
+    "flat": "^6.0.1",
+    "framer-motion": "^11.18.2",
+    "lottie-react": "^2.4.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-resizable-panels": "0.0.63"
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "^10.3.3",
+    "@storybook/addon-docs": "^10.3.3",
+    "@storybook/addon-links": "^10.3.3",
+    "@storybook/react-vite": "^10.3.3",
+    "@types/flat": "^5.0.5",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.7.0",
+    "storybook": "^10.3.3",
+    "typescript": "^5.9.3",
+    "vite": "^5.4.21"
+  },
+  "engines": {
+    "node": ">=22.19.0",
+    "pnpm": ">=10"
+  },
+  "packageManager": "pnpm@10.33.4",
+  "volta": {
+    "node": "22.19.0"
+  }
+}

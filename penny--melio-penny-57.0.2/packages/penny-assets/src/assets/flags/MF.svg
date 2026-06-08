@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+  <g clip-path="url(#saint-martin__a)">
+    <mask id="saint-martin__b" width="24" height="24" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:luminance">
+      <path fill="#fff" d="M0 0h24v24H0z"/>
+    </mask>
+    <g mask="url(#saint-martin__b)">
+      <path fill="#F50100" fill-rule="evenodd" d="M16.5 0H24v24h-7.5V0Z" clip-rule="evenodd"/>
+      <path fill="#2E42A5" fill-rule="evenodd" d="M0 0h9v24H0V0Z" clip-rule="evenodd"/>
+      <path fill="#EDEDED" fill-rule="evenodd" d="M7.5 0h9v24h-9V0Z" clip-rule="evenodd"/>
+    </g>
+  </g>
+  <defs>
+    <clipPath id="saint-martin__a">
+      <path fill="#fff" d="M0 12C0 5.373 5.373 0 12 0s12 5.373 12 12-5.373 12-12 12S0 18.627 0 12Z"/>
+    </clipPath>
+  </defs>
+</svg>

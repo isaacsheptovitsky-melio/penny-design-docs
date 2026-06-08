@@ -1,0 +1,18 @@
+name: Release Published Slack Notification
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  slackNotification:
+    name: Notify Slack on Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Slack Message
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_MESSAGE: |
+            🚀 **New Release:** [${{ github.event.release.tag_name }}](${{ github.event.release.html_url }})
+          SLACKIFY_MARKDOWN: true

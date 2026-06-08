@@ -1,0 +1,26 @@
+{
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@pellegrims/nx-remotecache-s3",
+      "options": {
+        "cacheableOperations": ["build", "lint", "lint:ci", "typecheck", "typecheck:ci"],
+        "bucket": "melio-nx-cache",
+        "prefix": "penny/",
+        "region": "us-east-1"
+      }
+    }
+  },
+  "affected": {
+    "defaultBase": "main"
+  },
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"]
+    }
+  },
+  "build-storybook": {
+    "options": {
+      "webpackStatsJson": true
+    }
+  }
+}

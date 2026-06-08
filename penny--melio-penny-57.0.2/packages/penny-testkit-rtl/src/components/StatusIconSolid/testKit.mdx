@@ -1,0 +1,61 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Status Icon Solid/RTL Test Kit" />
+
+# StatusIconSolid RTL Test Kit
+
+---
+
+Testing utilities for the `StatusIconSolid` component that provide easy access to component interactions, states, and accessibility features for Rtl (React Testing Library).
+
+## Import
+
+```typescript
+import { createStatusIconSolidTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+{`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the DOM element | \`HTMLElement\` |
+| \`getVisible()\` | Checks if the element is visible | \`boolean\` |
+| \`getActive()\` | Checks if the element has a data-active attribute | \`boolean\` |
+| \`getDisabled()\` | Checks if the element has a data-disabled attribute | \`boolean\` |
+| \`getReadOnly()\` | Checks if the element has a data-readonly attribute | \`boolean\` |
+| \`getIsBrandColor()\`| Checks if the element has a data-is-brand-color attribute | \`boolean\` |
+| \`getRole()\` | Gets the element's role attribute | \`string \| null\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createStatusIconSolidTestKit } from '@melio/penny-testkit-rtl';
+
+describe('StatusIconSolid Component', () => {
+  it('should check if the component exists', () => {
+    const testKit = createStatusIconSolidTestKit({ dataTestId: 'custom-datatestid' });
+    render(<StatusIconSolid status="success" data-testid="custom-datatestid"/>);
+
+    expect(testKit.getElement()).toBeInTheDocument();
+  });
+
+  it('should get aria-label attribute', () => {
+    const testKit = createStatusIconSolidTestKit({ dataTestId: 'custom-datatestid' });
+    render(<StatusIconSolid status="success" aria-label="Success Status" data-testid="custom-datatestid"/>);
+
+    expect(testKit.getElement().getAttribute('aria-label')).toBe('Success Status');
+  });
+
+  it('should be read-only', async () => {
+    const testKit = createStatusIconSolidTestKit({ dataTestId: 'custom-datatestid' });
+    render(<StatusIconSolid status="success" isReadOnly data-testid="custom-datatestid"/>);
+
+    expect(testKit.getReadOnly()).toBe(true);
+  });
+});
+```

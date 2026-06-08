@@ -1,0 +1,80 @@
+import { Markdown, Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/File Upload/RTL Test Kit" />
+
+# FileUpload RTL Test Kit
+---
+
+Testing utilities for the `FileUpload` component that provide easy access to component interactions, states, and accessibility features for RTL (React Testing Library).
+
+## Import
+
+```typescript
+import { createFileUploadTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the root container DOM element | \`HTMLElement\` |
+| \`getPlaceholder()\` | Gets the placeholder text | \`string\` |
+| \`getValue()\` | Gets the value text | \`string\` |
+| \`getIsDisabled()\` | Checks if the component is disabled | \`boolean\` |
+| \`getIsLoading()\` | Checks if the component is in loading state | \`boolean\` |
+| \`getIsReadOnly()\` | Checks if the component is read-only | \`boolean\` |
+| \`getIsInvalid()\` | Checks if the component is in an invalid state | \`boolean\` |
+| \`getIsSelected()\` | Checks if a file is currently selected | \`boolean\` |
+| \`uploadFile(file)\` | Simulates uploading a file via the file input | \`Promise<void>\` |
+| \`dropFile(file)\` | Simulates drag-and-drop of a file onto the component | \`void\` |
+| \`clickDropZone()\` | Clicks on the drop zone element | \`Promise<void>\` |
+| \`clickDeleteButton()\` | Clicks the delete button | \`Promise<void>\` |
+| \`clickReplaceButton()\` | Clicks the replace button | \`Promise<void>\` |
+| \`getIsDeleteButtonDisabled()\` | Checks if the delete button is disabled | \`boolean\` |
+| \`getIsReplaceButtonDisabled()\` | Checks if the replace button is disabled | \`boolean\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createFileUploadTestKit } from '@melio/penny-testkit-rtl';
+
+describe('FileUpload Component', () => {
+  let testKit: ReturnType<typeof createFileUploadTestKit>;
+
+  beforeEach(() => {
+    testKit = createFileUploadTestKit();
+  });
+
+  it('should upload a file', async () => {
+    const handleChange = vi.fn();
+    render(<FileUpload value={null} onChange={handleChange} />);
+
+    const file = new File(['content'], 'test.png', { type: 'image/png' });
+    testKit.uploadFile(file);
+
+    expect(handleChange).toHaveBeenCalledWith(file);
+    expect(testKit.getIsSelected()).toBeTruthy();
+  });
+
+  it('should be disabled', () => {
+    render(<FileUpload value={null} isDisabled />);
+
+    expect(testKit.getIsDisabled()).toBeTruthy();
+  });
+
+  it('should delete a file', async () => {
+    const handleChange = vi.fn();
+    const file = new File(['content'], 'test.png', { type: 'image/png' });
+    render(<FileUpload value={file} onChange={handleChange} />);
+
+    await act(async () => testKit.clickDeleteButton());
+
+    expect(handleChange).toHaveBeenCalledWith(null);
+  });
+});
+```

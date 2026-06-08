@@ -1,0 +1,552 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Storybook } from 'storybook-utils';
+
+import { Button, SectionBannerRoot, SectionBannerTitle, SectionBannerIcon, SectionBannerDescription, SectionBannerContent, Text } from '../../../components';
+import { PennyProvider, TokensProvider } from '../../providers';
+import { Box, SimpleGrid } from '@chakra-ui/react';
+
+<Meta title="Theme" />
+
+# Theme
+
+As the design system needs to match itself to the look and feel of the partner we're embedded into, we need the ability to override some of the design tokens of the design-system.<br />
+First, let's see how we insert the theme object into the design-system provider.
+
+```tsx
+// App.tsx
+
+import { PennyProvider, ThemeOptions } from '@melio/penny';
+
+const theme: ThemeOptions = {
+  colors: {
+    /*...*/
+  },
+  borderRadii: {
+    /*...*/
+  },
+  borders: {
+    /*...*/
+  },
+  textStyles: {
+    /*...*/
+  },
+  fonts: {
+    /*...*/
+  },
+  icons: {
+    /*...*/
+  },
+  illustrations: {
+    /*...*/
+  },
+  loader: {
+    /*...*/
+  },
+  blanket: {
+    /*...*/
+  },
+  logos: {
+    /*...*/
+  },
+};
+
+export const App = () => (
+  <PennyProvider theme={theme}>
+    <TheRestOfMyApp />
+  </PennyProvider>
+);
+```
+
+<SectionBannerRoot variant="informative">
+    <SectionBannerIcon />
+    <SectionBannerContent>
+        <SectionBannerDescription>Except for the mandatory value, each value that is not overridden will be taken from the default theme definitions.</SectionBannerDescription>
+    </SectionBannerContent>
+</SectionBannerRoot>
+
+Next up, let's make the theme look like our partner! 😁
+
+## Mandatory Values
+
+The theme must have mandatory values for the [Logos](/docs/theme--docs#logos) of which we don't supply any default value.
+
+## What's Included in the Theme
+
+### Tokens
+
+The theme includes design tokens that are used in the components. They can be adjusted according to the partner's theme.
+
+- [Colors](/docs/foundations-colors--docs)
+- [Typography](/docs/foundations-typography--docs)
+- [Breakpoints](/docs/foundations-breakpoints--docs)
+- [Spaces](/docs/foundations-spaces--docs)
+- [Border Radius](/docs/foundations-border-radius--docs)
+- [Borders](/docs/foundations-borders--docs)
+- [Shadows](/docs/foundations-shadows--docs)
+
+### Components
+
+The theme also includes some components that can be adjusted according to the partner's theme.
+
+- [Logos](/docs/foundations-logo--docs)
+- [Loader](/docs/foundations-loader--docs)
+- [Icons](/docs/foundations-icon--docs)
+- [Illustrations](/docs/foundations-illustration--docs)
+
+## Overriding Default Values
+
+### Logos
+
+This is how you can override a partner's [logo component](/docs/foundations-logo--docs).<br />
+It will be presented mostly in bars across the pages of the app.<br /><br />
+You need to supply _both_ a **dark** logo and a **light** logo.<br />
+The **dark** logo will be placed on **light** surface, whereas the **light** logo will be placed on a **dark** surface (as opposed to the idea of "dark/light mode" logo which is the opposite of what we're doing here).
+
+```tsx
+// my-theme.tsx
+
+import { ThemeOptions } from '@melio/penny';
+import { LightLogoComponent, DarkLogoComponent } from './logos';
+
+export const theme: ThemeOptions = {
+  logos: {
+    dark: DarkLogoComponent,
+    light: LightLogoComponent,
+  },
+};
+```
+
+You can also supply a URL to the logo instead of a JSX element.
+
+```tsx
+// my-theme.tsx
+
+import { ThemeOptions } from '@melio/penny';
+
+export const theme: ThemeOptions = {
+  logos: {
+    dark: 'https://cdn.my-logo.com/dark-logo.png',
+    light: 'https://cdn.my-logo.com/light-logo.svg',
+  },
+};
+```
+<SectionBannerRoot variant="warning">
+    <SectionBannerIcon />
+    <SectionBannerContent>
+        <SectionBannerTitle>Important to Note!</SectionBannerTitle>
+        <SectionBannerDescription>In order for the logo to be displayed correctly, the <Storybook.Code label="height" /> of the asset should be set to <Storybook.Code label="100%" />.<br />See the following code block for example.</SectionBannerDescription>
+    </SectionBannerContent>
+</SectionBannerRoot>
+
+```tsx
+// CustomLogo.tsx
+
+export const CustomLogo: VFC = () => (
+  <svg height="100%" viewBox="0 0 560 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+    // ...
+  </svg>
+);
+```
+
+### Colors
+
+We are using design tokens for our colors, here is a simple example of how you can override them.<br />
+For the full list of available color tokens, see the [Colors documentation](/docs/foundations-colors--docs)
+
+```tsx
+// my-theme.tsx
+
+import { ThemeOptions } from '@melio/penny';
+
+export const theme: ThemeOptions = {
+  colors: {
+    global: {
+      brand: {
+        100: '#0276B1',
+      },
+    },
+    semantic: {
+      text: {
+        primary: '{global.neutral.100}',
+      },
+    },
+    component: {
+      button: {
+        textSecondary: {
+          rest: {
+            label: '{semantic.link.primary.hover}',
+          },
+          hover: {
+            label: '{semantic.link.primary.pressed}',
+          },
+          pressed: {
+            label: '{semantic.link.primary.pressed}',
+          },
+        },
+      },
+    },
+  },
+};
+```
+
+### Border Radii
+
+We are using design tokens for our border radii, here is a simple example of how you can override them.<br />
+For the full list of available border radius tokens, see the [Border radii documentation](/docs/foundations-border-radius--docs)
+
+```tsx
+// my-theme.tsx
+
+import { ThemeOptions } from '@melio/penny';
+
+export const theme: ThemeOptions = {
+  borderRadii: {
+    global: {
+      100: '10px',
+    },
+    semantic: {
+      action: {
+        default: '{global.full}',
+      },
+    },
+  },
+};
+```
+
+### Borders
+
+We use design tokens to define border width and style. Here's a simple example of how you can override them in your theme.<br />
+For the full list of available border tokens, see the [Borders documentation](/docs/foundations-borders--docs)
+
+```tsx
+// my-theme.tsx
+
+import { ThemeOptions } from '@melio/penny';
+
+export const theme: ThemeOptions = {
+  borders: {
+    global: {
+      25: '4px dashed',
+    },
+    semantic: {
+      action: {
+        default: '{global.none}',
+      },
+    },
+  },
+};
+```
+
+### Typography
+
+This is how you can override the typography.<br />
+For the full list of available typography, see the [Typography documentation](/docs/foundations-typography--docs)
+
+```tsx
+// my-theme.tsx
+
+import { ThemeOptions } from '@melio/penny';
+
+export const theme: ThemeOptions = {
+  textStyles: {
+    body3Semi: {
+      // The available properties to override per typography option:
+      fontWeight: string | number;
+      textTransform: string;
+      letterSpacing: number;
+      fontFamily: string;
+      fontSize: string | number;
+      lineHeight: string | number;
+    },
+  },
+};
+```
+<SectionBannerRoot variant="informative">
+    <SectionBannerIcon />
+    <SectionBannerContent>
+        <SectionBannerTitle>Responsive Typography</SectionBannerTitle>
+        <SectionBannerDescription>Each property also accepts responsive values!<br />Meaning, you can pass an object of <a href="/docs/foundations-breakpoints--docs">breakpoint names</a> as the keys and their corresponding values.<br />See the following code block for example.</SectionBannerDescription>
+    </SectionBannerContent>
+</SectionBannerRoot>
+
+```tsx
+// my-theme.tsx
+
+import { ThemeOptions } from '@melio/penny';
+
+export const theme: ThemeOptions = {
+  textStyles: {
+    heading1Semi: {
+      fontSize: { xs: '24px', s: '32px' },
+      lineHeight: { xs: '32px', s: '40px' },
+      fontWeight: 600,
+    },
+  },
+};
+```
+
+### Font Family
+
+The partner possibly has a different font family than the default we provide.<br />
+Here's how to override it:
+
+```tsx
+// my-theme.tsx
+
+import { ThemeOptions } from '@melio/penny';
+
+export const theme: ThemeOptions = {
+  fonts: {
+    primary: 'My Font Family',
+  },
+};
+```
+<SectionBannerRoot variant="informative">
+    <SectionBannerIcon />
+    <SectionBannerContent>
+        <SectionBannerDescription>The <Storybook.Code label="primary" /> "role" is a preparation to allow more fonts in the future to be applied based on semantics or roles (e.g. font for titles).<br />Currently <Storybook.Code label="primary" /> is the only "role" of font we have.</SectionBannerDescription>
+    </SectionBannerContent>
+</SectionBannerRoot>
+
+<br />
+
+<SectionBannerRoot variant="warning">
+    <SectionBannerIcon />
+    <SectionBannerContent>
+        <SectionBannerTitle>Loading the Font</SectionBannerTitle>
+        <SectionBannerDescription>The <Storybook.Code label="fonts" /> definition in the theme only decides which font is to be used in the components.<br />It is your responsibility to make sure you load the font for the design-system to use.<br />See the following code block for example.</SectionBannerDescription>
+    </SectionBannerContent>
+</SectionBannerRoot>
+
+```tsx
+// index.html
+
+// Put this in the `head` tag
+<link href="http://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet" type="text/css" />
+```
+
+### Loader
+
+This is how you can override the [loader component](/docs/foundations-loader--docs).
+
+```tsx
+// my-theme.tsx
+
+import { ThemeOptions } from '@melio/penny';
+import { Loader } from './Loader';
+
+export const theme: ThemeOptions = {
+  loader: Loader,
+};
+```
+
+In addition, the loader can come in different colors, so you can use the `color` prop to apply where the custom loader needs to apply the color.<br />
+For example:
+
+```tsx
+// CustomLoader.tsx
+
+import { ThemeLoaderProps } from '@melio/penny';
+
+export const CustomLoader: VFC<ThemeLoaderProps> = ({ color }) => (
+  <Spinner color={color} width="16px" height="16px" thickness="3px" speed="1.3s" />
+);
+```
+
+This is optional. If you want the loader to be in a static color, you can just ignore the `color` prop.
+
+<SectionBannerRoot variant="warning">
+    <SectionBannerIcon />
+    <SectionBannerContent>
+        <SectionBannerTitle>Important to Note!</SectionBannerTitle>
+        <SectionBannerDescription>In order for the loader to be displayed correctly, the <Storybook.Code label="height" /> of the asset should be set to <Storybook.Code label="16px" />.<br />See the following code block for example.</SectionBannerDescription>
+    </SectionBannerContent>
+</SectionBannerRoot>
+
+```tsx
+// CustomLoader.tsx
+
+import { ThemeLoaderProps } from '@melio/penny';
+
+export const CustomLoader: VFC<ThemeLoaderProps> = () => (
+  <Spinner width="16px" height="16px" thickness="3px" speed="1.3s" />
+);
+```
+
+### Icons
+
+This is how you can override the [icon component](/docs/foundations-icon--docs).
+
+```tsx
+// my-theme.tsx
+
+import { ThemeOptions } from '@melio/penny';
+import { BankIcon } from './icons';
+
+export const theme: ThemeOptions = {
+  icons: {
+    bank: BankIcon,
+  },
+};
+```
+
+You can also override the icon per size. Meaning you can override the icon for the `small` and `medium` sizes with different assets.<br />
+
+```tsx
+// my-theme.tsx
+
+import { ThemeOptions } from '@melio/penny';
+import { BankIconSmall, BankIconMedium } from './icons';
+
+export const theme: ThemeOptions = {
+  icons: {
+    bank: { small: BankIconSmall, medium: BankIconMedium },
+  },
+};
+```
+<SectionBannerRoot variant="warning">
+    <SectionBannerIcon />
+    <SectionBannerContent>
+        <SectionBannerTitle>Important to Note!</SectionBannerTitle>
+        <SectionBannerDescription>In order for the icon to be displayed correctly, the <Storybook.Code label="height" /> and the{' '}<Storybook.Code label="width" /> of the asset should be set to <Storybook.Code label="100%" />.<br />See the following code block for example.</SectionBannerDescription>
+    </SectionBannerContent>
+</SectionBannerRoot>
+
+```tsx
+// CustomIcon.tsx
+
+export const CustomIcon: VFC = () => (
+  <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    // ...
+  </svg>
+);
+```
+
+### Illustrations
+
+This is how you can override the [illustration component](/docs/foundations-illustration--docs).
+
+```tsx
+// my-theme.tsx
+
+import { ThemeOptions } from '@melio/penny';
+import { BankSuccess } from './illustrations';
+
+export const theme: ThemeOptions = {
+  illustrations: {
+    bankSuccess: BankSuccess,
+  },
+};
+```
+
+You can also override the illustrations per size. Meaning you can override the illustration for the `small`, `medium` and `large` size with different assets.<br />
+
+```tsx
+// my-theme.tsx
+
+import { ThemeOptions } from '@melio/penny';
+import { BankSuccessSmall, BankSuccessMedium, BankSuccessLarge } from './illustrations';
+
+export const theme: ThemeOptions = {
+  illustrations: {
+    bankSuccess: { small: BankSuccessLarge, medium: BankSuccessMedium, large: BankSuccessLarge },
+  },
+};
+```
+
+Another way to load custom illustrations is to upload them to the cloud as `.svg` files and pass the link to the theme:
+
+```tsx
+// my-theme.tsx
+
+import { ThemeOptions } from '@melio/penny';
+
+export const theme: ThemeOptions = {
+  illustrations: {
+    bankSuccess: 'https://my-cdn.couldstorage.com/illustration.svg',
+  },
+};
+```
+
+In addition to static illustrations, you can also use animated components (Lottie):
+
+````tsx
+
+// CustomAnimation.tsx
+
+import { Lottie } from '@melio/penny';
+
+const animationData = {"v":"4.8.0","meta":{"g":"LottieFiles AE 3.4.4","a":"","k":"","d":"","tc":""},"fr":12,"ip":0,"op":61,"w":1080,"h":1080,"nm":"B","assets":[{"id":"comp_0","layers":[{"ind":1,"ty":4,"nm":"b","sr":1,"ks":{"o":{"a":0,"k":100},"r":{"a":0,"k":0},"p":{"a":0,"k":[900,1287.496,0]},"a":{"a":0,"k":[900,1287.496,0]},"s":{"a":0,"k":[100,100,100]}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[0,0],[0,0]],"v":[[-775.194,71.309],[-775.194,-71.309],[775.194,-71.309],[775.194,71.309]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.118,0.118,0.129,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":31},"lc":1,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[900,1705.244]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[0,0],[0,0]],"v":[[-678.308,71.309],[-678.308,-71.309],[678.308,-71.309],[678.308,71.309]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.118,0.118,0.129,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":31},"lc":1,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[900,1562.626]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],"v":[[678.308,-346.439],[-678.308,-346.439],[-678.308,-182.027],[-593.785,-182.027],[-593.785,346.439],[-388.051,346.439],[-388.051,-182.027],[-102.867,-182.027],[-102.867,346.439],[102.867,346.439],[102.867,-182.027],[388.052,-182.027],[388.052,346.439],[593.785,346.439],[593.785,-182.027],[678.308,-182.027]],"c":true}},"nm":"P"},{"ty":"fl","c":{"a":0,"k":[0.596,0.455,1,1]},"o":{"a":0,"k":100},"r":1,"nm":"F"},{"ty":"tr","p":{"a":0,"k":[900,1144.878]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"}],"ip":0,"op":72,"st":12},{"ind":2,"ty":4,"nm":"t","sr":1,"ks":{"o":{"a":0,"k":100},"r":{"a":0,"k":0},"p":{"a":1,"k":[{"i":{"x":0.338,"y":1},"o":{"x":0.768,"y":0},"t":12,"s":[736,1225.351,0],"to":[-3.302,-52.841,0],"ti":[0.278,49.806,0]},{"t":24,"s":[730.708,1071.043,0],"h":1},{"i":{"x":0.231,"y":1},"o":{"x":0.305,"y":0},"t":27.5,"s":[730.708,1071.043,0],"to":[-1.742,-312.16,0],"ti":[-72.442,-0.467,0]},{"i":{"x":0.401,"y":1},"o":{"x":0.615,"y":0},"t":37.5,"s":[856,520.101,0],"to":[74.333,0.479,0],"ti":[0,33.146,0]},{"t":39.5,"s":[900,546.351,0]}]},"a":{"a":0,"k":[900,1225.351,0]},"s":{"a":0,"k":[100,100,100]}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[-21.193,-30.006],[21.193,30.006]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":1,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[510.346,1223.924]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[36.438,-32.619],[-60.713,-53.469],[37.442,56.036],[7.438,10.134]],"o":[[-58.623,-79.672],[-44.314,39.669],[43.69,38.477],[-7.174,-10.737],[-19.323,-26.329]],"v":[[96.301,-48.841],[-78.032,-92.867],[-18.856,100.711],[47.193,34.06],[24.841,2.295]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":1,"lj":2,"nm":"S"},{"ty":"fl","c":{"a":0,"k":[1,1,1,1]},"o":{"a":0,"k":100},"r":1,"nm":"F"},{"ty":"tr","p":{"a":0,"k":[498.332,1240.078]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[5.409,4.763],[-1.775,47.194],[0,0],[-31.089,-57.878],[-25.7,-26.536],[0.831,67.461],[0,0]],"o":[[-44.367,-39.073],[0,0],[-78.231,-16.898],[24.441,45.501],[25.7,26.536],[0,0],[-5.688,-2.232]],"v":[[75.877,42.799],[-1.333,-107.546],[-1.568,-107.947],[-80.913,-12.111],[-10.439,94.742],[92.629,53.207],[92.629,53.207]],"c":true}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":1,"lj":2,"nm":"S"},{"ty":"fl","c":{"a":0,"k":[1,1,1,1]},"o":{"a":0,"k":100},"r":1,"nm":"F"},{"ty":"tr","p":{"a":0,"k":[403.599,1297.989]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[2.85,2.943],[24.441,45.501],[0.136,13.011],[-28.996,-53.982],[-25.7,-26.536],[0.831,67.461],[0,0]],"o":[[-25.7,-26.536],[-7.767,-14.46],[-67.113,-7.041],[24.441,45.501],[25.699,26.536],[0,0],[-3.962,-2.221]],"v":[[73.84,44.86],[3.365,-61.994],[-8.351,-103.735],[-72.57,-5.496],[-16.855,84.538],[84.279,52.668],[84.229,52.569]],"c":true}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":1,"lj":2,"nm":"S"},{"ty":"fl","c":{"a":0,"k":[1,1,1,1]},"o":{"a":0,"k":100},"r":1,"nm":"F"},{"ty":"tr","p":{"a":0,"k":[319.321,1347.871]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"tr","p":{"a":0,"k":[319.321,1347.871]},"a":{"a":0,"k":[319.321,1347.871]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[21.418,-28.321],[-21.418,28.321]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":1,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[1295.036,1226.103]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[-36.438,-32.619],[60.713,-53.469],[-37.442,56.036],[-6.737,9.245]],"o":[[69.046,-96.663],[44.314,39.669],[-43.69,38.477],[6.453,-9.658],[20.211,-27.735]],"v":[[-100.506,-47.79],[82.238,-89.739],[23.061,103.839],[-42.987,37.188],[-22.886,8.5]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":1,"lj":2,"nm":"S"},{"ty":"fl","c":{"a":0,"k":[1,1,1,1]},"o":{"a":0,"k":100},"r":1,"nm":"F"},{"ty":"tr","p":{"a":0,"k":[1302.97,1236.95]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[78.231,-16.898],[0,0],[44.367,-39.073],[5.688,-2.232],[0,0],[-25.699,26.536],[-24.441,45.501]],"o":[[0,0],[1.775,47.194],[-5.409,4.763],[0,0],[-0.831,67.461],[25.7,-26.536],[31.089,-57.878]],"v":[[1.568,-107.947],[1.333,-107.546],[-75.877,42.799],[-92.629,53.207],[-92.629,53.207],[10.439,94.742],[80.913,-12.111]],"c":true}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":1,"lj":2,"nm":"S"},{"ty":"fl","c":{"a":0,"k":[1,1,1,1]},"o":{"a":0,"k":100},"r":1,"nm":"F"},{"ty":"tr","p":{"a":0,"k":[1401.909,1297.989]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[67.113,-7.041],[7.767,-14.46],[25.7,-26.536],[3.962,-2.221],[0,0],[-25.699,26.536],[-24.441,45.501]],"o":[[-0.136,13.011],[-24.441,45.501],[-2.85,2.943],[0,0],[-0.831,67.461],[25.7,-26.536],[28.996,-53.982]],"v":[[8.351,-103.735],[-3.365,-61.994],[-73.84,44.86],[-84.229,52.569],[-84.279,52.668],[16.855,84.538],[72.57,-5.496]],"c":true}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":1,"lj":2,"nm":"S"},{"ty":"fl","c":{"a":0,"k":[1,1,1,1]},"o":{"a":0,"k":100},"r":1,"nm":"F"},{"ty":"tr","p":{"a":0,"k":[1486.187,1347.871]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"tr","p":{"a":0,"k":[1486.187,1347.871]},"a":{"a":0,"k":[1486.187,1347.871]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[5.917,-6.109],[-0.806,67.425],[-0.735,59.895],[-32.806,49.099],[-6.85,9.389],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[-7.174,-10.737],[40.254,15.799],[31.801,17.715],[25.695,26.532],[4.713,6.51],[0,0],[0,0]],"o":[[-4.259,5.644],[-25.695,26.532],[-31.8,17.715],[-40.254,15.799],[6.567,-9.829],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[7.438,10.135],[32.806,49.099],[0.735,59.895],[0.806,67.425],[-6.817,-7.039],[0,0],[0,0],[0,0]],"v":[[618.061,189.648],[603.043,207.058],[501.909,175.22],[409.279,125.85],[359.983,48.787],[380.442,19.609],[302.464,-36.192],[302.464,-36.192],[302.464,-36.192],[0,-252.633],[-305.367,-34.114],[-376.827,17.022],[-354.475,48.787],[-403.771,125.85],[-496.401,175.22],[-597.535,207.058],[-614.459,187.07],[-706.08,252.633],[706.08,252.633]],"c":true}},"nm":"P"},{"ty":"fl","c":{"a":0,"k":[0.741,0.741,1,1]},"o":{"a":0,"k":100},"r":1,"nm":"F"},{"ty":"tr","p":{"a":0,"k":[900,1225.351]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"}],"ip":0,"op":72,"st":12},{"ind":3,"ty":4,"nm":"e","parent":12,"sr":1,"ks":{"o":{"a":0,"k":100},"r":{"a":0,"k":0},"p":{"a":0,"k":[44.493,-76.382,0]},"a":{"a":0,"k":[756.499,196.155,0]},"s":{"a":0,"k":[100,100,100]}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[0.164,-22.543],[-0.164,22.543]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":2,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[826.469,196.852]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[0.164,-22.543],[-0.164,22.543]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":2,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[686.529,195.457]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"}],"ip":67.5,"op":72,"st":67.5},{"ind":4,"ty":4,"nm":"e","parent":12,"sr":1,"ks":{"o":{"a":0,"k":100},"r":{"a":0,"k":0},"p":{"a":0,"k":[44.411,-75.685,0]},"a":{"a":0,"k":[756.417,196.852,0]},"s":{"a":0,"k":[100,100,100]}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[22.543,0.164],[-22.543,-0.164]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":2,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[686.365,196.852]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[22.543,0.164],[-22.543,-0.164]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":2,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[826.469,196.852]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"}],"ip":66,"op":67.5,"st":62.5},{"ind":5,"ty":4,"nm":"e","parent":12,"sr":1,"ks":{"o":{"a":0,"k":100},"r":{"a":0,"k":0},"p":{"a":0,"k":[44.493,-76.382,0]},"a":{"a":0,"k":[756.499,196.155,0]},"s":{"a":0,"k":[100,100,100]}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[0.164,-22.543],[-0.164,22.543]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":2,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[826.469,196.852]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[0.164,-22.543],[-0.164,22.543]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":2,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[686.529,195.457]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"}],"ip":48,"op":66,"st":62.5},{"ind":6,"ty":4,"nm":"e","parent":12,"sr":1,"ks":{"o":{"a":0,"k":100},"r":{"a":0,"k":0},"p":{"a":0,"k":[44.411,-75.685,0]},"a":{"a":0,"k":[756.417,196.852,0]},"s":{"a":0,"k":[100,100,100]}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[22.543,0.164],[-22.543,-0.164]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":2,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[686.365,196.852]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[22.543,0.164],[-22.543,-0.164]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":2,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[826.469,196.852]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"}],"ip":46.5,"op":48,"st":43},{"ind":7,"ty":4,"nm":"e","parent":12,"sr":1,"ks":{"o":{"a":0,"k":100},"r":{"a":0,"k":0},"p":{"a":0,"k":[44.493,-76.382,0]},"a":{"a":0,"k":[756.499,196.155,0]},"s":{"a":0,"k":[100,100,100]}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[0.164,-22.543],[-0.164,22.543]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":2,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[826.469,196.852]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[0.164,-22.543],[-0.164,22.543]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":2,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[686.529,195.457]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"}],"ip":28.5,"op":46.5,"st":43},{"ind":8,"ty":4,"nm":"e","parent":12,"sr":1,"ks":{"o":{"a":0,"k":100},"r":{"a":0,"k":0},"p":{"a":0,"k":[44.411,-75.685,0]},"a":{"a":0,"k":[756.417,196.852,0]},"s":{"a":0,"k":[100,100,100]}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[22.543,0.164],[-22.543,-0.164]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":2,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[686.365,196.852]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[22.543,0.164],[-22.543,-0.164]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":2,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[826.469,196.852]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"}],"ip":27,"op":28.5,"st":23.5},{"ind":9,"ty":4,"nm":"e","parent":12,"sr":1,"ks":{"o":{"a":0,"k":100},"r":{"a":0,"k":0},"p":{"a":0,"k":[44.493,-76.382,0]},"a":{"a":0,"k":[756.499,196.155,0]},"s":{"a":0,"k":[100,100,100]}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[0.164,-22.543],[-0.164,22.543]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":2,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[826.469,196.852]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[0.164,-22.543],[-0.164,22.543]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":2,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[686.529,195.457]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"}],"ip":17,"op":27,"st":23.5},{"ind":10,"ty":4,"nm":"e","parent":12,"sr":1,"ks":{"o":{"a":0,"k":100},"r":{"a":0,"k":0},"p":{"a":0,"k":[44.411,-75.685,0]},"a":{"a":0,"k":[756.417,196.852,0]},"s":{"a":0,"k":[100,100,100]}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[22.543,0.164],[-22.543,-0.164]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":2,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[686.365,196.852]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[22.543,0.164],[-22.543,-0.164]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":2,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[826.469,196.852]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"}],"ip":15.5,"op":17,"st":12},{"ind":11,"ty":4,"nm":"e","parent":12,"sr":1,"ks":{"o":{"a":0,"k":100},"r":{"a":0,"k":0},"p":{"a":0,"k":[44.493,-76.382,0]},"a":{"a":0,"k":[756.499,196.155,0]},"s":{"a":0,"k":[100,100,100]}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[0.164,-22.543],[-0.164,22.543]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":2,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[826.469,196.852]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"},{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[0.164,-22.543],[-0.164,22.543]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":2,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[686.529,195.457]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"}],"ip":0,"op":15.5,"st":12},{"ind":12,"ty":4,"nm":"n","sr":1,"ks":{"o":{"a":0,"k":100},"r":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.167],"y":[0.167]},"t":12,"s":[-23]},{"i":{"x":[0.833],"y":[0.833]},"o":{"x":[0.333],"y":[0]},"t":24,"s":[-14.596]},{"i":{"x":[0.833],"y":[0.833]},"o":{"x":[0.167],"y":[0.167]},"t":34,"s":[-7.083]},{"t":39.5,"s":[-7.083],"h":1},{"i":{"x":[0.833],"y":[0.833]},"o":{"x":[0.167],"y":[0.167]},"t":44,"s":[-7.083]},{"t":52,"s":[0]}]},"p":{"a":1,"k":[{"i":{"x":0.667,"y":1},"o":{"x":0.167,"y":0.167},"t":12,"s":[632.006,468.537,0],"to":[-1.112,-1.112,0],"ti":[-3.204,3.917,0]},{"i":{"x":0.833,"y":0.833},"o":{"x":0.333,"y":0},"t":24,"s":[712.322,360.442,0],"to":[6.597,-8.066,0],"ti":[5.662,5.662,0]},{"t":34,"s":[764.009,275.039,0],"h":1},{"t":39.5,"s":[764.009,275.039,0],"h":1},{"i":{"x":0.833,"y":0.833},"o":{"x":0.167,"y":0.167},"t":44,"s":[764.009,275.039,0],"to":[-6.428,-6.428,0],"ti":[2.599,2.599,0]},{"t":52,"s":[712.006,272.537,0]}]},"a":{"a":0,"k":[0,0,0]},"s":{"a":0,"k":[100,100,100]}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":0,"k":{"i":[[0,0],[45.96,-11.888],[-65.382,0],[0,0]],"o":[[0,64.841],[-75.867,19.624],[43.999,0],[0,0]],"v":[[40.523,-117.983],[-18.077,-7.736],[-18.077,117.292],[71.118,117.983]],"c":false}},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0.129,0.129,0.141,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":1,"lj":2,"nm":"S"},{"ty":"tr","p":{"a":0,"k":[0,0]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"}],"ip":0,"op":72,"st":12},{"ind":13,"ty":4,"nm":"b","sr":1,"ks":{"o":{"a":0,"k":100},"r":{"a":0,"k":0},"p":{"a":0,"k":[950.695,757.369,0]},"a":{"a":0,"k":[0,0,0]},"s":{"a":0,"k":[100,100,100]}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ks":{"a":1,"k":[{"i":{"x":0.667,"y":1},"o":{"x":0.167,"y":0.167},"t":12,"s":[{"i":[[0,0],[71.6,303.721],[-187.673,79.456],[-82.484,-197.172],[-96.928,-243.227],[0,0]],"o":[[0,0],[-95.717,-406.024],[168.529,-71.351],[77.168,184.465],[0,0],[0,0]],"v":[[-332.906,733.948],[-374.978,100.655],[-319.022,-552.826],[67.789,-300.198],[358.578,185.455],[378.792,733.948]],"c":false}]},{"i":{"x":0.833,"y":0.833},"o":{"x":0.333,"y":0},"t":24,"s":[{"i":[[0,0],[35.54,310.015],[-196.957,46.303],[-49.063,-197.532],[-96.928,-243.227],[0,0]],"o":[[0,0],[-55.717,-486.024],[178.154,-41.883],[48.2,194.059],[0,0],[0,0]],"v":[[-332.906,733.948],[-354.978,104.655],[-207.022,-656.826],[131.789,-396.198],[358.578,185.455],[378.792,733.948]],"c":false}]},{"t":34,"s":[{"i":[[0,0],[16.045,311.633],[-196.957,46.303],[-49.063,-197.532],[-96.928,-243.227],[0,0]],"o":[[0,0],[-25.249,-490.393],[178.154,-41.883],[48.2,194.059],[0,0],[0,0]],"v":[[-332.906,733.948],[-370.978,48.655],[-171.022,-724.826],[167.789,-464.198],[358.578,185.455],[378.792,733.948]],"c":false}]}]},"nm":"P"},{"ty":"st","c":{"a":0,"k":[0,0,0,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":33},"lc":1,"lj":2,"nm":"S"},{"ty":"fl","c":{"a":0,"k":[1,1,1,1]},"o":{"a":0,"k":100},"r":1,"nm":"F"},{"ty":"tr","p":{"a":0,"k":[0,0]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"sk":{"a":0,"k":0},"sa":{"a":0,"k":0},"nm":"T"}],"nm":"G"}],"ip":0,"op":72,"st":12}]}],"layers":[{"ind":1,"ty":0,"nm":"b","refId":"comp_0","sr":1,"ks":{"o":{"a":0,"k":100},"r":{"a":0,"k":0},"p":{"a":0,"k":[540,540,0]},"a":{"a":0,"k":[900,900,0]},"s":{"a":0,"k":[57,57,100]}},"ao":0,"w":1800,"h":1800,"ip":0,"op":61,"st":-11}],"markers":[]};
+
+export const CustomAnimation: React.VFC = () => (
+  <Lottie animationData={animationData} width="100%" height="100%" />
+);```
+
+```tsx
+// my-theme.tsx
+
+import { ThemeOptions } from '@melio/penny';
+import { CustomAnimation } from './CustomAnimation';
+
+export const theme: ThemeOptions = {
+  illustrations: {
+    bankSuccess: CustomAnimation,
+  },
+};
+````
+
+### Nested Theming
+
+The theme can be nested to apply different appearances to different parts of the tree. This is useful for applying a global appearance and then overriding some parts of it.<br/><br/>
+To achieve this, simply wrap the part with another provider:<br/>
+
+- `<PennyProvider />` - use to apply whole theme appearance (tokens, logos, illustrations, icons). <br />
+- `<TokensProvider />` - use to apply only tokens appearance (colors, border radii, text styles, spaces and fonts).
+
+You will need to apply the appearance to an element using `cssVarsRoot`. Read [here](https://v2.chakra-ui.com/docs/styled-system/css-variables#attaching-the-css-variables) for more information.
+
+```tsx
+
+// Button with global theme appearance
+<Button label="click"/>
+
+// Button with nested theme appearance
+<Box id="nested-theme">
+  <PennyProvider
+    theme={{ logos: {}, colors: { semantic: { action: { primary: { rest: '{global.informative.700}' } } } } }}
+    cssVarsRoot="#nested-theme"
+  >
+    <Button label="click"/>
+  </PennyProvider>
+</Box>
+
+// Button with nested tokens appearance
+<Box id="nested-tokens">
+  <TokensProvider colors={{semantic: { action: { primary: { rest: '{global.success.700}' } } } }} cssVarsRoot="#nested-tokens">
+    <Button label="click"/>
+  </TokensProvider>
+</Box>
+```
+
+<SimpleGrid columns={3} justifyItems="start" alignItems="center" gap="m">
+  <Text textStyle="body2Semi">Global theme:</Text>
+  <Text textStyle="body2Semi">Nested theme:</Text>
+  <Text textStyle="body2Semi">Nested tokens:</Text>
+  <Button label="click" />
+  <Box id="nested-theme">
+    <PennyProvider
+      theme={{ logos: {}, colors: { semantic: { action: { primary: { rest: '{global.informative.700}' } } } } }}
+      cssVarsRoot="#nested-theme"
+    >
+      <Button label="click" />
+    </PennyProvider>
+  </Box>
+  <Box id="nested-tokens">
+    <TokensProvider
+      colors={{ semantic: { action: { primary: { rest: '{global.success.700}' } } } }}
+      cssVarsRoot="#nested-tokens"
+    >
+      <Button label="click" />
+    </TokensProvider>
+  </Box>
+</SimpleGrid>

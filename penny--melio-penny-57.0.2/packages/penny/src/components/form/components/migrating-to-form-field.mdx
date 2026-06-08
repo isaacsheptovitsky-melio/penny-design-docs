@@ -1,0 +1,243 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  SectionBannerRoot,
+  SectionBannerIcon,
+  SectionBannerContent,
+  SectionBannerDescription,
+} from '@/components/dataDisplay/SectionBanner';
+import { tableBorderStyles, tableHeaderStyles, tableRowBackgroundStyles } from 'storybook-utils';
+
+<Meta title="Form/Migrating to FormField" />
+
+# Migration Guide: `Form.*` Components to `FormField`
+
+## Overview
+
+This guide helps you migrate from the deprecated `Form.*` components (e.g., `Form.TextField`, `Form.Switch`, `Form.RadioGroup`) to the new `FormField` component.
+
+## Props Changes
+
+### 1. Render Prop Pattern
+
+The new `FormField` component uses a `render` prop pattern instead of using components directly.
+
+**Old syntax:**
+```tsx
+import { Form } from '@melio/penny';
+
+<Form.TextField ... />
+```
+
+**New syntax:**
+```tsx
+import { FormField, TextField } from '@melio/penny';
+
+<FormField render={(props) => <TextField {...props} />} />
+```
+
+<div style={{ marginTop: '60px' }} />
+
+#### 1.1 `fieldContext` (`Combobox` usage)
+
+The `render` function receives a second argument: `fieldContext`. This object contains:
+- `labelProps`
+- `error`
+- `helperText`
+- `showOptionalIndicator`
+
+The `fieldContext` must be passed to the `Combobox` component because it internally needs it for mobile view.
+
+```tsx
+<FormField
+  render={(props, fieldContext) => (
+    <Combobox {...props} {...fieldContext} />
+  )}
+/>
+```
+
+<div style={{ marginTop: '60px' }} />
+
+#### 1.2 `isLoading` Prop Handling
+
+The `isLoading` prop is included in the render props passed to your input component. However, some components like `RadioGroup`, `Switch`, `Checkbox` and `SegmentedControl` don't support the `isLoading` prop, so you need to destructure it out. Passing `isLoading` to `RadioGroup` can also trigger console warnings.
+
+```tsx
+<FormField
+  render={({ isLoading, ...props }) => <RadioGroup {...props} />}
+/>
+```
+
+#### 1.3 `isViewMode` Prop Handling
+
+The `isViewMode` prop is included in the render props passed to your input component. However, some components like `Checkbox`, `SegmentedControl` and `Switch` don't support the `isViewMode` prop, so you need to destructure it out. Passing `isViewMode` can trigger console warnings.
+
+```tsx
+<FormField
+  render={({ isViewMode, ...props }) => <Checkbox {...props} />}
+/>
+```
+
+#### 1.4 `isInvalid` Prop Handling
+
+The `isInvalid` prop is included in the render props passed to your input component. However, some components like `Switch` and `SegmentedControl` don't support the `isInvalid` prop, so you need to destructure it out. Passing `isInvalid` can trigger console warnings.
+
+```tsx
+<FormField
+  render={({ isInvalid, ...props }) => <Switch {...props} />}
+/>
+```
+
+### 2. `helperText` Prop
+
+The helper text prop has been simplified from an object to a string.
+
+**Old:**
+```tsx
+<Form.TextField
+  helperTextProps={{ label: 'This will be used as the name on checks' }}
+/>
+```
+
+**New:**
+```tsx
+<FormField
+  helperText="This will be used as the name on checks"
+/>
+```
+
+### 3. `isHidden` Prop
+
+The `isHidden` prop has been renamed to `hidden`.
+
+**Old:**
+```tsx
+<Form.TextField
+  isHidden={someCondition}
+/>
+```
+
+**New:**
+```tsx
+<FormField
+  hidden={someCondition}
+/>
+```
+
+<SectionBannerRoot variant="informative">
+    <SectionBannerIcon />
+    <SectionBannerContent>
+        <SectionBannerDescription>To prevent the field from rendering entirely (not just hiding it), use the React pattern: `{condition && <FormField ... />}`.</SectionBannerDescription>
+    </SectionBannerContent>
+</SectionBannerRoot>
+
+<div style={{ marginTop: '60px' }} />
+
+### 4. `labelProps` prop
+
+For accessibility reasons, `labelProps` should generally be provided. The structure remains the same.
+
+**If no `labelProps` existed before:**
+Add `labelProps={{ label: '', isHidden: true }}` to hide the label visually while keeping it for accessibility:
+
+```tsx
+<FormField
+  labelProps={{ label: '', isHidden: true }}
+/>
+```
+
+<SectionBannerRoot variant="informative">
+  <SectionBannerIcon />
+  <SectionBannerContent>
+    <SectionBannerDescription>
+      <span>`Checkbox` is the only case where `labelProps` can be omitted entirely, because checkbox already has its own label.</span>
+    </SectionBannerDescription>
+  </SectionBannerContent>
+</SectionBannerRoot>
+
+<div style={{ marginTop: '60px' }} />
+
+### 5. Other Props
+
+Props that don't belong to the [FormField interface](/docs/form-form-field--docs)  should be passed to the input component via the render prop.
+
+**Old:**
+```tsx
+<Form.TextField
+  placeholder="Enter your name"
+/>
+```
+
+**New:**
+```tsx
+<FormField
+  render={(props) => (
+    <TextField
+      {...props}
+      placeholder="Enter your name"
+    />
+  )}
+/>
+```
+
+## Test ID Changes
+
+The test IDs have changed between `Form.*` components and `FormField`. Update any test selectors in test files accordingly.
+
+<table style={tableBorderStyles}>
+  <thead style={tableHeaderStyles}>
+    <tr>
+      <th style={{ textAlign: 'start' }}>Element</th>
+      <th style={{ textAlign: 'start' }}>Old Test ID Pattern (`Form.*`)</th>
+      <th style={{ textAlign: 'start' }}>New Test ID Pattern (`FormField`)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={tableRowBackgroundStyles}>
+      <td>Container</td>
+      <td>`form-field-{name}`</td>
+      <td>`{data-testid}` (default: `form-field`)</td>
+    </tr>
+    <tr style={tableRowBackgroundStyles}>
+      <td>Label</td>
+      <td>`form-label-{name}`</td>
+      <td>`{data-testid}-label` (default: `form-field-label`)</td>
+    </tr>
+    <tr style={tableRowBackgroundStyles}>
+      <td>Error message</td>
+      <td>`form-error-message-{name}`</td>
+      <td>`{data-testid}-error-message` (default: `form-field-error-message`)</td>
+    </tr>
+    <tr style={tableRowBackgroundStyles}>
+      <td>Helper text</td>
+      <td>`form-helper-text-{name}`</td>
+      <td>`{data-testid}-helper-text` (default: `form-field-helper-text`)</td>
+    </tr>
+    <tr style={tableRowBackgroundStyles}>
+      <td>Input</td>
+      <td>`form-input-{name}`</td>
+      <td>`{data-testid}-render-field` (default: `form-field-render-field`)</td>
+    </tr>
+  </tbody>
+</table>
+
+<SectionBannerRoot variant="informative">
+  <SectionBannerIcon />
+  <SectionBannerContent>
+    <SectionBannerDescription>
+      <span>The `{name}` in the `Form.*` test IDs refers to the `name` prop that comes from `useMelioForm` `registerField`.</span>
+    </SectionBannerDescription>
+  </SectionBannerContent>
+</SectionBannerRoot>
+
+<div style={{ marginTop: '60px' }} />
+
+## Additional Notes
+
+### Deprecation
+
+The `Form.*` components (e.g., `Form.TextField`, `Form.Switch`, `Form.RadioGroup`) are deprecated and not maintained anymore.
+
+### Documentation
+
+For more details on the `FormField` component, please check out the [FormField docs](/docs/form-form-field--docs).
+

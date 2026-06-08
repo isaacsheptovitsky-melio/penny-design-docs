@@ -1,0 +1,288 @@
+name: Bundle Size Monitor
+
+on:
+  pull_request:
+    paths:
+      - 'packages/penny/**'
+      - 'vite.config.ts'
+      - '.github/workflows/bundle-size-check.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-current:
+    name: Build current
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+
+    outputs:
+      current_size: ${{ steps.current-size.outputs.current_size }}
+
+    steps:
+      - name: Checkout PR code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup npm auth
+        env:
+          NPM_TOKEN: ${{ secrets.PACKAGES_RELEASE_TOKEN }}
+        run: |
+          npm set @melio:registry=https://npm.pkg.github.com/melio
+          npm set "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}"
+
+      - name: Install dependencies
+        run: |
+          for attempt in 1 2 3; do
+            echo "pnpm install attempt $attempt"
+            pnpm install --frozen-lockfile && break || sleep 5
+          done
+
+      - name: Cache Vite prebundles
+        uses: actions/cache@v4
+        with:
+          path: packages/penny/node_modules/.vite
+          key: ${{ runner.os }}-vite-${{ hashFiles('pnpm-lock.yaml', 'packages/penny/vite.config.ts') }}
+
+      - name: Build penny package
+        run: pnpm --filter @melio/penny build
+        env:
+          ANALYZE_BUNDLE: true
+
+      - name: Analyze current bundle size
+        id: current-size
+        working-directory: packages/penny
+        run: |
+          echo "Analyzing current bundle size..."
+          CURRENT_SIZE=$(find dist \( -name "*.js" -o -name "*.cjs" \) -exec du -b {} + | awk '{sum += $1} END {print sum ? sum : 0}')
+          echo "current_size=$CURRENT_SIZE" >> $GITHUB_OUTPUT
+          echo "Current bundle size: ${CURRENT_SIZE} bytes"
+
+      - name: Upload bundle analysis artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-analysis-${{ github.event.number }}
+          path: packages/penny/dist/stats.html
+          retention-days: 30
+
+  build-base:
+    name: Build base
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+
+    outputs:
+      base_size: ${{ steps.base-size.outputs.base_size }}
+
+    steps:
+      - name: Checkout base branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup npm auth
+        env:
+          NPM_TOKEN: ${{ secrets.PACKAGES_RELEASE_TOKEN }}
+        run: |
+          npm set @melio:registry=https://npm.pkg.github.com/melio
+          npm set "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}"
+
+      - name: Install dependencies (base)
+        run: |
+          for attempt in 1 2 3; do
+            echo "pnpm install attempt $attempt (base)"
+            pnpm install --no-frozen-lockfile && break || sleep 5
+          done
+
+      - name: Cache Vite prebundles (base)
+        uses: actions/cache@v4
+        with:
+          path: packages/penny/node_modules/.vite
+          key: ${{ runner.os }}-vite-${{ hashFiles('pnpm-lock.yaml', 'packages/penny/vite.config.ts') }}
+
+      - name: Build base penny package
+        run: pnpm --filter @melio/penny build
+
+      - name: Analyze base bundle size
+        id: base-size
+        working-directory: packages/penny
+        run: |
+          echo "Analyzing base bundle size..."
+          BASE_SIZE=$(find dist \( -name "*.js" -o -name "*.cjs" \) -exec du -b {} + | awk '{sum += $1} END {print sum ? sum : 0}')
+          echo "base_size=$BASE_SIZE" >> $GITHUB_OUTPUT
+          echo "Base bundle size: ${BASE_SIZE} bytes"
+
+  report:
+    name: Bundle Size Check
+    runs-on: ubuntu-latest
+    needs: [build-current, build-base]
+    permissions:
+      contents: read
+      pull-requests: write
+      actions: read
+
+    steps:
+      - name: Calculate size difference
+        id: size-diff
+        run: |
+          CURRENT_SIZE=${{ needs.build-current.outputs.current_size }}
+          BASE_SIZE=${{ needs.build-base.outputs.base_size }}
+
+          DIFF=$((CURRENT_SIZE - BASE_SIZE))
+
+          if [ "$BASE_SIZE" -eq 0 ]; then
+            if [ "$CURRENT_SIZE" -eq 0 ]; then
+              DIFF_PERCENT="0"
+            else
+              DIFF_PERCENT="100"
+            fi
+          else
+            DIFF_PERCENT=$(echo "scale=2; ($DIFF * 100) / $BASE_SIZE" | bc -l)
+          fi
+
+          CURRENT_KB=$(echo "scale=2; $CURRENT_SIZE / 1024" | bc -l)
+          BASE_KB=$(echo "scale=2; $BASE_SIZE / 1024" | bc -l)
+          DIFF_KB=$(echo "scale=2; $DIFF / 1024" | bc -l)
+
+          echo "current_kb=$CURRENT_KB" >> $GITHUB_OUTPUT
+          echo "base_kb=$BASE_KB" >> $GITHUB_OUTPUT
+          echo "diff_bytes=$DIFF" >> $GITHUB_OUTPUT
+          echo "diff_kb=$DIFF_KB" >> $GITHUB_OUTPUT
+          echo "diff_percent=$DIFF_PERCENT" >> $GITHUB_OUTPUT
+
+          SIGNIFICANT=$(echo "$DIFF_PERCENT > 5" | bc -l)
+          echo "significant_increase=$SIGNIFICANT" >> $GITHUB_OUTPUT
+
+          ABS_DIFF_BYTES=${DIFF#-}
+          ABS_DIFF_KB=$(echo "scale=2; $ABS_DIFF_BYTES / 1024" | bc -l)
+          THRESHOLD_KB=1
+          SHOULD_COMMENT=$(echo "$ABS_DIFF_KB >= $THRESHOLD_KB" | bc -l)
+          echo "should_comment=$SHOULD_COMMENT" >> $GITHUB_OUTPUT
+
+          echo "Bundle size comparison:"
+          echo "  Base: ${BASE_KB} KB"
+          echo "  Current: ${CURRENT_KB} KB"
+          echo "  Difference: ${DIFF_KB} KB (${DIFF_PERCENT}%)"
+
+      - name: Check for existing identical bundle size comment
+        if: steps.size-diff.outputs.should_comment == '1'
+        id: check-comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const currentKB = '${{ steps.size-diff.outputs.current_kb }}';
+            const baseKB = '${{ steps.size-diff.outputs.base_kb }}';
+            const diffKB = '${{ steps.size-diff.outputs.diff_kb }}';
+            const diffPercent = '${{ steps.size-diff.outputs.diff_percent }}';
+            const diffBytes = parseInt('${{ steps.size-diff.outputs.diff_bytes }}');
+
+            const title = diffBytes > 0 ? 'Bundle Size Increased' : 'Bundle Size Decreased';
+            const signature = `| **Bundle Size** | ${baseKB} KB | ${currentKB} KB | ${diffKB} KB (${diffPercent}%) |`;
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              per_page: 100,
+            });
+
+            let latestMatchingCommentBody = undefined;
+            for (let i = comments.length - 1; i >= 0; i -= 1) {
+              const c = comments[i];
+              const isBot = c.user?.login === 'github-actions[bot]';
+              const body = typeof c.body === 'string' ? c.body : '';
+              if (isBot && body.includes(title) && body.includes('Bundle analysis powered by Vite + Rollup visualizer')) {
+                latestMatchingCommentBody = body;
+                break;
+              }
+            }
+
+            const isIdentical = latestMatchingCommentBody ? latestMatchingCommentBody.includes(signature) : false;
+            core.setOutput('should_comment', isIdentical ? 'false' : 'true');
+
+      - name: Comment on PR with bundle size analysis
+        if: steps.size-diff.outputs.should_comment == '1' && steps.check-comment.outputs.should_comment == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const currentKB = '${{ steps.size-diff.outputs.current_kb }}';
+            const baseKB = '${{ steps.size-diff.outputs.base_kb }}';
+            const diffKB = '${{ steps.size-diff.outputs.diff_kb }}';
+            const diffPercent = '${{ steps.size-diff.outputs.diff_percent }}';
+            const isSignificant = '${{ steps.size-diff.outputs.significant_increase }}' === '1';
+            const diffBytes = parseInt('${{ steps.size-diff.outputs.diff_bytes }}');
+
+            let emoji = '';
+            let title = '';
+            let alert = '';
+
+            if (diffBytes > 0) {
+              emoji = isSignificant ? '⚠️' : '📈';
+              title = 'Bundle Size Increased';
+              if (isSignificant) {
+                alert = '\n> **⚠️ Warning:** Bundle size increased by more than 5%. Please review if this increase is necessary.\n';
+              }
+            } else if (diffBytes < 0) {
+              emoji = '🎉';
+              title = 'Bundle Size Decreased';
+            }
+
+            const body = `## ${emoji} ${title}
+            ${alert}
+            | Metric | Base | Current | Difference |
+            |--------|------|---------|------------|
+            | **Bundle Size** | ${baseKB} KB | ${currentKB} KB | ${diffKB} KB (${diffPercent}%) |
+
+            **Analysis:**
+            ${diffBytes > 0 ? `
+            - Bundle size increased by **${diffKB} KB** (${diffPercent}%)
+            - Consider reviewing new dependencies or code changes
+            ` : `
+            - Bundle size decreased by **${Math.abs(parseFloat(diffKB))} KB** (${Math.abs(parseFloat(diffPercent))}%)
+            - Excellent optimization! 🎯
+            `}
+
+            <details>
+            <summary>📋 Bundle Size Guidelines</summary>
+
+            - **Green Zone**: < 2% increase (✅ acceptable)
+            - **Yellow Zone**: 2-5% increase (⚠️ review recommended)  
+            - **Red Zone**: > 5% increase (🚨 investigation required)
+
+            **Tips to reduce bundle size:**
+            - Replace large dependencies with smaller alternatives
+            - Remove unused code and dependencies
+            - Enable tree shaking and minification
+            </details>
+
+            ---
+            *Bundle analysis powered by Vite + Rollup visualizer*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });

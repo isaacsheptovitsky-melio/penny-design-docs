@@ -1,0 +1,27 @@
+name: Omlet CLI scan
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every day at 9:00 (no real reason for the specific timing)
+    - cron: "0 9 * * *"
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20
+
+      - name: Run analyze
+        run: npx @omlet/cli analyze
+        env:
+          OMLET_TOKEN: ${{ secrets.OMLET_TOKEN }}

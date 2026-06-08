@@ -1,0 +1,115 @@
+import { Canvas, Controls, Meta, ArgTypes, Story } from '@storybook/addon-docs/blocks';
+import * as IconButtonStories from './IconButton.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={IconButtonStories} />
+
+<PageHero
+  category="Action"
+  title="Icon Button"
+  badge="Healthy"
+  description="A compact button that displays only an icon, without a text label. Typically used for secondary or inline actions where space is limited."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="DS Components"
+      url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=31552-113935"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/42635f-icon-button"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={IconButtonStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={IconButtonStories.Playground} />
+</div>
+
+## Usage
+
+- Use for actions that can be understood through an **icon alone** — edit, delete, close, expand.
+- Always provide an `aria-label` describing the action; there is no visible text label.
+- Avoid using for **primary** actions such as form submissions — use a labeled `Button` instead.
+- Use `disabled` to prevent interactions when an action is unavailable.
+
+<Callout variant="note">Use icon buttons to declutter dense areas like tables, cards, or toolbars — where labelled buttons would crowd the layout.</Callout>
+
+## Variants
+
+### Hierarchy
+
+Icon buttons follow the same hierarchy as the standard Button — choose a variant based on the **intent** of the action, not its appearance.
+
+<Story of={IconButtonStories.VariantHierarchy} />
+
+### States
+
+All variants share the same set of states: rest, hover, pressed, and disabled.
+
+<Story of={IconButtonStories.IconButtonStates} />
+
+## Sizes
+
+Four sizes are available — `medium` is the default. All sizes meet the WCAG 2.2 minimum 24 × 24 px target area.
+
+<Canvas of={IconButtonStories.Sizes} />
+
+## With tooltip
+
+Icon buttons support tooltips to make the action visible to sighted users on hover. The tooltip also appears for disabled icon buttons — ensuring the action is always discoverable.
+
+<Canvas of={IconButtonStories.WithTooltipDemo} />
+
+<Callout variant="note">Tooltip integration requires the `Tooltip` component (not yet vendored into this workspace). The stories above show the icon button in isolation; wire up `<Tooltip content="...">` around `<IconButton>` in your implementation.</Callout>
+
+</DocTab>
+
+<DocTab label="Development">
+
+## Icon button as link
+
+When clicking the button navigates the user to a route or external page, pass a `link` prop. Penny renders an `<a>` tag under the hood while keeping the visual appearance of an icon button.
+
+```tsx
+<IconButton icon="chevron-right" aria-label="Open invoice" link={{ href: '/invoices/123' }} />
+<IconButton icon="external-link" aria-label="Open in new tab" link={{ href: 'https://example.com', target: '_blank' }} />
+```
+
+<Canvas of={IconButtonStories.IconButtonAsLink} />
+
+## Props
+
+<ArgTypes of={IconButtonStories} />
+
+</DocTab>
+
+<DocTab label="ADA">
+
+## Accessibility
+
+- **Keyboard**: `Tab` to focus, `Space`/`Enter` to activate.
+- **Focus ring**: a 2px offset focus ring renders on `:focus-visible`.
+- **`aria-label` required**: there is no visible text, so every icon button must have an `aria-label` that describes the action (e.g. `"Edit vendor"`, not just `"Edit"`). Prefer action-specific labels over generic ones.
+- **Semantics**: renders as `<button>`; passing the `link` prop switches to `<a>` so screen readers announce navigation correctly.
+- **Disabled**: uses the native `disabled` attribute, removing the element from the focus order. For link variants, `aria-disabled` is used instead.
+- **Minimum target size**: all sizes meet the WCAG 2.2 SC 2.5.8 minimum of 24 × 24 px.
+- **Tooltip on disabled**: the tooltip is intentionally preserved on disabled icon buttons so users know the action exists even when unavailable.
+
+</DocTab>
+
+</DocTabs>

@@ -1,0 +1,54 @@
+name: Publish Penny metadata asset
+
+on:
+  workflow_dispatch: {}
+  push:
+    tags:
+      - '@melio/penny@*'
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Generate component metadata
+        run: pnpm --filter @melio/penny generate-metadata
+
+      - name: Verify metadata exists
+        run: test -f packages/penny/dist/metadata.json
+
+      - name: Upload metadata assets to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: packages/penny/dist/metadata.json
+          fail_on_unmatched_files: true
+
+      - name: Notify Slack on Failure
+        if: failure()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_MESSAGE: |
+            ❌ **Penny Metadata Generation Failed**
+
+            Workflow: [${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            Tag: ${{ github.ref_name }}
+            Commit: [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
+          SLACKIFY_MARKDOWN: true

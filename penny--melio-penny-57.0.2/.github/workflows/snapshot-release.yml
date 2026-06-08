@@ -1,0 +1,78 @@
+name: Snapshot Release
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release Setup
+        uses: ./.github/actions/release-setup
+        with:
+          npm-token: ${{ secrets.PACKAGES_RELEASE_TOKEN }}
+
+      - name: 'Check changeset file existence'
+        id: check_files
+        run: |
+          file_count=`ls -l .changeset/*.md | grep -v README.md | wc -l`
+          if [ $file_count -gt 0 ]; then
+            echo "files_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "files_exists=false" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Compute Snapshot Tag
+        if: steps.check_files.outputs.files_exists == 'true'
+        id: compute_tag
+        run: |
+          LAST_COMMIT_HASH=$(git rev-parse --short HEAD)
+          SNAPSHOT_TAG="pr-${{ github.event.pull_request.number }}.${LAST_COMMIT_HASH}"
+          echo "Computed snapshot tag: $SNAPSHOT_TAG"
+          echo "tag=$SNAPSHOT_TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Create Snapshot Version
+        if: steps.check_files.outputs.files_exists == 'true'
+        run: |
+          echo "Using snapshot tag: ${{ steps.compute_tag.outputs.tag }}"
+          pnpm run version:snapshot
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_RELEASE_TOKEN }}
+          GH_TOKEN: ${{ secrets.PACKAGE_RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SNAPSHOT_TAG: ${{ steps.compute_tag.outputs.tag }}
+          
+      - name: Publish Snapshot
+        id: publish
+        if: steps.check_files.outputs.files_exists == 'true'
+        run: |
+          DIST_TAG="pr-${{ github.event.pull_request.number }}"
+          echo "Using dist tag: $DIST_TAG"
+          PUBLISHED=$(pnpm run publish:snapshot | tee /dev/stderr | grep -q "packages published" && echo true || echo false)
+          echo "published=$PUBLISHED" >> $GITHUB_OUTPUT
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_RELEASE_TOKEN }}
+          GH_TOKEN: ${{ secrets.PACKAGE_RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DIST_TAG: pr-${{ github.event.pull_request.number }}
+
+      - name: Add PR comments
+        if: ${{ steps.publish.outputs.published == 'true' }}
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            🚀 A new snapshot version was published:
+            - **Version tag:** ${{ steps.compute_tag.outputs.tag }}
+            - **NPM dist-tag:** pr-${{ github.event.pull_request.number }}

@@ -1,0 +1,132 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Project Guidelines for React & TypeScript
+
+This document outlines the coding standards, conventions, and best practices for this project. Adhering to these guidelines ensures code consistency, maintainability, and quality.
+
+## 1. General Principles
+
+-   **Readability:** Write clear, understandable code. Prioritize clarity over brevity if brevity obscures meaning.
+-   **Consistency:** Follow established patterns and conventions within the codebase.
+-   **Simplicity (KISS):** Keep solutions as simple as possible. Avoid unnecessary complexity.
+-   **Dry (Don't Repeat Yourself):** Abstract and reuse code where appropriate to avoid duplication.
+
+## 2. TypeScript Usage
+
+-   **Avoid `any`:** Do not use `any`. Prefer specific types, `unknown`, or generics. If a third-party library lacks types, consider creating a basic declaration file (`.d.ts`).
+-   **Type Inference:** Leverage TypeScript's type inference where possible, but provide explicit types for function signatures (parameters and return types) and complex object structures for clarity.
+-   **`interface` vs `type`:**
+    -   Use `interface` for defining the shape of objects or classes.
+    -   Use `type` for defining unions, intersections, primitives, or more complex types (e.g., mapped types, conditional types). Use `interface` for component props.
+-   **Utility Types:** Utilize built-in utility types (`Partial`, `Pick`, `Omit`, `Required`, etc.) to create new types from existing ones efficiently.
+-   **Enums/Unions:** Use string literal unions (e.g., `type Status = 'loading' | 'success' | 'error';`) or `enum` for fixed sets of values. Prefer string literal unions for simplicity unless numeric values or more complex enum behavior is needed.
+-   **`as const`:** Use `as const` for truly immutable arrays or objects where values should not change and types should be inferred as literals.
+
+## 3. React Component Practices
+
+-   **Functional Components:** Use functional components with Hooks exclusively. Avoid class components.
+-   Define props with interface or type in new doc with the name `[Component].types.ts`
+-   **Component Definition:** Define components using arrow functions:
+    ```typescript
+    type MyComponentProps = { /* ... */ };
+    const MyComponent = (props: MyComponentProps) => { /* ... */ };
+    ```
+-   **Props:**
+    -   Define props using `type` aliases.
+    -   Destructure props in the function signature.
+    -   Use ES6 default parameter values for optional props.
+-   **State Management:**
+    -   Use `useState` for simple local component state.
+    -   Use `useContext` for sharing state across the component tree without prop drilling. Structure context providers logically (see Context API best practices).
+-   **Immutability:** Never mutate state or props directly. Always create new objects or arrays when updating state (e.g., using spread syntax `...`).
+
+## 4. Component Folder Structure
+
+-   **Organization:** Components are typically located under `[COMPONENT_BASE_PATH]/`. *(Please update `[COMPONENT_BASE_PATH]` with the actual path, e.g., `src/components`)*
+-   **Component Files:** Each component should reside in its own directory named after the component (PascalCase).
+    ```
+    [COMPONENT_BASE_PATH]/
+    └── ComponentName/
+		    ├── __tests__                            # folder to gather the test doc (ComponentName.spec.tsx) and the driver (ComponentName.driver.tsx)
+		        ├── ComponentName.spec.tsx           # componets test file, locate there all the tests for the component
+	 			├── testKit                             # folder to gather the component testKit
+						├── ComponentName.testKit.tsx       # testKit file, locate there all the testKit which make easier to test the component.
+		        ├── ComponentName.testKit.spec.tsx  # testKit test file, locate there all the tests for the testKit to make sure the testKit works properly
+		    ├── hooks                                # folder to gather all the react hook which serve the component
+				    ├── hook1.spec.tsx 
+				    ├── hook2.spec.tsx 
+			  ├── utils                                # folder to gather all the utils/helper (js functions) which serve the component
+				    ├── util1.spec.tsx 
+				    ├── util2.spec.tsx  
+		    ├── components                           # folder to gather all sub-components
+				    ├── SubComponent1.spec.tsx 
+				    ├── SubComponent2.spec.tsx 
+		    ├── ComponentName.stories.tsx           # includes the component stories for our documentation
+        ├── ComponentName.tsx                   # Main component logic and JSX
+        ├── ComponentName.theme.ts              # style object with Chakra SystemStyleObject type for `__css` style prop 
+        └── index.ts                            # Barrel file exporting the component
+    ```
+-   **Example (`Combobox`, `SegmentedControl`):** Based on the structure observed in folders like `Combobox` and `SegmentedControl`, we follow the pattern above. *(This section needs adjustment once the actual structure is known)*
+-   **Sub-components:** If a component has smaller, tightly coupled child components only used by it, they can live within the parent component's directory.
+
+## 5. Styling
+-   For styling use @style.mdc
+
+## 6. Naming Conventions
+
+-   **Components:** `PascalCase` (e.g., `UserProfileCard`)
+-   **Files (Components):** `PascalCase` (e.g., `UserProfileCard.tsx`, `ActionBar.css`)
+-   **Files (Hooks):** `camelCase` with `use` prefix (e.g., `useFetchData.ts`)
+-   **Files (Utilities/Services):** `camelCase` (e.g., `dateUtils.ts`, `apiClient.ts`)
+-   **Variables/Functions:** `camelCase`
+-   **Constants:** `UPPER_SNAKE_CASE` (e.g., `MAX_ITEMS`)
+-   **enums:** `UPPER_SNAKE_CASE` (e.g., `MAX_ITEMS`)
+-   **Types/Interfaces:** `PascalCase` (e.g., `type UserProfile`, `interface ButtonProps`)
+
+## 7. Imports and exports
+
+-   **Relative Paths:** use relative paths like `../../../components`.
+-   **Named Exports:** Prefer named exports over default exports for better discoverability and refactoring. Use barrel files (`index.ts`) judiciously to group exports from a directory.
+
+## 8. Testing
+
+-   **Framework:** Use Vitest with `@testing-library/react`.
+-   **Location:** locate test files under `__tests__` folder which next to `ComponentName.tsx`.
+-   **Types of Tests:** Write unit tests for utilities and hooks, and integration tests for components focusing on user interaction and behavior, not implementation details.
+-   **Run test in coverage and make sure the test reaching 100% covarage*
+
+## 9. Accessibility (a11y)
+
+-   **Semantic HTML:** Use appropriate HTML elements for their semantic meaning (e.g., `<button>`, `<nav>`, `<main>`).
+-   **ARIA Attributes:** Use ARIA attributes correctly when semantic HTML is insufficient to convey roles, states, and properties.
+-   **Keyboard Navigation:** Ensure all interactive elements are focusable and operable via keyboard.
+-   **Labels:** Provide labels for all form controls using `<label>` or `aria-label`/`aria-labelledby`.
+-   **Contrast:** Ensure sufficient color contrast between text and background.
+
+## 10. Linting & Formatting
+
+-   **Tools:** Use ESLint and Prettier, configured according to project standards (`.eslintrc.json`, `.prettierrc`).
+-   **Integration:** Integrate linters and formatters into the development workflow (IDE extensions, pre-commit hooks).
+
+## 11. Package Management
+
+-   **Package Manager:** This project uses **Yarn** as the package manager. Always use `yarn` commands instead of `npm`.
+-   **Installation:** Use `yarn install` or `yarn` to install dependencies.
+-   **Adding Dependencies:** Use `yarn add <package>` for production dependencies and `yarn add -D <package>` for dev dependencies. Use the `-W` flag when adding dependencies to the root workspace in a yarn workspace setup.
+-   **Scripts:** Run scripts using `yarn <script-name>` (e.g., `yarn build`, `yarn test`).
+
+## 12. Code Comments
+
+-   **Minimal Comments:** Write very few comments. Code should be self-explanatory through clear naming and structure.
+-   **When to Comment:** Only add comments for:
+  - Complex business logic that isn't obvious from the code
+  - Non-trivial product decisions with reasoning
+  - TODO comments for future improvements
+  - Workarounds for external library limitations
+-   **Avoid:** Don't comment obvious code, simple variable assignments, or basic function calls.
+
+## 13. Autocomplete
+-   ** Use GitHub Copilot or Cursor AI for autocomplete/code-gen as needed — but always review.

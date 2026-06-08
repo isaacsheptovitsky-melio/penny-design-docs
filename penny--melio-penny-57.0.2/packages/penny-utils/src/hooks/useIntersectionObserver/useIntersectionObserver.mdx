@@ -1,0 +1,63 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Penny Utils/Hooks/useIntersectionObserver" />
+
+# `useIntersectionObserver`
+
+The `useIntersectionObserver` hook provides a convenient way to detect when an element enters or exits the viewport using the [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API). This can be useful for various applications, such as lazy loading images, triggering animations, or handling visibility-based logic in your components.
+
+## Hook Parameters
+
+<Markdown>
+  {`
+| Paramete       | Type                                                                                         | Description                                                                                   | Default        |
+| ------------ | -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | -------------- |
+| ref          | \`undefined | RefObject | HTMLElement\`                                                    | A ref to attach to the target element you want to observe.                                  | \`undefined\`  |
+| threshold    | \`number\`                                                                                   | The percentage of the element that must be visible to trigger a change in visibility.        | \`0.1\` (10%)  |
+| root         | \`HTMLElement\`                                                                             | The element to use as the viewport for checking visibility (defaults to the browser viewport).| \`null\`       |
+| rootMargin   | \`string\`                                                                                   | Margin around the root, which can be used to increase or decrease the area of intersection. | \`"0px"\`      |
+`}
+</Markdown>
+
+## Return Value
+
+<Markdown>
+  {`
+| Return Value | Type                      | Description                                                                         |
+| ------------ | ------------------------- | ----------------------------------------------------------------------------------- |
+| ref          | \`RefObject\`            | A ref to attach to the target element you want to observe.                        |
+| isVisible    | \`boolean\`              | A boolean indicating whether the element is currently visible in the viewport.    |
+`}
+</Markdown>
+
+## Usage Example
+
+```tsx
+import { useIntersectionObserver } from '@melio/penny-utils';
+
+const ExampleComponent = () => {
+  const [ref, isVisible] = useIntersectionObserver({
+    threshold: 0.1, // Trigger when 10% of the element is visible
+    rootMargin: '0px 0px -200px 0px', // Start observing 200px before the element is in view
+  });
+
+  return (
+    <div>
+      <div style={{ height: '150vh', backgroundColor: 'lightgray' }}>Scroll down to see the target element</div>
+
+      <div
+        ref={ref}
+        style={{
+          height: '100px',
+          backgroundColor: isVisible ? 'green' : 'red',
+          transition: 'background-color 0.5s',
+        }}
+      >
+        {isVisible ? 'I am visible!' : 'I am hidden!'}
+      </div>
+
+      <div style={{ height: '150vh', backgroundColor: 'lightgray' }} />
+    </div>
+  );
+};
+```

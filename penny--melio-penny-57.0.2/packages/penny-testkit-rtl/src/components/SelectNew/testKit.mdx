@@ -1,0 +1,117 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Select New/RTL Test Kit" />
+
+# SelectNew RTL Test Kit
+---
+Testing utilities for the SelectNew component that provide easy access to interactions, states, and component behavior for RTL (React Testing Library).
+
+## Import
+
+```typescript
+import { createSelectNewTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`getElement()\` | Direct access to the DOM element | \`HTMLElement\` |
+| \`clickTrigger()\` | Clicks on the trigger input to open the select | \`Promise<void>\` |
+| \`clickOptionByText(text: string)\` | Clicks an option by its visible text | \`Promise<void>\` |
+| \`clickOptionByTestId(testId: string)\` | Clicks an option by its data-testid | \`Promise<void>\` |
+| \`clickOptionByIndex(index: number)\` | Clicks an option by its index in the list | \`Promise<void>\` |
+| \`typeSearch(text: string)\` | Types text into the search input | \`Promise<void>\` |
+| \`clickSearchButton()\` | Clicks on the search button | \`Promise<void>\` |
+| \`clickOutside()\` | Clicks outside the select to close it | \`Promise<void>\` |
+| \`pressEsc()\` | Presses the Escape key to close the select | \`Promise<void>\` |
+| \`clickClearSearch()\` | Clears the search input | \`Promise<void>\` |
+| \`getValue()\` | Gets the selected value | \`string \| null\` |
+| \`getIsDisabled()\` | Checks if the select is disabled | \`boolean\` |
+| \`getIsInvalid()\` | Checks if the select is invalid | \`boolean\` |
+| \`getIsViewMode()\` | Checks if the select is in view mode | \`boolean\` |
+| \`getIsReadOnly()\` | Checks if the select is read-only | \`boolean\` |
+| \`getIsRequired()\` | Checks if the select is required | \`boolean\` |
+| \`clickClearButton()\` | Clicks on the clear button | \`Promise<void>\` |
+| \`getIsMenuOpen()\` | Checks if the select menu is currently open | \`boolean\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createSelectNewTestKit } from '@melio/penny-testkit-rtl';
+import { act, render, screen, waitFor } from '@testing-library/react';
+import { expect } from 'vitest';
+
+describe('SelectNew Component', () => {
+  it('should check if the select is disabled', () => {
+    const testKit = createSelectNewTestKit();
+
+    render(
+      <SelectNew
+        options={[
+          { label: 'New York', value: 'new_york' },
+          { label: 'Boston', value: 'boston' },
+          { label: 'Chicago', value: 'chicago' },
+        ]}
+        isDisabled
+      />
+    );
+
+    expect(testKit.getIsDisabled()).toBe(true);
+  });
+
+  it('should select an option', async () => {
+    const testKit = createSelectNewTestKit();
+
+    render(
+      <SelectNew
+        options={[
+          { label: 'New York', value: 'new_york' },
+          { label: 'Boston', value: 'boston' },
+          { label: 'Chicago', value: 'chicago' },
+        ]}
+      />
+    );
+
+    await act(async () => {
+      await testKit.clickTrigger();
+    });
+
+    await act(async () => {
+      await testKit.selectOptionByText('New York');
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    });
+
+    expect(testKit.getValue()).toBe('new_york');
+  });
+
+  it('should clear the select', async () => {
+    const testKit = createSelectNewTestKit();
+
+    render(
+      <SelectNew
+        options={[
+          { label: 'New York', value: 'new_york' },
+          { label: 'Boston', value: 'boston' },
+          { label: 'Chicago', value: 'chicago' },
+        ]}
+        value="boston"
+      />
+    );
+
+    expect(testKit.getValue()).toBe('boston');
+
+    await testKit.clearSelect();
+
+    expect(testKit.getValue()).toBeNull();
+  });
+});
+```
+

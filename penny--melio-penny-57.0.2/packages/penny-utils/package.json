@@ -1,0 +1,53 @@
+{
+  "name": "@melio/penny-utils",
+  "version": "2.0.0",
+  "description": "Melio Penny utils",
+  "keywords": [
+    "util",
+    "date",
+    "intl",
+    "test"
+  ],
+  "author": "shamelio <shay.tidhar@melio.com>",
+  "license": "UNLICENSED",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "sideEffects": false,
+  "publishConfig": {
+    "main": "dist/penny-utils.js",
+    "module": "dist/penny-utils.mjs",
+    "types": "dist/index.d.ts",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:melio/penny.git",
+    "directory": "packages/utils"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:ci": "circleci tests glob \"src/**/*.spec.*\" | circleci tests run --command=\"xargs pnpm test --coverage --passWithNoTests\" --verbose",
+    "lint": "eslint . --cache",
+    "build": "vite build",
+    "prepack": "dev-scripts prepack",
+    "package": "dev-scripts package",
+    "postpack": "dev-scripts postpack",
+    "analyze": "ANALYZE_BUNDLE=true vite build"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
+    "es-toolkit": "^1.39.9",
+    "react-intl": "^6",
+    "tabbable": "^6.2.0",
+    "use-resize-observer": "^9.1.0"
+  },
+  "devDependencies": {
+    "@melio/dev-scripts": "workspace:*",
+    "@melio/eslint-config-penny": "workspace:*"
+  }
+}

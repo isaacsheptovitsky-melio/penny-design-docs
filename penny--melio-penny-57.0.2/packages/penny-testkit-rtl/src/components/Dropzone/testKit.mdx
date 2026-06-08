@@ -1,0 +1,105 @@
+import { Markdown, Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Dropzone [composable]/RTL Test Kit" />
+
+# Dropzone RTL Test Kit
+---
+
+Testing utilities for the `Dropzone` component that provide easy access to component interactions, states, and accessibility features for RTL (React Testing Library).
+
+## Import
+
+```typescript
+import { createDropzoneTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the root container DOM element | \`HTMLElement\` |
+| \`getIsDisabled()\` | Checks if the component is disabled | \`boolean\` |
+| \`getIsReadOnly()\` | Checks if the component is read-only | \`boolean\` |
+| \`getIsInvalid()\` | Checks if the component is in an invalid state | \`boolean\` |
+| \`dropFiles(files)\` | Simulates drag-and-drop of files onto the drop area | \`void\` |
+| \`uploadFiles(files)\` | Simulates selecting files via the file input | \`Promise<void>\` |
+| \`openFilePicker()\` | Clicks the drop area to open the file picker | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { render } from '@testing-library/react';
+import { createDropzoneTestKit } from '@melio/penny-testkit-rtl';
+import { DropzoneArea, DropzoneContent, DropzoneHiddenInput, DropzoneRoot } from '@melio/penny';
+
+describe('Dropzone Component', () => {
+  it('should upload a file', async () => {
+    const testKit = createDropzoneTestKit({ dataTestId: 'my-dropzone' });
+    const handleAccept = vi.fn();
+    render(
+      <DropzoneRoot data-testid="my-dropzone" onFileAccept={handleAccept}>
+        <DropzoneHiddenInput />
+        <DropzoneArea>
+          <DropzoneContent />
+        </DropzoneArea>
+      </DropzoneRoot>
+    );
+
+    const file = new File(['content'], 'invoice.pdf', { type: 'application/pdf' });
+    await testKit.uploadFiles([file]);
+
+    expect(handleAccept).toHaveBeenCalledWith([file]);
+  });
+
+  it('should accept dropped files', () => {
+    const testKit = createDropzoneTestKit({ dataTestId: 'my-dropzone' });
+    const handleAccept = vi.fn();
+    render(
+      <DropzoneRoot data-testid="my-dropzone" onFileAccept={handleAccept}>
+        <DropzoneHiddenInput />
+        <DropzoneArea>
+          <DropzoneContent />
+        </DropzoneArea>
+      </DropzoneRoot>
+    );
+
+    const file = new File(['content'], 'invoice.pdf', { type: 'application/pdf' });
+    testKit.dropFiles([file]);
+
+    expect(handleAccept).toHaveBeenCalledWith([file]);
+  });
+
+  it('should be disabled', () => {
+    const testKit = createDropzoneTestKit({ dataTestId: 'my-dropzone' });
+    render(
+      <DropzoneRoot data-testid="my-dropzone" disabled>
+        <DropzoneHiddenInput />
+        <DropzoneArea>
+          <DropzoneContent />
+        </DropzoneArea>
+      </DropzoneRoot>
+    );
+
+    expect(testKit.getIsDisabled()).toBe(true);
+  });
+
+  it('should be invalid', () => {
+    const testKit = createDropzoneTestKit({ dataTestId: 'my-dropzone' });
+    render(
+      <DropzoneRoot data-testid="my-dropzone" invalid>
+        <DropzoneHiddenInput />
+        <DropzoneArea>
+          <DropzoneContent />
+        </DropzoneArea>
+      </DropzoneRoot>
+    );
+
+    expect(testKit.getIsInvalid()).toBe(true);
+  });
+});
+```

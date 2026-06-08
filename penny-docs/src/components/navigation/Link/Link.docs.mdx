@@ -1,0 +1,120 @@
+import { Canvas, Controls, Meta, Story } from '@storybook/addon-docs/blocks';
+import * as LinkStories from './Link.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={LinkStories} />
+
+<PageHero
+  category="Navigation"
+  title="Link"
+  badge="Healthy"
+  description="The Link component navigates users to another page or location. It renders a semantic anchor element and comes in two types — standalone for prominent navigation, and inline for links embedded in body text."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="Figma"
+      url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=1793-147447"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/921cd5-link"
+    />
+    <ShortcutTile
+      label="Buttons vs. Links"
+      url="/?path=/docs/ux-patterns-buttons-vs-links--docs"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={LinkStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={LinkStories.Playground} />
+</div>
+
+## Usage
+
+Use a link when you want to:
+
+- **Navigate to a different page within the Melio app** — e.g. from the dashboard to the "Payables" page.
+- **Direct users to an external URL** — such as a help article or a partner website.
+
+<Callout variant="tip">To prevent user confusion, always make sure link text clearly describes its destination. For example, use "View invoice details" instead of a generic "Click here."</Callout>
+
+## Variants
+
+### Type
+
+Links come in two main types:
+
+- **`standalone`** — used for navigation that stands on its own, such as in a navigation menu or as a primary call to action. It has more styling options like `size` and `isBold`.
+- **`inline`** — used within a sentence or block of text to link specific words without disrupting the flow of the content. For example: "Please review the Terms of Service before proceeding."
+
+<Canvas of={LinkStories.VariantTypes} />
+
+### Color
+
+You can apply different colors to a link to fit its context:
+
+<Story of={LinkStories.Colors} />
+
+### Size
+
+Standalone links can be set to two sizes.
+
+<Canvas of={LinkStories.Sizes} />
+
+- **`medium`** — the default size for most standalone links (Body3 style).
+- **`large`** — used for more prominent navigational links that need to draw more attention (Body2 style).
+
+### Bold
+
+Add `isBold` to a `standalone` link to give it more visual weight.
+
+<Canvas of={LinkStories.BoldLinks} />
+
+### Disabled
+
+A link with `isDisabled` is not clickable and appears grayed out.
+
+<Canvas of={LinkStories.DisabledLinks} />
+
+<Callout variant="warning">
+
+Disabled links still render a visible element. If the link should not be available at all in the current context, hide it rather than disabling it — a hidden absent option is less confusing than a visible but unavailable one.
+
+</Callout>
+
+### Ellipsis
+
+Use the `shouldSupportEllipsis` style when the link text might be too long for its container. It truncates the text and adds "…" to the end.
+
+<Callout variant="warning">Truncated links can pose an accessibility challenge. Prioritize clear and concise link labels that fit the available space whenever possible.</Callout>
+
+## Related components
+
+<Story of={LinkStories.RelatedComponentsBlock} />
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>

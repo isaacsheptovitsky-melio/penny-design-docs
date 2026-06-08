@@ -1,0 +1,115 @@
+import { Canvas, Controls, Meta, Story } from '@storybook/addon-docs/blocks';
+import * as ButtonGroupStories from './ButtonGroup.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+import mobileUsageImg from '@/assets/bg-mobile-usage.png';
+
+<Meta of={ButtonGroupStories} />
+
+<PageHero
+  category="Action"
+  title="Button Group"
+  badge="Healthy"
+  description="A container that groups related buttons together with consistent styling and shared state. It merges adjacent buttons into a single visual unit and is the foundation of the Split Button pattern."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="DS Components"
+      url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=31657-534884"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/88903e-split-button"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={ButtonGroupStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={ButtonGroupStories.Playground} />
+</div>
+
+## Usage
+
+- Use a Button Group to **bind closely-related actions** into one visual unit — `variant`, `size`, `isLoading`, and `isDisabled` are set once on the container and inherited by every child.
+- The most common use is the **Split Button**: a default action paired with a menu of related options.
+- Keep the default action **predictable** — users shouldn't have to open the menu to understand what the component does.
+- Constrain group usage to the regular, positive variants — **`primary`** and **`tertiary`**. Reserve `critical` for genuinely destructive groupings.
+
+<Callout variant="tip">Make the default action self-explanatory. If the primary button's purpose only becomes clear after opening the dropdown, the grouping is wrong.</Callout>
+
+## Variants
+
+The `variant` prop is applied uniformly to **every** button in the group — you set it once on the container, not on each child. Keep group usage to the regular, positive variants.
+
+<Story of={ButtonGroupStories.Variants} />
+
+### Icon buttons
+
+A group can hold `IconButton`s instead of text buttons. The seams between cells are merged the same way.
+
+<Canvas of={ButtonGroupStories.IconButtons} />
+
+### Shared state
+
+`isLoading` and `isDisabled` cascade to the whole group — every button reflects the container's state at once.
+
+<Canvas of={ButtonGroupStories.SharedState} />
+
+## Sizes
+
+Three sizes are available — `medium` is the default. The `size` prop sizes the entire group together.
+
+<Canvas of={ButtonGroupStories.Sizes} />
+
+## Split Button
+
+The Split Button is the primary pattern built on Button Group: it **provides a default action while grouping a set of secondary, related actions into a dropdown menu**. Compose one by placing a `Button`, an `IconButton`, and a `Menu` together under a single `ButtonGroup`.
+
+<Canvas of={ButtonGroupStories.AsSplitButton} />
+
+Some good split-button candidates:
+
+- **Save** → *Save as template*
+- **Create bill** → *Import from spreadsheet*, *Add from Gmail*
+
+### When to use each variant
+
+The Split Button is available in every Button variant, but keep usage to the regular, positive ones.
+
+<Story of={ButtonGroupStories.SplitButtonGuide} />
+
+<Callout variant="warning">`critical` and `critical-secondary` split buttons are possible but rarely appropriate — hiding destructive options behind a dropdown makes them easy to trigger by accident. You'd better have a good reason.</Callout>
+
+## Mobile usage
+
+On mobile, a Split Button's default and secondary options surface in a **bottom sheet** rather than an anchored dropdown menu — the tap targets are larger and easier to reach with the thumb.
+
+<div style={{ border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden', background: '#FFFFFF', padding: '24px', marginTop: '16px' }}>
+  <img src={mobileUsageImg} alt="Desktop split button with an anchored dropdown menu beside its mobile interpretation, where the same options appear in a bottom sheet" style={{ display: 'block', width: '100%', borderRadius: '4px' }} />
+</div>
+<p style={{ fontSize: '12px', color: '#6B7280', margin: '8px 0 0', lineHeight: 1.5 }}>The desktop dropdown (left) becomes a bottom sheet on mobile (right).</p>
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>

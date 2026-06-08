@@ -1,0 +1,53 @@
+{
+  "name": "@melio/penny-assets",
+  "version": "1.0.0",
+  "description": "Melio Design System Assets Package - Icons, Brands, Illustrations, and Flags",
+  "keywords": [
+    "assets",
+    "icons",
+    "illustrations",
+    "brands",
+    "flags",
+    "design-system"
+  ],
+  "author": "Melio Design System Team",
+  "license": "UNLICENSED",
+  "main": "src/index.ts",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:melio/penny.git",
+    "directory": "packages/penny-assets"
+  },
+  "scripts": {
+    "codegen": "tsx scripts/codegen.ts",
+    "upload-assets": "tsx scripts/upload-assets.ts",
+    "sync-latest-assets": "tsx scripts/sync-latest-assets.ts",
+    "postinstall": "pnpm codegen",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest -c vite.config.ts --passWithNoTests",
+    "lint": "eslint . --cache",
+    "build": "pnpm codegen && vite build",
+    "prepack": "dev-scripts prepack",
+    "package": "dev-scripts package",
+    "postpack": "dev-scripts postpack"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "dependencies": {
+    "react-inlinesvg": "^4.1.5"
+  },
+  "devDependencies": {
+    "@melio/dev-scripts": "workspace:*",
+    "@melio/eslint-config-penny": "workspace:*",
+    "storybook-utils": "workspace:*"
+  },
+  "lernaPackageWeight": 2
+}

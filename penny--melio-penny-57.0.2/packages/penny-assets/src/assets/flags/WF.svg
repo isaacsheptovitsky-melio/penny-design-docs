@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+  <g clip-path="url(#wallis-and-futuna__a)">
+    <g clip-path="url(#wallis-and-futuna__b)">
+      <path fill="#CE1126" d="M0 0h24v24H0V0Z"/>
+      <path fill="#fff" d="M1 0h6.4v6.4H1V0Z"/>
+      <path fill="#002654" d="M1 0h3.2v6.4H1V0Z"/>
+      <path stroke="#fff" stroke-width=".16" d="M1 6.4h9.6V0"/>
+      <path fill="#fff" d="m16.8 11.36-1.92-1.92h3.84l-1.92 1.92Zm-.64.64-1.92-1.92v3.84L16.16 12Zm.64.64-1.92 1.92h3.84l-1.92-1.92Zm.64-.64 1.92-1.92v3.84L17.44 12Z"/>
+    </g>
+  </g>
+  <defs>
+    <clipPath id="wallis-and-futuna__a">
+      <path fill="#fff" d="M0 12C0 5.373 5.373 0 12 0s12 5.373 12 12-5.373 12-12 12S0 18.627 0 12Z"/>
+    </clipPath>
+    <clipPath id="wallis-and-futuna__b">
+      <path fill="#fff" d="M0 0h24v24H0z"/>
+    </clipPath>
+  </defs>
+</svg>

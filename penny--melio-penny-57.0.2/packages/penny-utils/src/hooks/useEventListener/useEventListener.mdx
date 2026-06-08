@@ -1,0 +1,87 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Penny Utils/Hooks/useEventListener" />
+
+# `useEventListener`
+
+The `useEventListener` hook provides a simple way to attach event listeners to DOM elements using refs. It handles the lifecycle of adding and removing event listeners automatically, ensuring proper cleanup when the component unmounts or the ref changes.
+
+> **⚠️ Important:** Event handler props (e.g., `onClick`, `onKeyDown`) are the **recommended way** to handle events in React.
+> Using effects for event handling should be avoided when possible as it goes against React's declarative paradigm.
+> Only use this hook when you have a ref to an element and cannot use event handler props directly.
+
+## Hook Parameters
+
+<Markdown>
+  {`
+| Parameter | Type                           | Description                                                    | Default |
+|-----------|--------------------------------|----------------------------------------------------------------|---------|
+| ref       | \`RefObject<T>\`               | A ref object pointing to the HTML element                      | -       |
+| eventName | \`keyof HTMLElementEventMap\`  | The name of the event to listen for (e.g., 'click', 'keydown') | -       |
+| callback  | \`(event: Event) => void\`     | The function to call when the event is triggered              | -       |
+`}
+</Markdown>
+
+## Return Value
+
+This hook doesn't return any value. It's a utility hook that handles the event listener lifecycle internally.
+
+## Usage Example
+
+```tsx
+import { useEventListener } from '@melio/penny-utils';
+import { useRef } from 'react';
+
+const ClickableComponent = () => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEventListener({
+    ref: buttonRef,
+    eventName: 'click',
+    callback: (event) => {
+      console.log('Button clicked!', event);
+    },
+  });
+
+  return <button ref={buttonRef}>Click me!</button>;
+};
+```
+
+## Advanced Usage
+
+```tsx
+import { useEventListener } from '@melio/penny-utils';
+import { useRef, useCallback } from 'react';
+
+const KeyboardHandler = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleKeyDown = useCallback((event: Event) => {
+    const keyboardEvent = event as KeyboardEvent;
+    if (keyboardEvent.key === 'Escape') {
+      console.log('Escape key pressed!');
+    }
+  }, []);
+
+  useEventListener({
+    ref: containerRef,
+    eventName: 'keydown',
+    callback: handleKeyDown,
+  });
+
+  return (
+    <div ref={containerRef} tabIndex={0}>
+      Press Escape key when this div is focused
+    </div>
+  );
+};
+```
+
+## Notes
+
+- The hook uses `useEffect` internally to manage the event listener lifecycle
+- Event listeners are automatically added when the ref is attached to a DOM element
+- Event listeners are automatically removed when the component unmounts or the ref changes
+- If the ref is null or not attached to an element, no event listener will be added
+- The hook will re-attach the event listener if any of the parameters (eventName, element, callback) change
+- For performance reasons, consider memoizing the callback function with `useCallback` if it depends on props or state

@@ -1,0 +1,236 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Form/How to Use" />
+
+# Form - How to Use
+The form in the design-system is a sub-framework that facilitates working with forms.<br />
+
+## What's Included
+This framework handles several things for us:<br />
+* The form layout.<br />
+* Validation.<br />
+* Help with connecting the submit/cancellation buttons.
+
+## Tutorial
+
+The best way to show how this framework works is by creating a form!<br />
+Let's build a simple "Create a bill" form: <br />
+
+<img src="/assets/form/form-tutorial-add-bill.png" style={{ maxWidth: "50%" }} />
+<br />
+
+### Form Layout
+Let's start with part with the most immediate feedback - the form UI.<br />
+Forms in Melio usually follow a certain grid.<br />
+Our [Form](/docs/form-form--docs) component comes with that layout out-of-the-box.<br />
+Our [FormField](/docs/form-form-field--docs) component is what we will use to wrap inputs with labels and helper text and embed in the form.<br />
+All we need to do is to insert the fields to it.<br />
+
+```tsx
+// MyForm.tsx
+import { AmountField, DateField, Form, FormField, Select, TextField } from '@melio/penny';
+
+export const MyForm: VFC = () => (
+    <Form columns={2}>
+      <FormField
+        colSpan={2}
+        labelProps={{ label: "Vendor's business name" }}
+        placeholder="Search or add a vendor"
+        isRequired
+        render={props => <Select options={vendorOptions} {...props} />}
+      />
+      <FormField
+        colSpan={2}
+        labelProps={{ label: "Bill amount" }}
+        placeholder="$0.00"
+        isRequired
+        render={props => <AmountField {...props} />}
+      />
+      <FormField
+        labelProps={{ label: "Invoice #" }}
+        helperText="Add an invoice number to help your vendor reconcile payments"
+        render={props => <TextField {...props} />}
+      />
+      <FormField labelProps={{ label: "Due date" }} isRequired render={props => <DateField {...props} />} />
+      <FormField colSpan={2} labelProps={{ label: "Note to self" }} render={props => <TextField {...props} />} />
+    </Form>
+);
+```
+... That's it!<br />
+
+You might notice we didn't add the submission button. We will handle it soon.<br /><br />
+
+### Add the Form Logic
+Now, we're missing the actual logic of the form - What are we doing when the user submits the data? How do we validate values? <br />
+For that let's introduce the [useMelioForm](/docs/form-usemelioform--docs) hook as the one-stop-shop hook for creating a form.<br />
+
+Let's give our form a submit handler function and register our fields (along with some types):<br />
+
+```tsx
+// MyForm.tsx
+import { AmountField, DateField, Form, FormField, Select, TextField, useMelioForm } from '@melio/penny';
+
+export type MyFormFields = {
+  vendorId: string;
+  billAmount: string;
+  billNumber: string;
+  dueDate: Date;
+  note: string;
+};
+
+type MyFormProps = {
+  onSubmit: (data: MyFormFields) => void;
+}
+
+export const MyForm: VFC<MyFormProps> = ({ onSubmit }) => {
+  const { formProps, registerField } = useMelioForm<MyFormFields>({ onSubmit });
+
+  return (
+    <Form columns={2} {...formProps}>
+      <FormField
+        colSpan={2}
+        labelProps={{ label: "Vendor's business name" }}
+        placeholder="Search or add a vendor"
+        isRequired
+        {...registerField('vendorId')}
+        render={props => <Select options={vendorOptions} {...props} />}
+      />
+      <FormField
+        colSpan={2}
+        labelProps={{ label: "Bill amount" }}
+        placeholder="$0.00"
+        isRequired
+        {...registerField('billAmount')}
+        render={props => <AmountField {...props} />}
+      />
+      <FormField
+        labelProps={{ label: "Invoice #" }}
+        helperText="Add an invoice number to help your vendor reconcile payments"
+        {...registerField('billNumber')}
+        render={props => <TextField {...props} />}
+      />
+      <FormField
+        labelProps={{ label: "Due date" }}
+        isRequired
+        {...registerField('dueDate')}
+        render={props => <DateField {...props} />}
+      />
+      <FormField
+        colSpan={2}
+        labelProps={{ label: "Note to self" }}
+        {...registerField('note')}
+        render={props => <TextField {...props} />}
+      />
+    </Form>
+  );
+}
+```
+
+### Connecting Buttons to the Form
+Now that we've built the form, we can connect it to the submit button.<br />
+Most of the time, our submit/cancel buttons won't sit in the same component as the form.<br />
+What we do in that case is to use a utility hook called [useFormSubmissionController](/docs/form-useFormSubmissionController--docs) which links between the form and the button.<br />
+This hook exposes 2 tools we need to connect the buttons with the form:<br />
+* The `submitButtonProps` will help aligning the submit/cancel button to the state of the form (e.g. submit is disabled until form is valid).<br />
+* The `onSubmissionStateChange` is the actual connector. We will need to pass this along to the relevant `useMelioForm`.
+
+Let's add a submit button and connect it to the form in a new "screen" component:
+
+```tsx
+// MyScreen.tsx
+import { Button, Group, useFormSubmissionController } from '@melio/penny';
+
+import { MyFormComp } from './MyForm';
+import type { MyFormFields } from './MyForm';
+
+export const MyScreen: VFC = () => {
+  const { onSubmissionStateChange, submitButtonProps } =
+    useFormSubmissionController<MyFormFields>();
+
+  return (
+    <Group variant="vertical">
+      <MyFormComp onSubmit={console.log} onSubmissionStateChange={onSubmissionStateChange} />
+      <Button {...submitButtonProps}>Continue</Button>
+    </Group>
+  );
+}
+```
+
+```tsx
+// MyForm.tsx
+import { Form, useMelioForm } from '@melio/penny';
+import type { OnSubmissionStateChange } from '@melio/penny';
+
+export type MyFormFields = {
+  vendorId: string;
+  billAmount: string;
+  billNumber: string;
+  dueDate: Date;
+  note: string;
+};
+
+type MyFormProps = {
+  onSubmit: (data: MyFormFields) => void;
+  onSubmissionStateChange: OnSubmissionStateChange<MyFormFields>;
+}
+
+export const MyForm: VFC<MyFormProps> = ({ onSubmit }) => {
+  const { formProps, registerField } = useMelioForm<MyFormFields>({ onSubmit, onSubmissionStateChange });
+
+  return (
+    <Form columns={2} {...formProps}>
+      // ...Fields
+    </Form>
+  );
+}
+```
+
+... And that's it! Now the submit button will trigger the submission of the form 👏🏼
+
+### Validation Schema
+Validation to the form is done using [Yup](https://github.com/jquense/yup).<br />
+Create the validation schema, and pass it to the `useMelioForm`.<br />
+
+```tsx
+// MyForm.tsx
+import { Form, useMelioForm } from '@melio/penny';
+import * as yup from 'yup';
+
+// ...
+
+const schema = {
+    vendorId: yup.string().required().nullable(),
+    billAmount: yup.string().required(),
+    billNumber: yup.string(),
+    dueDate: yup.date().nullable().required(),
+    note: yup.string().optional(),
+}
+
+export const MyForm: VFC<MyFormProps> = ({ onSubmit }) => {
+  const { formProps, registerField } = useMelioForm<MyFormFields>({ onSubmit, schema });
+
+  return (
+    <Form columns={2} {...formProps}>
+      // ... Fields
+    </Form>
+  );
+}
+```
+
+#### Optional & Required
+Now that we've connected a validation schema to the form - the form can extrapolate which fields are required and which are optional.<br />
+Each field will receive `isRequired` via the `registerField` function coming from the `useMelioForm`. Hooray!<br />
+
+Required fields will have `*` next to the field label.<br />
+We can safely remove the explicit `isRequired` property we passed to the required fields.<br />
+
+By default there won't be any indication for optional fields, but you can add `(optional)` next to the field label by passing `showOptionalIndicator` prop.
+
+#### When Is the Form Validating?
+Validation is done on submit.<br />
+After the clicking the submit button - if there are any validation errors, the validation per field will be upon change.
+
+### Further Reading
+If you want to dive deeper, and see what options are available - you can go to:<br />
+* [useMelioForm](/docs/form-usemelioform--docs)<br />
+* [useFormSubmissionController](/docs/form-useFormSubmissionController--docs)

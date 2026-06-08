@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+  <g clip-path="url(#reunion__a)">
+    <g clip-path="url(#reunion__b)">
+      <path fill="#36F" d="M0 0h24v24H0V0Z"/>
+      <path fill="red" d="M12 12 0 24h24L12 12Z"/>
+      <path fill="#FF0" d="M0 11.4v1.2l24-1.2v1.2L0 11.4Z"/>
+      <path fill="#FF0" d="M12 12 0 5V4h1l11 8Zm0 0 11-8h1v1l-12 7Zm0 0L11 0h2l-1 12Z"/>
+    </g>
+  </g>
+  <defs>
+    <clipPath id="reunion__a">
+      <path fill="#fff" d="M0 12C0 5.373 5.373 0 12 0s12 5.373 12 12-5.373 12-12 12S0 18.627 0 12Z"/>
+    </clipPath>
+    <clipPath id="reunion__b">
+      <path fill="#fff" d="M0 0h24v24H0z"/>
+    </clipPath>
+  </defs>
+</svg>

@@ -1,0 +1,170 @@
+import { Markdown, Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Containers/Menus/Using Menus" />
+
+# Using Menus
+
+---
+
+Menus are flexible and powerful components used to display a list of options in a variety of contexts. This guide covers both the modular menu types and predefined patterns, ensuring you can choose the best solution for your need.
+
+### Modular Menu Types
+
+<Markdown>
+  {`
+| **Menu Type**       | **Description**                                                                               | **Ideal Use Case**                                  |
+| ------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| [**FloatingMenu**](#floating-menu)    | A floating menu that appears beside its trigger element, typically used for dropdowns.         | Desktop interfaces, dropdowns  that float next to their trigger. |
+| [**BottomSheetMenu**](#bottom-sheet-menu) | A mobile-friendly menu that slides up from the bottom of the screen with a dimmed background. | Mobile devices.      |
+| [**FlatMenu**](#flat-menu)        | An inline menu that opens below the trigger element (non-floating), blending seamlessly into the layout.     | Inline dropdowns (non-floating). implemented in Combobox [mobile view](/story/selection-inputs-components-combobox-new--mobile-view).
+`}
+</Markdown>
+Each of these menus is flexible, accessible, and can be customized to fit various use cases.
+
+---
+
+### Predefined Menu Patterns
+
+In addition to the core menu types, we offer a set of predefined **Menu patterns** designed for common scenarios. These patterns integrate responsive, accessible, and intuitive behavior, so you don’t have to reinvent the wheel. Here’s an overview of the available patterns:
+
+<Markdown>
+  {`
+| **Menu Pattern**                                                                              | **Description**                                                                                          | **Item Component**                    |
+| --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| [**Menu**](#menu)                                         | A responsive menu that adapts to different screen sizes, offering distinct layouts for both desktop and mobile views. |  |
+| [**Actions Dropdown Menu**](#actions-dropdown-menu)       | Based on Menu designed to display action items, each triggering a callback function when selected.                | \`ActionItem\`                        |
+| [**Selectable Dropdown Menu**](#selectable-dropdown-menu) | Based on Menu that renders items, allowing users to select options with a selection handler.     | \`SelectableItem\`                    |
+| [**Sort Dropdown Menu**](#sort-dropdown-menu)             | Based on Menu that displays sorting options, including visual indicators for sorting order (ascending/descending).            | \`SortItem\`                          |
+`}
+
+</Markdown>
+
+These patterns offer tailored solutions, ready to use and fully customizable, making it easier to implement menus with specific
+functionalities.
+
+---
+
+<br />
+<br />
+---
+
+## Modular Menus
+
+### Floating Menu
+
+The [**Floating Menu**](/docs/containers-menus-floating-menu-floating-menu-new--docs) is ideal for scenarios where a menu needs to appear beside its trigger element. It floats above the content and adjusts its position relative to the trigger, ensuring it stays visible and accessible based on the available space.
+
+<img src="/assets/menus/floatingMenu.gif" style={{ maxWidth: '40%' }} />
+
+<br />
+<br />
+---
+
+### Bottom Sheet Menu
+
+The [**Bottom Sheet Menu**](/docs/containers-menus-bottom-sheet-menu-bottom-sheet-menu-new--docs) provides a bottom layout with an overlay, making it perfect for mobile interfaces. This menu slides up from the bottom of the screen and overlays the content, ensuring focus remains on the menu while the background content is dimmed.
+
+<img src="/assets/menus/bottomSheetMenu.gif" style={{ maxWidth: '40%' }} />
+
+<br />
+<br />
+---
+
+### Flat Menu
+
+The [**Flat Menu**](/docs/containers-menus-flat-menu-flat-menu-new--docs) is designed for scenarios where a menu needs to open inline, directly beneath the trigger element, without floating or sliding. It seamlessly integrates within the surrounding layout.
+
+Unlike the **FloatingMenu**, where the menu content appear next to the trigger and float above the content, the FlatMenu stays within the flow of the page, offering a more minimalistic, in-context interaction.
+
+<img src="/assets/menus/flatMenu.gif" style={{ maxWidth: '40%' }} />
+
+<br />
+<br />
+---
+
+## Predefined Menu Patterns
+
+Our Menu Patterns provide structured, reusable solutions for common use cases, ensuring consistency, responsiveness, and accessibility. Each pattern adapts to different contexts while maintaining an intuitive user experience.
+
+### Menu
+
+The [**Menu**](/docs/containers-menus-menu-pattern--docs) pattern dynamically switches between `FloatingMenu` for desktop and `BottomSheetMenu` for mobile, ensuring a seamless experience across devices. Each of the menu patterns, including the **Actions Dropdown Menu**, **Selectable Dropdown Menu**, and **Sort Dropdown Menu**, is based on this component, providing a consistent structure while adapting to different screen sizes and contexts.
+
+Desktop:
+
+<img src="/assets/menus/menuDesktop.gif" style={{ maxWidth: '40%' }} />
+
+Mobile:
+
+<img src="/assets/menus/menuMobile.gif" style={{ maxWidth: '40%' }} />
+
+<br />
+<br />
+### Actions Dropdown Menu
+
+The [**Actions Dropdown Menu**](/docs/containers-menus-actions-dropdown-menu-pattern--docs) is a menu that renders `ActionItem` components. Each `ActionItem` receives an `onClick` prop for event handling, has a pressed CSS style to indicate interaction, and supports icon or brand symbol for additional visual context.
+
+The menu includes an internal trigger: `ActionTrigger`, and also supports a custom trigger. Essentially, the **Actions Dropdown Menu** is a `Menu` component that comes with predefined triggers and `ActionItem` components.
+
+<img src="/assets/menus/actionMenu.gif" style={{ maxWidth: '40%' }} />
+<br />
+<br />
+### Selectable Dropdown Menu
+
+The [**Selectable Dropdown Menu**](/docs/containers-menus-selectable-dropdown-menu-pattern--docs) allows users to make selections from a list of options. It renders `SelectableItem` components, each of which can be selected or deselected. This pattern is ideal for scenarios where users need to choose one or more options from a menu.
+
+When an item is selected, it receives a CSS style to indicate the selection, and an `isSelected` prop is used to manage the state of the item. The menu also provides an `onSelect` callback to handle selection changes.
+
+Additionally, the menu includes a footer, which can be rendered as either a `Button` or a `NakedButton`, offering flexibility for custom actions (e.g., applying the selection or clearing the choices).
+
+<img src="/assets/menus/selectableMenu.gif" style={{ maxWidth: '40%' }} />
+<br />
+<br />
+
+### Sort Dropdown Menu
+
+The [**Sort Dropdown Menu**](/docs/containers-menus-sort-dropdown-menu-pattern--docs) enhances sorting interactions by displaying `SortItem` components. Each item includes ascending and descending indicators to visually represent the sorting direction. The menu itself doesn’t manage the sorting functionality directly, but it provide the visually represention.
+
+<img src="/assets/menus/sortMenu.gif" style={{ maxWidth: '40%' }} />
+
+<br />
+<br />
+
+---
+
+## Accessibility
+
+ALL our Menus ensures accessibility for both screen readers and keyboard navigation by adhering to ARIA standards. Key roles, attributes, and navigation behaviors provide an intuitive experience for all users,
+making the menu easily navigable with assistive technologies.
+
+#### Keyboard Interaction
+
+<Markdown>
+  {`
+| Key                    | Action                                                                                |
+| ---------------------- | ------------------------------------------------------------------------------------- |
+| **Enter** or **Space** | Opens the menu and places focus on the first menu item when the Trigger is focused. |
+| **ArrowDown**          | Opens the menu and moves focus to the first menu item when the Trigger is focused.  |
+| **ArrowUp**            | Opens the menu and moves focus to the last menu item when the Trigger is focused.   |
+| **Escape**             | Closes the menu and returns focus to the Trigger.                                   |
+| **Tab**                | Skip to the Footer (if available).                                                                    |
+| **A-Z** or **a-z**     | Moves focus to the next menu item with a label that starts with the typed character.  |
+`}
+</Markdown>
+
+#### ARIA Roles and Attributes
+
+- **Trigger:**
+
+  - `role="button"`: Identifies the trigger as a button.
+  - `aria-haspopup="menu | listbox"`: Indicates the button opens a menu or listbox.
+  - `aria-expanded="true"`: Indicates the menu is open.
+  - `aria-controls`: References the ID of the associated `Item`.
+
+- **Dropdown:**
+
+  - `role="menu | listbox"`: Identifies the list as a menu os listbox.
+  - `aria-orientation="vertical"`: Specifies that the menu is vertically oriented.
+
+- **Item:**
+  - `role="menuitem"`: Defines the type of menu item based on its functionality.

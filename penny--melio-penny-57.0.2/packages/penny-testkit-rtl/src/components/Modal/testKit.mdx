@@ -1,0 +1,98 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Containers/Modals/Modal [pattern]/RTL Test Kit" />
+
+# Modal RTL Test Kit
+---
+
+Testing utilities for the `Modal` component that provide easy access to component interactions, states, and accessibility features for Rtl (React Testing Library).
+
+The `Modal` test kit extends the [BaseModal test kit](?path=/docs/containers-modals-base-modal-rtl-test-kit--docs) and adds test kits for interacting with the modal's primary and secondary buttons.
+
+## Import
+
+```typescript
+import { createModalTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+The `Modal` test kit inherits all methods from the [BaseModal test kit](?path=/docs/containers-modals-base-modal-rtl-test-kit--docs).
+
+### Additional Properties
+
+<Markdown>
+  {`
+| Property | Description | Return value |
+|----------|-------------|--------------|
+| \`primaryButton\` | The test kit for the primary button | [ButtonTestKit](?path=/docs/action-components-button-rtl-test-kit--docs) |
+| \`secondaryButton\` | The test kit for the secondary button | [ButtonTestKit](?path=/docs/action-components-button-rtl-test-kit--docs) |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createModalTestKit } from '@melio/penny-testkit-rtl';
+
+describe('Modal Component', () => {
+  it('should close the modal when clicking the overlay while not loading', async () => {
+     const handleClose = vi.fn();
+
+     render(
+       <Modal
+         header="headerText"
+         isOpen
+         onClose={handleClose}
+         primaryButton={{ label: 'primary', variant: 'primary' }}
+       />
+     );
+
+     await modalTestKit.clickOverlay();
+     expect(handleClose).toHaveBeenCalled();
+  });
+
+  it("should click on primary button", async () => {
+     const handleClose = vi.fn();
+     const handlePrimaryBtn = vi.fn();
+
+     render(
+        <Modal
+          header="headerText"
+          isOpen
+          onClose={handleClose}
+          primaryButton={{ label: 'primary', onClick: handlePrimaryBtn, variant: 'primary' }}
+        />
+     );
+
+     await modalTestKit.primaryButton.click();
+     expect(handlePrimaryBtn).toHaveBeenCalled();
+  });
+
+  it("should select modal header, body, and footer elements", async () => {
+       const handleClose = vi.fn();
+       const handlePrimaryBtn = vi.fn();
+
+       render(
+          <Modal
+            header="headerText"
+            isOpen
+            onClose={handleClose}
+            primaryButton={{ label: 'primary', onClick: handlePrimaryBtn, variant: 'primary' }}
+          />
+       );
+
+
+       const modalHeader = screen.getByTestId('modal-header'); // default dataTestId value
+       expect(modalHeader).toBeInTheDocument();
+
+       const modalBody = screen.getByTestId('modal-body'); // default dataTestId value
+       expect(modalBody).toBeInTheDocument();
+
+       const modalFooter = screen.getByTestId('modal-footer'); // default dataTestId value
+       expect(modalFooter).toBeInTheDocument();
+
+
+    });
+});
+```

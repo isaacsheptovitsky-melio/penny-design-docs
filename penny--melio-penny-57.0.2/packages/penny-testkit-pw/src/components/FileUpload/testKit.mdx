@@ -1,0 +1,71 @@
+import { Markdown, Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/File Upload/Playwright Test Kit" />
+
+# FileUpload Playwright Test Kit
+---
+
+Testing utilities for the `FileUpload` component that provide easy access to component interactions, states, and accessibility features for Playwright testing.
+
+## Import
+
+```typescript
+import { createFileUploadTestKit } from '@melio/penny-testkit-pw';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the root container element | \`Locator\` |
+| \`getPlaceholder()\` | Gets the placeholder text | \`Promise<string>\` |
+| \`getValue()\` | Gets the value text | \`Promise<string>\` |
+| \`getIsDisabled()\` | Checks if the component is disabled | \`Promise<boolean>\` |
+| \`getIsLoading()\` | Checks if the component is in loading state | \`Promise<boolean>\` |
+| \`getIsReadOnly()\` | Checks if the component is read-only | \`Promise<boolean>\` |
+| \`getIsInvalid()\` | Checks if the component is in an invalid state | \`Promise<boolean>\` |
+| \`getIsSelected()\` | Checks if a file is currently selected | \`Promise<boolean>\` |
+| \`uploadFile(file)\` | Simulates uploading a file (file path string) | \`Promise<void>\` |
+| \`dropFile(file)\` | Simulates drag-and-drop of a file onto the component (file path string) | \`Promise<void>\` |
+| \`clickDropZone()\` | Clicks on the drop zone element | \`Promise<void>\` |
+| \`clickDeleteButton()\` | Clicks the delete button | \`Promise<void>\` |
+| \`clickReplaceButton()\` | Clicks the replace button | \`Promise<void>\` |
+| \`getIsDeleteButtonDisabled()\` | Checks if the delete button is disabled | \`Promise<boolean>\` |
+| \`getIsReplaceButtonDisabled()\` | Checks if the replace button is disabled | \`Promise<boolean>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { test, expect } from '@playwright/test';
+import { createFileUploadTestKit } from '@melio/penny-testkit-pw';
+
+test.describe('FileUpload Component', () => {
+  test('should be disabled', async ({ page }) => {
+    const testKit = createFileUploadTestKit(page);
+
+    await page.goto('/some-page');
+    expect(await testKit.getIsDisabled()).toBeTruthy();
+  });
+
+  test('should upload a file', async ({ page }) => {
+    const testKit = createFileUploadTestKit(page);
+
+    await page.goto('/some-page');
+    await testKit.uploadFile('/path/to/test.png');
+    expect(await testKit.getIsSelected()).toBeTruthy();
+  });
+
+  test('should delete a file', async ({ page }) => {
+    const testKit = createFileUploadTestKit(page);
+
+    await page.goto('/some-page');
+    await testKit.clickDeleteButton();
+    expect(await testKit.getIsSelected()).toBeFalsy();
+  });
+});
+```

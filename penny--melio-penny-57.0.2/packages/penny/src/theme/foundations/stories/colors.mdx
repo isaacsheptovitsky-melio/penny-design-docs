@@ -1,0 +1,29 @@
+import { Markdown, Meta, Title } from '@storybook/addon-docs/blocks';
+import { Colors } from './utils/Colors';
+
+<Markdown>
+  {/* 
+  This CSS rule hides the Table of Contents (TOC) in the Docs page
+  by targeting the sbdocs-wrapper and removing display when a TOC
+  is present, ensuring it doesn't appear in specific stories. 
+  https://github.com/storybookjs/storybook/discussions/23672 
+*/}
+</Markdown>
+
+<style>
+  {`
+    .sbdocs-wrapper > div:has(div > .toc-wrapper) {
+      display: none;
+    }
+  `}
+</style>
+
+<Meta title="Foundations/Colors" />
+
+# Colors
+
+The color design tokens are color palettes to help give meaning and consistency across the system.<br />
+Below are the color tokens used in our design-system.<br />
+
+<br />
+<Colors />

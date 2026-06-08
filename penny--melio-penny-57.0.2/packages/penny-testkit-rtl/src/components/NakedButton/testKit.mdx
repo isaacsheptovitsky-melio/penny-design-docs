@@ -1,0 +1,66 @@
+import { Markdown, Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Action Components/Naked Button/RTL Test Kit" />
+
+# NakedButton RTL Test Kit
+---
+
+Testing utilities for the `Button` component that provide easy access to component interactions, states, and accessibility features for Rtl (React Testing Library).
+
+## Import
+
+```typescript
+import { createNakedButtonTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the DOM element | \`HTMLElement\` |
+| \`click()\` | Clicks on the element | \`Promise<void>\` |
+| \`getDisabled()\` | Checks if the element is disabled | \`boolean\` |
+| \`getIsLink()\` | Checks if the element is a link tag | \`boolean\` |
+| \`getHref()\` | Gets the element's href (when rendered as link) | \`string \| null\` |
+| \`getLabelText()\` | Gets the element's text content | \`string\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createNakedButtonTestKit } from '@melio/penny-testkit-rtl';
+
+describe('NakedButton Component', () => {
+  it('should call onClick when clicked', async () => {
+    const onClick = vi.fn();
+    const testKit = createNakedButtonTestKit({ dataTestId: 'custom-datatestid' });
+    render(<NakedButton onClick={onClick} label="Button" data-testid="custom-datatestid" />);
+
+    await testKit.click();
+
+    expect(onClick).toHaveBeenCalled();
+  });
+
+  it('should not call onClick when disabled', async () => {
+    const onClick = vi.fn();
+    const testKit = createNakedButtonTestKit({ dataTestId: 'custom-datatestid' });
+    render(<NakedButton isDisabled onClick={onClick} data-testid="custom-datatestid" />);
+
+    await testKit.click();
+
+    expect(await testKit.getDisabled()).toBe(true);
+    expect(onClick).not.toHaveBeenCalled();
+  });
+
+  it('should get button label', () => {
+    const testKit = createNakedButtonTestKit({ dataTestId: 'custom-datatestid' });
+    render(<NakedButton label="Submit" data-testid="custom-datatestid" />);
+
+    expect(testKit.getLabelText()).toBe('Submit');
+  });
+});
+```

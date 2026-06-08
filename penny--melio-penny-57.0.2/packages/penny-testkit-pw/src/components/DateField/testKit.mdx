@@ -1,0 +1,88 @@
+import { Markdown, Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Date Field/Playwright Test Kit" />
+
+# DateField Playwright Test Kit
+---
+
+Testing utilities for the `DateField` component that provide easy access to component interactions, states, and accessibility features for Playwright testing.
+
+## Import
+
+```typescript
+import { createDateFieldTestKit } from '@melio/penny-testkit-pw';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the root element | \`Locator\` |
+| \`click()\` | Clicks the element | \`Promise<void>\` |
+| \`type(text: string)\` | Types text into the element | \`Promise<void>\` |
+| \`clear()\` | Clears the element value | \`Promise<void>\` |
+| \`getValue()\` | Gets the value | \`Promise<string>\` |
+| \`getPlaceholder()\` | Gets the placeholder | \`Promise<string>\` |
+| \`clickClearButton()\` | Clicks the clear button | \`Promise<void>\` |
+| \`clickCalendarButton()\` | Clicks the calendar button | \`Promise<void>\` |
+| \`getIsRequired()\` | Checks if the component is required | \`Promise<boolean>\` |
+| \`getIsDisabled()\` | Checks if the component is disabled | \`Promise<boolean>\` |
+| \`getIsInvalid()\` | Checks if the component is invalid | \`Promise<boolean>\` |
+| \`getIsReadOnly()\` | Checks if the component is read only | \`Promise<boolean>\` |
+| \`getIsLoading()\` | Checks if the component is loading | \`Promise<boolean>\` |
+| \`isCalendarOpen()\` | Checks if calendar open | \`Promise<boolean>\` |
+| \`clickOutside()\` | Clicks outside the calendar | \`Promise<void>\` |
+| \`selectDay(day: number)\` | Selects the day | \`Promise<void>\` |
+| \`isDaySelected(day: number)\` | Checks if day selected | \`Promise<boolean>\` |
+| \`isDayDisabled(day: number)\` | Checks if day disabled | \`Promise<boolean>\` |
+| \`clickPreviousMonth()\` | Clicks the previous month | \`Promise<void>\` |
+| \`clickNextMonth()\` | Clicks the next month | \`Promise<void>\` |
+| \`isPreviousMonthDisabled()\` | Checks if previous month disabled | \`Promise<boolean>\` |
+| \`isNextMonthDisabled()\` | Checks if next month disabled | \`Promise<boolean>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { test, expect } from '@playwright/test';
+import { createDateFieldTestKit } from '@melio/penny-testkit-pw';
+
+test.describe('DateField Component', () => {
+  test('should be disabled', async ({ page }) => {
+    const testKit = createDateFieldTestKit(page);
+    await page.goto('/some-page');
+    
+    expect(await testKit.getIsDisabled()).toBe(true);
+  });
+
+  test('should select date and close calendar', async ({ page }) => {
+    const testKit = createDateFieldTestKit(page);
+    await page.goto('/some-page');
+    
+    await testKit.clickCalendarButton();
+    expect(await testKit.isCalendarOpen()).toBe(true);
+
+    await testKit.clickNextMonth();
+    await testKit.selectDay(1);
+    expect(await testKit.getValue()).toBe('01/01/2026');
+    expect(await testKit.isCalendarOpen()).toBe(false);
+  });
+
+  test('should type date and close calendar', async ({ page }) => {
+    const testKit = createDateFieldTestKit(page);
+    await page.goto('/some-page');
+    
+    expect(await testKit.getPlaceholder()).toBe('mm/dd/yyyy');
+
+    await testKit.type('01/01/2026');
+    expect(await testKit.getValue()).toBe('01/01/2026');
+
+    await testKit.clear();
+    expect(await testKit.getPlaceholder()).toBe('mm/dd/yyyy');
+  });
+});
+```

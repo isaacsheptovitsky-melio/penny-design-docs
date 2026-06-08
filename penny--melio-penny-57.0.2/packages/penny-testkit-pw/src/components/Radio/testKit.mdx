@@ -1,0 +1,57 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Radio [new]/Playwright Test Kit" />
+
+# Radio Playwright Test Kit
+
+---
+
+Testing utilities for the `Radio` component that provide easy access to component interactions, states, and accessibility features for Playwright.
+
+## Import
+
+```typescript
+import { createRadioTestKit } from '@melio/penny-testkit-pw';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Gets the container element of the radio | \`Locator\` |
+| \`getInputElement()\` | Gets the input element of the radio | \`Locator\` |
+| \`getIsDisabled()\` | Checks if the radio is disabled | \`Promise<boolean>\` |
+| \`getIsChecked()\` | Checks if the radio is checked | \`Promise<boolean>\` |
+| \`getIsReadOnly()\` | Checks if the radio is read-only | \`Promise<boolean>\` |
+| \`getIsInvalid()\` | Checks if the radio is invalid | \`Promise<boolean>\` |
+| \`getValue()\` | Gets the value of the radio | \`Promise<string \\| null>\` |
+| \`click()\` | Clicks on the radio input | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createRadioTestKit } from '@melio/penny-testkit-pw';
+import { test, expect } from '@playwright/test';
+
+test.describe('Radio Component', () => {
+  test('should be disabled', async ({ page }) => {
+    const testKit = createRadioTestKit(page, { dataTestId: 'my-radio' });
+    await page.goto('/radio-page');
+
+    expect(await testKit.getIsDisabled()).toBe(true);
+  });
+
+  test('should be checked when clicking on the radio', async ({ page }) => {
+    const testKit = createRadioTestKit(page, { dataTestId: 'my-radio' });
+    await page.goto('/radio-page');
+
+    await testKit.click();
+    expect(await testKit.getIsChecked()).toBe(true);
+  });
+});
+```

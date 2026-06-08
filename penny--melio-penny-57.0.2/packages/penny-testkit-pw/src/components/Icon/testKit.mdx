@@ -1,0 +1,63 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Icon/Playwright TestKit" />
+
+# Icon Playwright Test Kit
+---
+Testing utilities for the `Icon` component that provide easy access to component interactions, states, and accessibility features for Playwright testing.
+
+## Import
+
+```typescript
+import { createIconTestKit } from '@melio/penny-testkit-pw';
+```
+
+## Methods
+
+<Markdown>
+{`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the DOM element | \`Locator\` |
+| \`getVisible()\` | Checks if the element is visible | \`Promise<boolean>\` |
+| \`getActive()\` | Checks if the element has a data-active attribute | \`Promise<boolean>\` |
+| \`getDisabled()\` | Checks if the element has a data-disabled attribute | \`Promise<boolean>\` |
+| \`getReadOnly()\` | Checks if the element has a data-readonly attribute | \`Promise<boolean>\` |
+| \`getIsBrandColor()\` | Gets if the element has a data-is-brand-color attribute | \`Promise<boolean>\` |
+| \`getRole()\` | Gets the element's role attribute | \`Promise<string | null>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { test, expect } from '@playwright/test';
+import { createIconTestKit } from '@melio/penny-testkit-pw';
+
+test.describe('Icon Component', () => {
+  test('should be visible', async ({ page }) => {
+    const testKit = createIconTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    
+    expect(await testKit.getVisible()).toBe(true);
+  });
+
+  test('should get aria-label attribute', async ({ page }) => {
+    const testKit = createIconTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    
+    expect(await testKit.getElement().getAttribute('aria-label').toBe('Success Status');
+  });
+
+  test('should be read-only', async ({ page }) => {
+    const testKit = createIconTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+
+    expect(await testKit.getReadOnly()).toBe(true);
+  });
+});
+```

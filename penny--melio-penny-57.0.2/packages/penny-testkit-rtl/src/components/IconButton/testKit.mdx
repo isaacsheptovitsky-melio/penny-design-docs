@@ -1,0 +1,62 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Action Components/Icon Button/RTL Test Kit" />
+
+# IconButton RTL Test Kit
+---
+
+Testing utilities for the `IconButton` component that provide easy access to component interactions, states, and accessibility features for Rtl (React Testing Library).
+
+## Import
+
+```typescript
+import { createIconButtonTestKit } from '@melio/penny-tetkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the DOM element | \`HTMLElement\` |
+| \`click()\` | Clicks on the element | \`Promise<void>\` |
+| \`getDisabled()\` | Checks if the element is disabled | \`boolean\` |
+| \`getIsLink()\` | Checks if the element is a link | \`boolean\` |
+| \`getHref()\` | Gets the element's href | \`string \| null\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createIconButtonTestKit } from '@melio/penny-testkit-rtl';
+
+describe('IconButton Component', () => {
+  it('should call onClick callback', async () => {
+    const onClick = jest.fn();
+    const testKit = createIconButtonTestKit({ dataTestId: 'custom-datatestid' });
+    render(<IconButton onClick={onClick} data-testid="custom-datatestid"/>);
+
+    await testKit.click();
+
+    expect(onClick).toHaveBeenCalledOnce();
+  });
+
+  it('should be link', () => {
+    const testKit = createIconButtonTestKit({ dataTestId: 'custom-datatestid' });
+    render(<IconButton icon="add" link={{ href: '/some-page', target: '_blank' }} data-testid="custom-datatestid"/>);
+
+    expect(testKit.getIsLink()).toBe(true);
+    expect(testKit.getHref()).toBe('/some-page');
+  });
+
+  it('should be disabled', () => {
+    const testKit = createIconButtonTestKit({ dataTestId: 'custom-datatestid' });
+    render(<IconButton label="Submit" isDisabled data-testid="custom-datatestid"/>);
+
+    expect(testKit.getDisabled()).toBe(true);
+  });
+});
+```

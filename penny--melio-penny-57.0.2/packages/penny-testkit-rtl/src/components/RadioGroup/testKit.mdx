@@ -1,0 +1,84 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Radio Group/RTL Test Kit" />
+
+# RadioGroup RTL Test Kit
+
+---
+
+Testing utilities for the `RadioGroup` component that provide easy access to component interactions, states, and accessibility features for RTL (React Testing Library).
+
+## Import
+
+```typescript
+import { createRadioGroupTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the radio group container element | \`HTMLDivElement\` |
+| \`getIsDisabled()\` | Checks if the radio group is disabled | \`boolean\` |
+| \`getIsInvalid()\` | Checks if the radio group is invalid | \`boolean\` |
+| \`getIsViewMode()\` | Checks if the radio group is in view mode | \`boolean\` |
+| \`getAllRadios()\` | Gets all radios as an array of radioTestKits | \`RadioTestKit[]\` |
+| \`radio(value)\` | Gets a specific radio option testkit by its value | \`RadioTestKit\` |
+| \`getSelectedOption()\` | Gets the currently selected option value | \`string \\| undefined\` |
+| \`selectOption(value)\` | Selects a radio option by its value | \`Promise<void>\` |
+| \`getAllValues()\` | Gets all option values in the group | \`string[]\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createRadioGroupTestKit } from '@melio/penny-testkit-rtl';
+
+const options = [
+  { value: '1', mainLabelProps: { label: 'First' } },
+  { value: '2', mainLabelProps: { label: 'Second' } },
+];
+
+describe('RadioGroup Component', () => {
+  it('should have the correct selected value', () => {
+    const testKit = createRadioGroupTestKit();
+    render(<RadioGroup value="2" options={options} />);
+
+    expect(testKit.getSelectedOption()).toBe('2');
+  });
+
+  it('should select a radio by value', async () => {
+    const onChange = vi.fn();
+    const testKit = createRadioGroupTestKit();
+    render(<RadioGroup value="1" options={options} onChange={onChange} />);
+
+    await testKit.selectOption('2');
+    expect(onChange).toHaveBeenCalled();
+  });
+
+  it('should get all option values', () => {
+    const testKit = createRadioGroupTestKit();
+    render(<RadioGroup options={options} />);
+
+    expect(testKit.getAllValues()).toEqual(['1', '2']);
+  });
+
+  it('should be disabled', () => {
+    const testKit = createRadioGroupTestKit();
+    render(<RadioGroup options={options} isDisabled />);
+
+    expect(testKit.getIsDisabled()).toBe(true);
+  });
+
+  it('should access individual radio testkits', () => {
+    const testKit = createRadioGroupTestKit();
+    render(<RadioGroup value="1" options={options} />);
+
+    expect(testKit.radio('1').getIsChecked()).toBe(true);
+  });
+});
+```

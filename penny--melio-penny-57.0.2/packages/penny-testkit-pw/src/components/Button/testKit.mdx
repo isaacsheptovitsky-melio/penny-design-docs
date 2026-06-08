@@ -1,0 +1,64 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Action Components/Button/Playwright Test Kit" />
+
+# Button Playwright Test Kit
+---
+
+Testing utilities for the `Button` component that provide easy access to component interactions, states, and accessibility features for Playwright testing.
+
+## Import
+
+```typescript
+import { createButtonTestKit } from '@melio/penny-testkit-pw';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the DOM element | \`Locator\` |
+| \`click()\` | Clicks on the element | \`Promise<void>\` |
+| \`getDisabled()\` | Checks if the element is disabled | \`Promise<boolean>\` |
+| \`getIsLink()\` | Checks if the element is a link | \`Promise<boolean>\` |
+| \`getHref()\` | Gets the element's href | \`Promise<string | null>\` |
+| \`getIsLoading()\` | Checks if the element is in loading state | \`Promise<boolean>\` |
+| \`getLabelText()\` | Gets the element's text content | \`Promise<string>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { test, expect } from '@playwright/test';
+import { createButtonTestKit } from '@melio/penny-testkit-pw';
+
+test.describe('Button Component', () => {
+  test('should be in loading state', async ({ page }) => {
+    const testKit = createButtonTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+
+    expect(await testKit.getIsLoading()).toBe(true);
+  });
+
+  test("shouldn't be disabled", async ({ page }) => {
+    const testKit = createButtonTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    
+    expect(await testKit.getDisabled()).toBe(false);
+  });
+
+  test('should get aria-label attribute', async ({ page }) => {
+    const testKit = createButtonTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    
+    expect(await testKit.getElement().getAttribute('aria-label')).toBe('Upload file');
+  });
+});
+```

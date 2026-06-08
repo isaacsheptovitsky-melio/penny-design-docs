@@ -1,0 +1,48 @@
+name: Renovate
+
+on:
+  # Actual schedule is controlled by renovate.json5.
+  schedule:
+    - cron: '0 7 * * *'
+
+  # Manual trigger with options
+  workflow_dispatch:
+    inputs:
+      log_level:
+        description: 'Log level for Renovate'
+        required: false
+        default: 'info'
+        type: choice
+        options:
+          - debug
+          - info
+          - warn
+          - error
+      dry_run:
+        description: 'Run in dry-run mode (no PRs created)'
+        required: false
+        default: false
+        type: boolean
+
+# Prevent overlapping runs - newer runs cancel older ones
+concurrency:
+  group: renovate
+  cancel-in-progress: true
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Renovate
+        uses: renovatebot/github-action@v44.2.6
+        with:
+          configurationFile: .github/renovate.json5
+          token: ${{ secrets.RENOVATE_TOKEN }}
+        env:
+          LOG_LEVEL: ${{ inputs.log_level || 'info' }}
+          RENOVATE_DRY_RUN: ${{ inputs.dry_run == true && 'full' || '' }}
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
+          NPM_TOKEN: ${{ secrets.GLOBAL_READ_GH_TOKEN }}

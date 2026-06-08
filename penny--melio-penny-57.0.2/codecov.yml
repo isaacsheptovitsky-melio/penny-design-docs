@@ -1,0 +1,9 @@
+ignore:
+  - 'packages/**/src/**/*.spec.*'
+  - 'packages/**/src/**/*.stories.tsx'
+  - 'packages/**/src/**/*.examples.tsx'
+  - 'packages/**/src/**/*.types.ts'
+  - 'packages/**/src/**/*.theme.ts'
+  - 'packages/**/src/**/__test__/*'
+  - 'packages/penny/scripts/**/*'
+  - 'packages/penny-assets/**/*'

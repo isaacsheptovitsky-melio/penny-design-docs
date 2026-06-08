@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+  <g clip-path="url(#new-caledonia__a)">
+    <g clip-path="url(#new-caledonia__b)">
+      <mask id="new-caledonia__c" width="24" height="24" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:luminance">
+        <path fill="#fff" d="M22.286 0H1.714C.768 0 0 1.075 0 2.4v19.2C0 22.925.768 24 1.714 24h20.572C23.233 24 24 22.925 24 21.6V2.4c0-1.325-.767-2.4-1.714-2.4Z"/>
+      </mask>
+      <g mask="url(#new-caledonia__c)">
+        <path fill="url(#new-caledonia__d)" d="M24 0H0v23h24V0Z"/>
+        <path fill="url(#new-caledonia__e)" d="M24-1H0V9h24V-1Z"/>
+        <path fill="url(#new-caledonia__f)" d="M24 14H0v11h24V14Z"/>
+        <path fill="url(#new-caledonia__g)" d="M24 7H0v9h24V7Z"/>
+        <path fill="url(#new-caledonia__h)" d="M12 15.572a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/>
+        <path fill="url(#new-caledonia__i)" fill-rule="evenodd" d="M11.533 10.098a.571.571 0 1 0 .588-.229c.055-.027.11-.057.165-.088.683-.395 1.109-.936.951-1.21-.158-.273-.84-.175-1.523.22-.683.394-1.109.936-.951 1.209.097.17.396.196.77.098ZM12 15c-.947 0-1.143-.827-1.143-1.143 0-.315.196-.571 1.143-.571.947 0 1.143.256 1.143.571 0 .316-.196 1.143-1.143 1.143Zm0-1.714a.571.571 0 1 1 0-1.143.571.571 0 0 1 0 1.143Zm0-1.143A.571.571 0 1 1 12 11a.571.571 0 0 1 0 1.143Z" clip-rule="evenodd"/>
+      </g>
+    </g>
+  </g>
+  <defs>
+    <linearGradient id="new-caledonia__d" x1="12" x2="12" y1="0" y2="23" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff"/>
+      <stop offset="1" stop-color="#F0F0F0"/>
+    </linearGradient>
+    <linearGradient id="new-caledonia__e" x1="12" x2="12" y1="-1" y2="9" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#094CC7"/>
+      <stop offset="1" stop-color="#003CAB"/>
+    </linearGradient>
+    <linearGradient id="new-caledonia__f" x1="12" x2="12" y1="14" y2="25" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2AAD55"/>
+      <stop offset="1" stop-color="#219447"/>
+    </linearGradient>
+    <linearGradient id="new-caledonia__g" x1="12" x2="12" y1="7" y2="16" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F65D55"/>
+      <stop offset="1" stop-color="#E9443C"/>
+    </linearGradient>
+    <linearGradient id="new-caledonia__h" x1="12" x2="12" y1="7.571" y2="15.572" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FAE749"/>
+      <stop offset="1" stop-color="#FBE533"/>
+    </linearGradient>
+    <linearGradient id="new-caledonia__i" x1="12" x2="12" y1="8.417" y2="15" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#262626"/>
+      <stop offset="1" stop-color="#0D0D0D"/>
+    </linearGradient>
+    <clipPath id="new-caledonia__a">
+      <path fill="#fff" d="M0 12C0 5.373 5.373 0 12 0s12 5.373 12 12-5.373 12-12 12S0 18.627 0 12Z"/>
+    </clipPath>
+    <clipPath id="new-caledonia__b">
+      <path fill="#fff" d="M0 0h24v24H0z"/>
+    </clipPath>
+  </defs>
+</svg>

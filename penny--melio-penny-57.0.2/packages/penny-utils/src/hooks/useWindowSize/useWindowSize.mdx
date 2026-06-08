@@ -1,0 +1,120 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Penny Utils/Hooks/useWindowSize" />
+
+# `useWindowSize`
+
+Track the browser window dimensions and automatically update when the window is resized.
+
+This hook provides a convenient way to monitor the viewport size.
+
+Useful for responsive designs,
+conditional rendering based on screen size, or any component that needs to adapt to window dimensions.
+
+## Hook Options
+
+<Markdown>
+  {`
+| Option     | Type    | Description                                             | Default |
+|-----------|---------|---------------------------------------------------------|---------|
+| isDisabled | boolean | Disable the window resize event listener                | false   |
+| delay   | number  | Debounce delay (in ms) for the resize event handler     | 500     |
+`}
+</Markdown>
+
+## Return Value
+
+<Markdown>
+  {`
+| Property | Type                | Description                       |
+|----------|---------------------|-----------------------------------|
+| width    | number \\| undefined | The current width of the window   |
+| height   | number \\| undefined | The current height of the window  |
+`}
+</Markdown>
+
+## Notes
+
+- The hook uses `window.addEventListener('resize', ...)` to detect size changes.
+- The dimensions are updated whenever the window is resized.
+- On component unmount, the dimensions are set to `undefined` and the resize event listener is removed.
+- The resize handler is debounced to improve performance by avoiding excessive updates during resize operations.
+- Can be disabled by setting the `isDisabled` option to `true`.
+
+## Usage Examples
+
+### Basic Usage
+
+Monitor window size and adapt the UI based on its dimensions:
+
+```tsx
+import { useWindowSize } from '@melio/penny-utils';
+
+const ResponsiveComponent = () => {
+  const { width, height } = useWindowSize();
+
+  // Determine if we're on a mobile device based on width
+  const isMobile = width ? width < 768 : false;
+
+  return (
+    <div>
+      <p>
+        Current window dimensions: {width}px × {height}px
+      </p>
+      <p>Device type: {isMobile ? 'Mobile' : 'Desktop'}</p>
+
+      {/* Conditional rendering based on window size */}
+      {isMobile ? <div>Mobile optimized content</div> : <div>Desktop optimized content</div>}
+    </div>
+  );
+};
+```
+
+### Custom Debounce Delay
+
+Customize the debounce delay for more or less responsive updates:
+
+```tsx
+import { useWindowSize } from '@melio/penny-utils';
+
+const FastUpdatingComponent = () => {
+  // Use a shorter 100ms debounce delay for more responsive updates
+  const { width, height } = useWindowSize({ delay: 100 });
+
+  return (
+    <div>
+      <p>Window width: {width}px</p>
+      <p>Window height: {height}px</p>
+      <p>Try resizing the window to see faster updates</p>
+    </div>
+  );
+};
+```
+
+### Disabling the Hook
+
+Disable the hook when window resize monitoring is not needed:
+
+```tsx
+import { useState } from 'react';
+import { useWindowSize } from '@melio/penny-utils';
+
+const ToggleableComponent = () => {
+  const [isTracking, setIsTracking] = useState(true);
+  const { width, height } = useWindowSize({ isDisabled: !isTracking });
+
+  return (
+    <div>
+      <button onClick={() => setIsTracking(!isTracking)}>{isTracking ? 'Stop' : 'Start'} tracking window size</button>
+
+      {isTracking ? (
+        <p>
+          Current dimensions: {width}px × {height}px
+        </p>
+      ) : (
+        <p>Window size tracking is disabled</p>
+      )}
+    </div>
+  );
+};
+```

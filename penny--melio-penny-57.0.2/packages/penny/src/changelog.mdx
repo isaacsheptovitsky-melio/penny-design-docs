@@ -1,0 +1,43 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+import utilsChangelog from '../../penny-utils/CHANGELOG.md?raw';
+import pennyChangelog from '../CHANGELOG.md?raw';
+import pennyTestKitCyChangelog from '../../penny-testkit-cy/CHANGELOG.md?raw'
+import pennyTestKitRtlChangelog from '../../penny-testkit-rtl/CHANGELOG.md?raw'
+import pennyTestKitPwChangelog from '../../penny-testkit-pw/CHANGELOG.md?raw'
+
+<Meta title="Changelog" />
+
+<style>
+  {`
+    .sbdocs-wrapper > div:has(div > .toc-wrapper) {
+      display: none;
+    }
+  `}
+</style>
+
+# Changelog
+
+All changes to this project will be documented in this file,
+and divided into four sections:
+
+- #### [Penny package](#penny)
+- #### [Penny-utils package](#penny-utils)
+- #### [Penny-testkit-rtl package](#penny-testkit-rtl)
+- #### [Penny-testkit-pw package](#penny-testkit-pw)
+
+<br />
+## Penny
+
+<Markdown>{pennyChangelog.replace('# @melio/penny', '')}</Markdown>
+
+## Penny-utils
+
+<Markdown>{utilsChangelog.replace('# @melio/penny-utils', '')}</Markdown>
+
+## Penny-testkit-rtl
+
+<Markdown>{pennyTestKitRtlChangelog.replace('# @melio/penny-testkit-rtl', '')}</Markdown>
+
+## Penny-testkit-pw
+
+<Markdown>{pennyTestKitPwChangelog.replace('# @melio/penny-testkit-pw', '')}</Markdown>

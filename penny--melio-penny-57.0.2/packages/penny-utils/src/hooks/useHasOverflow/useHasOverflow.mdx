@@ -1,0 +1,48 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Penny Utils/Hooks/useHasOverflow" />
+
+# `useHasOverflow` Hook
+
+The `useHasOverflow` hook returns whether an element has overflow in the X and Y axes. This can be useful for dynamically determining if the content of an element overflows its container, either horizontally or vertically.
+
+## How It Works
+
+The hook takes a `ref` to an `HTMLElement` and utilizes `ResizeObserver` to track the dimensions of the element. It determines overflow by comparing the `scrollWidth` to the `clientWidth` for horizontal overflow and `scrollHeight` to `clientHeight` for vertical overflow. It returns two boolean values: `hasOverflowX` and `hasOverflowY`, indicating overflow on the X (horizontal) and Y (vertical) axes, respectively.
+
+### Hook Parameters
+
+- **`ref: RefObject<T>`** - A reference to the DOM element for which the overflow is being calculated.
+
+### Return Value
+
+- **`hasOverflowX: boolean`** - Indicates whether the element has horizontal overflow.
+- **`hasOverflowY: boolean`** - Indicates whether the element has vertical overflow.
+
+### Internal Mechanism
+
+1. **ResizeObserver:** Listens to changes in the element’s size.
+2. **Scroll & Client Comparison:** The hook compares `scrollWidth` with `clientWidth` to check for horizontal overflow and `scrollHeight` with `clientHeight` to check for vertical overflow.
+3. **State Updates:** Uses `useState` and `useLayoutEffect` to detect changes in these values and update the state accordingly.
+
+## Usage Example
+
+```tsx
+import { useHasOverflow } from '@melio/penny-utils';
+import { useRef } from 'react';
+
+const OverflowDemo = () => {
+  const divRef = useRef(null);
+  const { hasOverflowX, hasOverflowY } = useHasOverflow(divRef);
+
+  return (
+    <div>
+      <div ref={divRef} style={{ width: '200px', height: '200px', overflow: 'auto' }}>
+        <div style={{ width: '400px', height: '400px' }}>This content overflows both horizontally and vertically.</div>
+      </div>
+      <p>Has Horizontal Overflow: {hasOverflowX ? 'Yes' : 'No'}</p>
+      <p>Has Vertical Overflow: {hasOverflowY ? 'Yes' : 'No'}</p>
+    </div>
+  );
+};
+```

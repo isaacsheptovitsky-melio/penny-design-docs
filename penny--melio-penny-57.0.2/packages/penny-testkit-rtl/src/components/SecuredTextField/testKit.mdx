@@ -1,0 +1,75 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Secured Text Field/RTL Test Kit" />
+
+# SecuredTextField RTL Test Kit
+---
+
+Testing utilities for the `SecuredTextField` component that provide easy access to component interactions, states, and accessibility features for Rtl (React Testing Library).
+
+## Import
+
+```typescript
+import { createSecuredTextFieldTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+This testKit extends [TextField TestKit](?path=/docs/selection-inputs-components-text-field-rtl-test-kit--docs) and includes all its methods.
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`maskIconButton\` | TestKit for the visibility toggle icon button | \`IconButtonTestKit\` |
+| \`getIsTextVisible()\` | Checks if the text is currently visible | \`boolean\` |
+| \`toggleTextVisibility(isVisible?: boolean)\` | toggles the text masking. Pass true to ensure the text is visible (unmasked), false to ensure it is masked. If no argument is provided, it simply toggles the current state | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { render } from '@testing-library/react';
+import { createSecuredTextFieldTestKit } from '@melio/penny-testkit-rtl';
+import { SecuredTextField } from '@melio/penny';
+
+describe('SecuredTextField Component', () => {
+  it('should mask text by default', () => {
+    const testKit = createSecuredTextFieldTestKit({ dataTestId: 'custom-datatestid' });
+    render(<SecuredTextField aria-label="password field" data-testid="custom-datatestid" />);
+    
+    expect(testKit.getIsTextMasked()).toBeTruthy();
+  });
+
+  it('should unmask text when clicking icon button', async () => {
+    const testKit = createSecuredTextFieldTestKit({ dataTestId: 'custom-datatestid' });
+    render(<SecuredTextField aria-label="password field" data-testid="custom-datatestid" />);
+    
+    await testKit.type('password123');
+    await testKit.toggleTextVisibility(false);
+    
+    expect(testKit.getIsTextVisible()).toBeFalsy();
+    expect(testKit.getValue()).toBe('password123');
+  });
+
+  it('should mask text when clicking icon button again', async () => {
+    const testKit = createSecuredTextFieldTestKit({ dataTestId: 'custom-datatestid' });
+    render(<SecuredTextField aria-label="password field" data-testid="custom-datatestid" />);
+    
+    await testKit.type('password123');
+    await testKit.toggleTextVisibility();
+    await testKit.toggleTextVisibility();
+    
+    expect(testKit.getIsTextVisible()).toBeFalsy();
+  });
+
+  it('should get field value', async () => {
+    const testKit = createSecuredTextFieldTestKit({ dataTestId: 'custom-datatestid' });
+    render(<SecuredTextField aria-label="password field" data-testid="custom-datatestid" />);
+    
+    await testKit.type('secret password');
+    expect(testKit.getValue()).toBe('secret password');
+  });
+});
+```

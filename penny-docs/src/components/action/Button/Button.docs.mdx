@@ -1,0 +1,284 @@
+import { Canvas, Controls, Meta, ArgTypes, Story } from '@storybook/addon-docs/blocks';
+import * as ButtonStories from './Button.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { DoDont } from '@/storybook-utils/DoDont';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+import criticalUxImg from '@/assets/btn-critical-ux.gif';
+import widthScheduleImg from '@/assets/btn-width-schedule.png';
+import widthDoImg from '@/assets/btn-width-do.png';
+import widthDontImg from '@/assets/btn-width-dont.png';
+import placementRefImg from '@/assets/btn-placement-ref.png';
+import placementHorizontalDoImg from '@/assets/btn-placement-horizontal-do.png';
+import placementHorizontalDontImg from '@/assets/btn-placement-horizontal-dont.png';
+import placementCountDoImg from '@/assets/btn-placement-count-do.png';
+import placementCountDontImg from '@/assets/btn-placement-count-dont.png';
+import placementOrderDoImg from '@/assets/btn-placement-order-do.png';
+import placementOrderDontImg from '@/assets/btn-placement-order-dont.png';
+import mobileWidthImg from '@/assets/btn-mobile-width.png';
+import mobilePlacementImg from '@/assets/btn-mobile-placement.png';
+
+<Meta of={ButtonStories} />
+
+<PageHero
+  category="Action"
+  title="Button"
+  badge="Healthy"
+  description="The Button component is used to trigger actions or events, such as form submissions and navigation."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="DS Components"
+      url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=31133-792"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/53251c-button/t/f357499154"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={ButtonStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={ButtonStories.Playground} />
+</div>
+
+## Usage
+
+- Use for **primary** actions such as submitting forms or initiating key flows. Reserve `secondary` and `tertiary` variants for less prominent, supporting actions.
+- Use the `disabled` variant to prevent interactions when an action is unavailable.
+- Don't use a `disabled` button to signal invalid form input — let the user submit and respond with a clear error instead.
+
+## Variants
+
+### Hierarchy
+
+The Button component has several levels of hierarchy:
+
+<Story of={ButtonStories.VariantHierarchy} />
+
+### States
+
+All buttons share the same set of states.
+
+<Story of={ButtonStories.ButtonStates} />
+
+### Sizes
+
+Buttons are available in 3 sizes — `medium` is the default.
+
+<Canvas of={ButtonStories.Sizes} />
+
+## Slots
+
+The button has two slots — `leftElement` and `rightElement` — typically used to clarify the button's purpose or suggest UI behavior (e.g. a caret for a dropdown, a plus for an add action).
+
+<Story of={ButtonStories.ElementsGuide} />
+
+### Using both slots
+
+It's not recommended using both right and left elements too often, since it may clutter the UI and become repetitive, defeating the differentiating effect of the icon.
+
+<Story of={ButtonStories.ElementsBothSlots} />
+
+### Additional use cases
+
+<Story of={ButtonStories.ElementsAdditionalUseCases} />
+
+## Critical button UX pattern
+
+Destructive actions follow a **two-step confirmation flow** to prevent accidental clicks:
+
+1. The initial trigger is a `tertiary` button labeled clearly (e.g. *Delete vendor*).
+2. Clicking it opens a confirmation modal whose primary action **is** the `critical` button (e.g. *Delete bill*).
+
+This creates a deliberate pause before any irreversible action.
+
+<div style={{ display: 'inline-block', background: '#E4E8EE', borderRadius: '8px', padding: '30px', marginTop: '12px' }}>
+  <img src={criticalUxImg} alt="Melio Bills list showing Pay as the primary action with a more-actions menu for secondary/destructive actions" style={{ width: '600px', maxWidth: '100%', borderRadius: '8px', display: 'block' }} />
+</div>
+
+## Desktop usage and treatment
+
+### Width
+
+<div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden', margin: '16px 0 0' }}>
+  <div style={{ background: '#F3F5F7', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: '32px 32px 32px 0', overflow: 'hidden' }}>
+    <img src={widthScheduleImg} alt="Modal footer showing Cancel and Schedule payments buttons hugging their content" style={{ width: '122%', display: 'block', borderRadius: '8px', boxShadow: '0 2px 12px rgba(0,0,0,0.10)', marginRight: '12px' }} />
+  </div>
+  <div style={{ background: '#fff', padding: '32px 28px', display: 'flex', flexDirection: 'column', justifyContent: 'center', borderLeft: '1px solid #E2E8F0' }}>
+    <p style={{ margin: '0 0 10px', fontSize: '15px', fontWeight: 700, color: '#111827' }}>Hug content</p>
+    <p style={{ margin: '0 0 3px', fontSize: '13px', lineHeight: 1.65, color: '#4A5568' }}>As a rule, buttons should hug their contents — meaning their width is defined by the content inside.</p>
+    <p style={{ margin: 0, fontSize: '13px', lineHeight: 1.65, color: '#4A5568' }}>One exception to this rule is the Sign in button at the login screen.</p>
+  </div>
+</div>
+
+<div style={{ marginTop: '16px' }}>
+<DoDont items={[
+  {
+    type: 'do',
+    title: 'Hug content',
+    description: "Set the button's width to match its content.",
+    imagePreview: true,
+    preview: <img src={widthDoImg} alt="Button hugging its content width" style={{ width: '100%', display: 'block' }} />,
+  },
+  {
+    type: 'dont',
+    title: 'Fill container',
+    description: 'Avoid stretching buttons to fill their container, unless on mobile.',
+    imagePreview: true,
+    preview: <img src={widthDontImg} alt="Button filling its container width" style={{ width: '100%', display: 'block' }} />,
+  },
+]} />
+</div>
+
+### Placement
+
+Position the essential action on the right; place secondary or optional actions to its left. Buttons sit horizontally side-by-side — never stacked vertically on desktop.
+
+Surface up to **three buttons per area**. If there are more, consolidate lower-priority actions (Edit, Delete, Download, Share) into a **"More"** menu.
+
+<div style={{ display: 'inline-block', background: '#E4E8EE', borderRadius: '8px', padding: '24px', marginTop: '12px', marginBottom: '8px' }}>
+  <img src={placementRefImg} alt="Bill details drawer showing More and Pay buttons" style={{ width: '480px', maxWidth: '100%', borderRadius: '8px', display: 'block' }} />
+</div>
+<p style={{ fontSize: '12px', color: '#6B7280', margin: '0 0 16px', lineHeight: 1.5 }}>Button placement in a bill details drawer — secondary action left, primary action right.</p>
+
+<Callout variant="success">These guidelines support consistent action arrangement. If an optional action needs extra emphasis because of business impact, it's okay to break the rule.</Callout>
+
+<div style={{ marginTop: '8px' }}>
+<DoDont items={[
+  {
+    type: 'do',
+    title: 'Place buttons horizontally',
+    description: 'Buttons sit side-by-side on desktop.',
+    imagePreview: true,
+    preview: <img src={placementHorizontalDoImg} alt="Buttons placed horizontally side by side" style={{ width: '100%', display: 'block' }} />,
+  },
+  {
+    type: 'dont',
+    title: 'Stack buttons vertically',
+    description: 'Vertical stacking on desktop makes the hierarchy unclear.',
+    imagePreview: true,
+    preview: <img src={placementHorizontalDontImg} alt="Buttons stacked vertically" style={{ width: '100%', display: 'block' }} />,
+  },
+]} />
+</div>
+
+<div style={{ marginTop: '16px' }}>
+<DoDont items={[
+  {
+    type: 'do',
+    title: 'Surface up to 3 buttons',
+    description: 'Consolidate lower-priority actions into a "More" menu.',
+    imagePreview: true,
+    preview: <img src={placementCountDoImg} alt="Three buttons: More actions, Mark as paid, Pay bill" style={{ width: '100%', display: 'block' }} />,
+  },
+  {
+    type: 'dont',
+    title: 'Expose more than 3 buttons',
+    description: 'Too many buttons dilute focus and clutter the UI.',
+    imagePreview: true,
+    preview: <img src={placementCountDontImg} alt="Four buttons: Cancel, Edit bill, Mark as paid, Pay bill" style={{ width: '100%', display: 'block' }} />,
+  },
+]} />
+</div>
+
+<div style={{ marginTop: '16px' }}>
+<DoDont items={[
+  {
+    type: 'do',
+    title: 'Essential action on the far right',
+    description: 'Place primary actions rightmost; secondary or cancel actions to the left.',
+    imagePreview: true,
+    preview: <img src={placementOrderDoImg} alt="Cancel on left, Continue to pay on right" style={{ width: '100%', display: 'block' }} />,
+  },
+  {
+    type: 'dont',
+    title: 'Primary left of secondary',
+    description: 'Placing the primary action before a secondary one disrupts the expected reading order.',
+    imagePreview: true,
+    preview: <img src={placementOrderDontImg} alt="Continue to pay on left, Save and close on right" style={{ width: '100%', display: 'block' }} />,
+  },
+]} />
+</div>
+
+## Mobile usage and treatment
+
+### Width
+
+<div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden', margin: '16px 0 0' }}>
+  <div style={{ background: '#F3F5F7', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', overflow: 'hidden' }}>
+    <img src={mobileWidthImg} alt="Mobile confirmation dialog with Cancel and Delete buttons side by side at equal width" style={{ width: '100%', maxWidth: '220px', display: 'block', borderRadius: '8px', boxShadow: '0 2px 12px rgba(0,0,0,0.10)' }} />
+  </div>
+  <div style={{ background: '#fff', padding: '32px 28px', display: 'flex', flexDirection: 'column', justifyContent: 'center', borderLeft: '1px solid #E2E8F0' }}>
+    <p style={{ margin: '0 0 10px', fontSize: '15px', fontWeight: 700, color: '#111827' }}>Fill container on mobile</p>
+    <p style={{ margin: 0, fontSize: '13px', lineHeight: 1.65, color: '#4A5568' }}>On mobile devices, it's best to place buttons side by side, ideally using a full-width container to give them equal widths.</p>
+  </div>
+</div>
+
+### Placement
+
+When button labels are short enough to fit side by side, let them hug content — width is determined by the text inside. If they don't fit, stack vertically instead (see below).
+
+<div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden', margin: '16px 0 0' }}>
+  <div style={{ background: '#F3F5F7', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', overflow: 'hidden' }}>
+    <img src={mobilePlacementImg} alt="Mobile card showing Mark as paid and Resolve and reschedule buttons stacked vertically" style={{ width: '100%', maxWidth: '220px', display: 'block', borderRadius: '8px', boxShadow: '0 2px 12px rgba(0,0,0,0.10)' }} />
+  </div>
+  <div style={{ background: '#fff', padding: '32px 28px', display: 'flex', flexDirection: 'column', justifyContent: 'center', borderLeft: '1px solid #E2E8F0' }}>
+    <p style={{ margin: '0 0 10px', fontSize: '15px', fontWeight: 700, color: '#111827' }}>Vertical placement</p>
+    <p style={{ margin: 0, fontSize: '13px', lineHeight: 1.65, color: '#4A5568' }}>If the button content doesn't fit side by side, stack the buttons vertically instead. Place the primary button at the bottom to make it easier to reach with the thumb.</p>
+  </div>
+</div>
+
+</DocTab>
+
+<DocTab label="Development">
+
+## Anatomy
+
+<Callout variant="note">**Image to be added** — screenshot from Figma showing the button anatomy.</Callout>
+
+## Button as link
+
+When clicking the button navigates the user to another route or external page, pass a `link` prop. Penny renders an `<a>` tag under the hood while keeping the visual appearance of a button.
+
+```tsx
+<Button label="View invoice" link={{ href: '/invoices/123' }} />
+<Button label="Open in new tab" link={{ href: 'https://example.com', target: '_blank' }} />
+```
+
+<Canvas of={ButtonStories.ButtonAsLink} />
+
+Even when a link is styled like a button (or vice versa), the underlying HTML must match the function. Screen readers rely on `<button>` vs `<a>` to tell users whether the element triggers an action or navigates. Passing `link` ensures the right element is rendered.
+
+## Props
+
+<ArgTypes of={ButtonStories} />
+
+</DocTab>
+
+<DocTab label="ADA">
+
+## Accessibility
+
+- **Keyboard**: `Tab` to focus, `Space`/`Enter` to activate.
+- **Focus ring**: a 2px offset focus ring renders on `:focus-visible`.
+- **Semantics**: regular button renders as `<button>`; `link` prop renders as `<a>`.
+- **Loading**: `aria-busy` is set when `isLoading`; `loadingText` is announced by screen readers.
+- **Disabled**: uses the native `disabled` attribute, removing the button from focus order. For `link` buttons, `aria-disabled` is used instead.
+- **Icon-only buttons**: provide `aria-label` when no visible label is present.
+
+</DocTab>
+
+</DocTabs>

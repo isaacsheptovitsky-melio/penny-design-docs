@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+  <g clip-path="url(#saint-helena__a)">
+    <mask id="saint-helena__b" width="24" height="24" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:luminance">
+      <path fill="#fff" d="M0 0h24v24H0z"/>
+    </mask>
+    <g mask="url(#saint-helena__b)">
+      <path fill="#2E42A5" fill-rule="evenodd" d="M0 0v24h24V0H0Z" clip-rule="evenodd"/>
+      <mask id="saint-helena__c" width="24" height="24" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:luminance">
+        <path fill="#fff" fill-rule="evenodd" d="M0 0v24h24V0H0Z" clip-rule="evenodd"/>
+      </mask>
+      <g mask="url(#saint-helena__c)">
+        <mask id="saint-helena__d" width="14" height="11" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:luminance">
+          <path fill="#fff" d="M0 0h13.5v10.5H0z"/>
+        </mask>
+        <g mask="url(#saint-helena__d)">
+          <path fill="#F7FCFF" d="m-1.503 9.75 2.97 1.303 12.1-9.636L15.134-.52l-3.176-.435-4.936 4.152L3.05 5.995-1.503 9.75Z"/>
+          <path fill="#F50100" d="m-1.097 10.663 1.514.756L14.572-.7h-2.125L-1.096 10.663Z"/>
+          <path fill="#F7FCFF" d="m15.003 9.75-2.97 1.303-12.1-9.636L-1.634-.52l3.176-.435 4.936 4.152 3.972 2.798 4.553 3.755Z"/>
+          <path fill="#F50100" d="m14.902 10.405-1.514.756-6.027-5.188-1.787-.58-7.36-5.906H.34l7.355 5.766 1.954.695 5.253 4.457Z"/>
+          <mask id="saint-helena__e" width="16" height="13" x="-1" y="-1" fill="#000" maskUnits="userSpaceOnUse">
+            <path fill="#fff" d="M-1-1h16v13H-1z"/>
+            <path fill-rule="evenodd" d="M7.488 0h-1.5v4.5H0V6h5.988v4.5h1.5V6H13.5V4.5H7.488V0Z" clip-rule="evenodd"/>
+          </mask>
+          <path fill="#F50100" fill-rule="evenodd" d="M7.488 0h-1.5v4.5H0V6h5.988v4.5h1.5V6H13.5V4.5H7.488V0Z" clip-rule="evenodd"/>
+          <path fill="#F7FCFF" d="M5.988 0v-.75h-.75V0h.75Zm1.5 0h.75v-.75h-.75V0Zm-1.5 4.5v.75h.75V4.5h-.75ZM0 4.5v-.75h-.75v.75H0ZM0 6h-.75v.75H0V6Zm5.988 0h.75v-.75h-.75V6Zm0 4.5h-.75v.75h.75v-.75Zm1.5 0v.75h.75v-.75h-.75Zm0-4.5v-.75h-.75V6h.75ZM13.5 6v.75h.75V6h-.75Zm0-1.5h.75v-.75h-.75v.75Zm-6.012 0h-.75v.75h.75V4.5ZM5.988.75h1.5v-1.5h-1.5v1.5Zm.75 3.75V0h-1.5v4.5h1.5ZM0 5.25h5.988v-1.5H0v1.5ZM.75 6V4.5h-1.5V6h1.5Zm5.238-.75H0v1.5h5.988v-1.5Zm.75 5.25V6h-1.5v4.5h1.5Zm.75-.75h-1.5v1.5h1.5v-1.5ZM6.738 6v4.5h1.5V6h-1.5Zm6.762-.75H7.488v1.5H13.5v-1.5Zm-.75-.75V6h1.5V4.5h-1.5Zm-5.262.75H13.5v-1.5H7.488v1.5ZM6.738 0v4.5h1.5V0h-1.5Z" mask="url(#saint-helena__e)"/>
+        </g>
+        <path fill="#B7E1FF" stroke="#F7FCFF" stroke-width=".25" d="M17.034 11.404h-.125v.125c0 .392-.002.774-.003 1.147-.005.888-.008 1.722.013 2.489.03 1.088.11 2.051.312 2.851.204.8.534 1.45 1.072 1.896.539.448 1.271.68 2.252.68.988 0 1.74-.287 2.304-.8.56-.51.922-1.234 1.15-2.085.455-1.699.39-3.954.262-6.185l-.007-.118h-7.23Z"/>
+        <mask id="saint-helena__f" width="9" height="10" x="16" y="11" maskUnits="userSpaceOnUse" style="mask-type:luminance">
+          <path fill="#fff" stroke="#fff" stroke-width=".25" d="M17.034 11.404h-.125v.125c0 .392-.002.774-.003 1.147-.005.888-.008 1.722.013 2.489.03 1.088.11 2.051.312 2.851.204.8.534 1.45 1.072 1.896.539.448 1.271.68 2.252.68.988 0 1.74-.287 2.304-.8.56-.51.922-1.234 1.15-2.085.455-1.699.39-3.954.262-6.185l-.007-.118h-7.23Z"/>
+        </mask>
+        <g mask="url(#saint-helena__f)">
+          <path fill="#2E42A5" d="M18.8 18.7h5.4v1.8h-5.4z"/>
+          <g filter="url(#saint-helena__g)">
+            <path fill="#FDFF00" d="M15.2 9.7H26v5.4H15.2z"/>
+          </g>
+          <path fill="#272727" fill-rule="evenodd" d="M20.6 14.56a1.26 1.26 0 1 0 0-2.52 1.26 1.26 0 0 0 0 2.52Z" clip-rule="evenodd"/>
+          <path fill="#CE6201" fill-rule="evenodd" d="m17.106 16.618.804-.74s1.086-.11 1.214.13c.128.24.052-.11.256.44.204.55.285-.237.398.55.112.786.207 1.058.207 1.24 0 .184 1.024.73.631 1.105-.392.375-.41 1.24-.41 1.488s-.03.36-.428.304c-.398-.056-.881.142-.978.142-.097 0-1.262-.237-1.262-.726 0-.49-.432-3.933-.432-3.933Z" clip-rule="evenodd"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <defs>
+    <clipPath id="saint-helena__a">
+      <path fill="#fff" d="M0 12C0 5.373 5.373 0 12 0s12 5.373 12 12-5.373 12-12 12S0 18.627 0 12Z"/>
+    </clipPath>
+    <filter id="saint-helena__g" width="10.8" height="5.65" x="15.2" y="9.7" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+      <feOffset dy=".25"/>
+      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
+      <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_24949_322043"/>
+      <feBlend in="SourceGraphic" in2="effect1_dropShadow_24949_322043" result="shape"/>
+    </filter>
+  </defs>
+</svg>

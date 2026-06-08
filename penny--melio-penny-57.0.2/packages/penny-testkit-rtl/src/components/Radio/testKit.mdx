@@ -1,0 +1,63 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Radio [new]/RTL Test Kit" />
+
+# Radio RTL Test Kit
+
+---
+
+Testing utilities for the `Radio` component that provide easy access to component interactions, states, and accessibility features for RTL (React Testing Library).
+
+## Import
+
+```typescript
+import { createRadioTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Gets the container element of the radio | \`HTMLDivElement\` |
+| \`getInputElement()\` | Gets the input element of the radio | \`HTMLInputElement\` |
+| \`getIsDisabled()\` | Checks if the radio is disabled | \`boolean\` |
+| \`getIsChecked()\` | Checks if the radio is checked | \`boolean\` |
+| \`getIsReadOnly()\` | Checks if the radio is read-only | \`boolean\` |
+| \`getIsInvalid()\` | Checks if the radio is invalid | \`boolean\` |
+| \`getValue()\` | Gets the value of the radio | \`string\` |
+| \`click()\` | Clicks on the radio input | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createRadioTestKit } from '@melio/penny-testkit-rtl';
+
+describe('Radio Component', () => {
+  it('should be checked', () => {
+    const testKit = createRadioTestKit({ dataTestId: 'my-radio' });
+    render(<Radio isChecked value="option1" mainLabelProps={{ label: 'Option 1' }} data-testid="my-radio" />);
+
+    expect(testKit.getIsChecked()).toBe(true);
+  });
+
+  it('should be disabled', () => {
+    const testKit = createRadioTestKit({ dataTestId: 'my-radio' });
+    render(<Radio disabled value="option1" mainLabelProps={{ label: 'Option 1' }} data-testid="my-radio" />);
+
+    expect(testKit.getIsDisabled()).toBe(true);
+  });
+
+  it('should click the radio', async () => {
+    const testKit = createRadioTestKit({ dataTestId: 'my-radio' });
+    render(<Radio value="option1" mainLabelProps={{ label: 'Option 1' }} data-testid="my-radio" />);
+
+    await testKit.click();
+    expect(testKit.getIsChecked()).toBe(true);
+  });
+});
+```

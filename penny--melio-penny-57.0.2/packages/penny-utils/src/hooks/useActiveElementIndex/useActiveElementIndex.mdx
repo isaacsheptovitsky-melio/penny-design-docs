@@ -1,0 +1,89 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Penny Utils/Hooks/useActiveElementIndex" />
+
+# `useActiveElementIndex`
+
+The `useActiveElementIndex` hook tracks the currently focused element's index within a container of focusable elements. It's particularly useful for managing focus in complex UI components like modals, drawers, and menus where you need to know which element is currently active.
+
+## Hook Parameters
+
+This hook doesn't accept any parameters.
+
+## Return Value
+
+<Markdown>
+  {`
+| Name                      | Type                           | Description                                                    |
+|---------------------------|--------------------------------|----------------------------------------------------------------|
+| activeElementIndex        | \`number\`                     | The index of the currently focused element (0-based)          |
+| setActiveElementRef       | \`RefCallback<Element>\`       | A ref callback to attach to the container element             |
+| resetActiveElementIndex   | \`() => void\`                 | Function to reset the active element index back to 0          |
+`}
+</Markdown>
+
+## Usage Example
+
+```tsx
+import { useActiveElementIndex } from '@melio/penny-utils';
+
+const FocusableList = () => {
+  const { activeElementIndex, setActiveElementRef, resetActiveElementIndex } = useActiveElementIndex();
+
+  return (
+    <div ref={setActiveElementRef}>
+      <p>Currently focused element index: {activeElementIndex}</p>
+      <button>First button</button>
+      <button>Second button</button>
+      <input placeholder="Input field" />
+      <button>Third button</button>
+      <button onClick={resetActiveElementIndex}>Reset focus index</button>
+    </div>
+  );
+};
+```
+
+## Modal Usage
+
+```tsx
+import { useActiveElementIndex } from '@melio/penny-utils';
+import { useEffect } from 'react';
+
+const Modal = ({ isOpen, onClose }) => {
+  const { activeElementIndex, setActiveElementRef, resetActiveElementIndex } = useActiveElementIndex();
+
+  useEffect(() => {
+    if (!isOpen) {
+      resetActiveElementIndex();
+    }
+  }, [isOpen, resetActiveElementIndex]);
+
+  return (
+    <div className="modal" ref={setActiveElementRef}>
+      <h2>Modal Title</h2>
+      <button>Action 1</button>
+      <button>Action 2</button>
+      <input placeholder="Enter text" />
+      <button onClick={onClose}>Close</button>
+      {/* Pass activeElementIndex to focus management libraries */}
+    </div>
+  );
+};
+```
+
+## How It Works
+
+- **Container Tracking**: Attach `setActiveElementRef` to the container element you want to monitor
+- **Focus Events**: Listens for `focusin` events within the container
+- **Tabbable Elements**: Uses the `tabbable` library to identify all focusable elements
+- **Index Calculation**: Calculates the index of the currently focused element within the focusable elements array
+- **Lazy Registration**: Only registers event listeners when the container is rendered (useful for conditional rendering)
+
+## Notes
+
+- The hook uses `useRefCallback` internally to ensure event listeners are only registered when the container is actually rendered
+- Returns `-1` if the focused element is not found in the tabbable elements list
+- The index is 0-based, so the first focusable element has index 0
+- Perfect for integration with focus management libraries like `@floating-ui/react`
+- Automatically handles cleanup when the container is unmounted
+- Call `resetActiveElementIndex()` when you want to reset the tracking (e.g., when closing a modal)

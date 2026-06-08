@@ -1,0 +1,66 @@
+import { Markdown, Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Dropzone [composable]/Playwright Test Kit" />
+
+# Dropzone Playwright Test Kit
+---
+
+Testing utilities for the `Dropzone` component that provide easy access to component interactions, states, and accessibility features for Playwright testing.
+
+## Import
+
+```typescript
+import { createDropzoneTestKit } from '@melio/penny-testkit-pw';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the root container element | \`Locator\` |
+| \`getIsDisabled()\` | Checks if the component is disabled | \`Promise<boolean>\` |
+| \`getIsReadOnly()\` | Checks if the component is read-only | \`Promise<boolean>\` |
+| \`getIsInvalid()\` | Checks if the component is in an invalid state | \`Promise<boolean>\` |
+| \`dropFiles(files)\` | Simulates drag-and-drop of files onto the drop area | \`Promise<void>\` |
+| \`uploadFiles(files)\` | Simulates selecting files via the file input | \`Promise<void>\` |
+| \`openFilePicker()\` | Clicks the drop area to open the file picker | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { test, expect } from '@playwright/test';
+import { createDropzoneTestKit } from '@melio/penny-testkit-pw';
+
+test('should upload a file', async ({ page }) => {
+  const testKit = createDropzoneTestKit(page, { dataTestId: 'my-dropzone' });
+
+  await page.goto('/your-page');
+  await testKit.uploadFiles([{ name: 'invoice.pdf', mimeType: 'application/pdf', buffer: Buffer.from('content') }]);
+});
+
+test('should accept dropped files', async ({ page }) => {
+  const testKit = createDropzoneTestKit(page, { dataTestId: 'my-dropzone' });
+
+  await page.goto('/your-page');
+  await testKit.dropFiles([{ name: 'invoice.pdf', mimeType: 'application/pdf', buffer: Buffer.from('content') }]);
+});
+
+test('should be disabled', async ({ page }) => {
+  const testKit = createDropzoneTestKit(page, { dataTestId: 'my-dropzone' });
+
+  await page.goto('/your-page');
+  expect(await testKit.getIsDisabled()).toBe(true);
+});
+
+test('should be invalid', async ({ page }) => {
+  const testKit = createDropzoneTestKit(page, { dataTestId: 'my-dropzone' });
+
+  await page.goto('/your-page');
+  expect(await testKit.getIsInvalid()).toBe(true);
+});
+```

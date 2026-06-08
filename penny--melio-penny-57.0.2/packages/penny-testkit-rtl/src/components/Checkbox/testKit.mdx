@@ -1,0 +1,94 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Checkbox/RTL Test Kit" />
+
+# Checkbox RTL Test Kit
+
+---
+
+Testing utilities for the `Checkbox` component that provide easy access to component interactions, states, and accessibility features for Rtl (React Testing Library).
+
+## Import
+
+```typescript
+import { createCheckboxTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the container DOM element | \`HTMLDivElement\` |
+| \`getInputElement()\` | Direct access to the input element with role="checkbox" | \`HTMLDivElement\` |
+| \`getIsDisabled()\` | Checks if the checkbox is disabled | \`boolean\` |
+| \`getIsRequired()\` | Checks if the checkbox is required | \`boolean\` |
+| \`getIsChecked()\` | Checks if the checkbox is checked | \`boolean\` |
+| \`getIsIndeterminate()\` | Checks if the checkbox is in indeterminate state | \`boolean\` |
+| \`getIsReadOnly()\` | Checks if the checkbox is read-only | \`boolean\` |
+| \`getIsInvalid()\` | Checks if the checkbox is invalid | \`boolean\` |
+| \`getLabelText()\` | Gets the checkbox label text | \`string\` |
+| \`click()\` | Clicks on the checkbox input | \`Promise<void>\` |
+| \`toggle(isChecked?: boolean)\` | Toggles the checkbox state. Pass true to check, false to uncheck. If no argument is provided, it simply toggles the current state. | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createCheckboxTestKit } from '@melio/penny-testkit-rtl';
+
+describe('Checkbox Component', () => {
+  it('should be checked', () => {
+    const testKit = createCheckboxTestKit({ dataTestId: 'my-checkbox' });
+    render(<Checkbox isChecked onChange={vi.fn()} aria-label="checkbox" data-testid="my-checkbox" />);
+
+    expect(testKit.getIsChecked()).toBe(true);
+  });
+
+  it('should be disabled', () => {
+    const testKit = createCheckboxTestKit({ dataTestId: 'my-checkbox' });
+    render(<Checkbox isDisabled aria-label="checkbox" data-testid="my-checkbox" />);
+
+    expect(testKit.getIsDisabled()).toBe(true);
+  });
+
+  it('should check the checkbox', async () => {
+    const testKit = createCheckboxTestKit({ dataTestId: 'my-checkbox' });
+    render(<Checkbox aria-label="checkbox" data-testid="my-checkbox" />);
+
+    await testKit.toggle(true);
+    expect(testKit.getIsChecked()).toBe(true);
+  });
+
+  it('should get label text', () => {
+    const testKit = createCheckboxTestKit({ dataTestId: 'my-checkbox' });
+    render(<Checkbox label="Accept terms" aria-label="checkbox" data-testid="my-checkbox" />);
+
+    expect(testKit.getLabelText()).toBe('Accept terms');
+  });
+
+  it('should be read-only', () => {
+    const testKit = createCheckboxTestKit({ dataTestId: 'my-checkbox' });
+    render(<Checkbox isReadOnly aria-label="checkbox" data-testid="my-checkbox" />);
+
+    expect(testKit.getIsReadOnly()).toBe(true);
+  });
+
+  it('should be in indeterminate state', () => {
+    const testKit = createCheckboxTestKit({ dataTestId: 'my-checkbox' });
+    render(<Checkbox isIndeterminate aria-label="checkbox" data-testid="my-checkbox" />);
+
+    expect(testKit.getIsIndeterminate()).toBe(true);
+  });
+
+  it('should be invalid', () => {
+    const testKit = createCheckboxTestKit({ dataTestId: 'my-checkbox' });
+    render(<Checkbox isInvalid aria-label="checkbox" data-testid="my-checkbox" />);
+
+    expect(testKit.getIsInvalid()).toBe(true);
+  });
+});
+```

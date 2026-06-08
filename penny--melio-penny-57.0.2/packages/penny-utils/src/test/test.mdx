@@ -1,0 +1,145 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Storybook } from 'storybook-utils';
+
+import { SectionBannerRoot, SectionBannerTitle, SectionBannerIcon, SectionBannerDescription, SectionBannerContent } from '../../../penny/src/components/dataDisplay/SectionBanner';
+
+<Meta title="Penny Utils/Test" />
+
+# Test utils
+
+The design system utilizes a `useTestId` hook to generate `data-testid` attributes for testing purposes.<br />
+This hook helps to ensure that the `data-testid` attribute is consistent across the application and that it is easy to maintain.<br />
+By using it, we can expect what the `data-testid` attribute will be, and we can also override it if needed.
+
+## How it Works
+
+The `useTestId` hook returns a function, `getTestId`, to generate a `data-testid` attribute by combining a given `data-testid` attribute (based on the component name by default) and its child nodes names (optional).<br />
+If no child name is provided to `getTestId`, it will return the `data-testid` as is.
+
+<SectionBannerRoot variant="warning">
+    <SectionBannerIcon />
+    <SectionBannerContent>
+        <SectionBannerTitle>Note</SectionBannerTitle>
+        <SectionBannerDescription>By overriding the default <Storybook.Code label="data-testid" /> attribute, you will only change the prefix and not its child nodes names. See the examples below for more details.</SectionBannerDescription>
+    </SectionBannerContent>
+</SectionBannerRoot>
+
+## Usage
+
+In the following examples, we showcase the internal implementation of this hook which includes a default value for the `data-testid` attribute (based on the component name), and how you may override it by providing a custom `data-testid` attribute.
+
+Example of basic usage:
+
+```tsx
+// MyButton.tsx
+const MyButton = ({ 'data-testid': dataTestId = 'my-button', ...props }) => {
+  const getTestId = useTestId(dataTestId);
+
+  return <button {...props} {...getTestId()} />;
+};
+
+// MyButton.spec.tsx
+const { getByTestId } = render(<MyButton />);
+
+expect(getByTestId('my-button')).toBeInTheDocument();
+// or
+const { getByTestId } = render(<MyButton data-testid="my-custom-id" />);
+
+expect(getByTestId('my-custom-id')).toBeInTheDocument();
+```
+
+Example of usage with child nodes:
+
+```tsx
+// MyButton.tsx
+const MyButton = ({ 'data-testid': dataTestId = 'my-button', icon, ...props }) => {
+  const getTestId = useTestId(dataTestId);
+
+  return (
+    <button {...props} {...getTestId()}>
+      <span {...getTestId('label')}>
+        <i {...getTestId('label', 'icon')}>{icon}</i>
+        Click me
+      </span>
+    </button>
+  );
+};
+
+// MyButton.spec.tsx
+const { getByTestId } = render(<MyButton />);
+
+expect(getByTestId('my-button')).toBeInTheDocument();
+expect(getByTestId('my-button-label')).toHaveTextContent('Click me');
+expect(getByTestId('my-button-label-icon')).toBeInTheDocument();
+// or
+const { getByTestId } = render(<MyButton data-testid="my-custom-id" />);
+
+expect(getByTestId('my-custom-id')).toBeInTheDocument();
+expect(getByTestId('my-custom-id-label')).toHaveTextContent('Click me');
+expect(getByTestId('my-custom-id-label-icon')).toBeInTheDocument();
+```
+<SectionBannerRoot>
+    <SectionBannerIcon />
+    <SectionBannerContent>
+        <SectionBannerDescription>Note that in the last example, the <Storybook.Code label="data-testid" /> attribute is overridden, but the child nodes names are still the same.</SectionBannerDescription>
+    </SectionBannerContent>
+</SectionBannerRoot>
+
+Example of usage in a more complex component:
+
+```tsx
+// MySelect.tsx
+const MySelect = ({ 'data-testid': dataTestId = 'my-select', options, ...props }) => {
+  const getTestId = useTestId(dataTestId);
+
+  // ...other component logic
+
+  return (
+    <div {...props} {...getTestId()}>
+      <button {...getTestId('trigger')} onClick={handleToggle}>
+        {selected.label}
+      </button>
+      {isOpen && (
+        <ul {...getTestId('menu')}>
+          {options.map((option, index) => (
+            <li key={index} {...getTestId('option', `${index}`)} onClick={() => handleSelect(option)}>
+              {option.label}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
+// MySelect.spec.tsx
+const { getByTestId, queryByTestId } = render(<MySelect />);
+
+expect(getByTestId('my-select')).toBeInTheDocument();
+expect(getByTestId('my-select-trigger')).toHaveTextContent('Option 1');
+expect(queryByTestId('my-select-menu')).not.toBeInTheDocument();
+
+getByTestId('my-select-trigger').click();
+
+expect(getByTestId('my-select-menu')).toBeInTheDocument();
+
+getByTestId('my-select-option-2').click();
+
+expect(getByTestId('my-select-trigger')).toHaveTextContent('Option 3');
+expect(queryByTestId('my-select-menu')).not.toBeInTheDocument();
+// or
+const { getByTestId, queryByTestId } = render(<MySelect data-testid="my-custom-id" />);
+
+expect(getByTestId('my-custom-id')).toBeInTheDocument();
+expect(getByTestId('my-custom-id-trigger')).toHaveTextContent('Option 1');
+expect(queryByTestId('my-custom-id-menu')).not.toBeInTheDocument();
+
+getByTestId('my-custom-id-trigger').click();
+
+expect(getByTestId('my-custom-id-menu')).toBeInTheDocument();
+
+getByTestId('my-custom-id-option-2').click();
+
+expect(getByTestId('my-custom-id-trigger')).toHaveTextContent('Option 3');
+expect(queryByTestId('my-custom-id-menu')).not.toBeInTheDocument();
+```

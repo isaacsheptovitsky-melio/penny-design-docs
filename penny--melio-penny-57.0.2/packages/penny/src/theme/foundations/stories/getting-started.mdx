@@ -1,0 +1,200 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Storybook } from 'storybook-utils';
+
+import { SectionBannerRoot, SectionBannerIcon, SectionBannerTitle, SectionBannerContent, SectionBannerDescription } from '../../../components/dataDisplay/SectionBanner';
+import { Video } from '../../../components/media/Video';
+
+<Meta title="Getting Started" />
+
+# Getting Started
+
+Melio has the same design guidelines across its different products.<br />
+I guess there's no more need to explain what and why a design system is required and used for, so let's dive in into how to get you started.
+
+## Installation
+
+```
+yarn add @melio/penny
+// or
+npm install @melio/penny
+```
+<SectionBannerRoot variant="warning">
+    <SectionBannerIcon />
+    <SectionBannerContent>
+        <SectionBannerTitle>Note</SectionBannerTitle>
+        <SectionBannerDescription>Make sure you have permissions to install <Storybook.Code label="@melio" /> npm packages.<br />Make sure you're in <Storybook.Code label="@melio" />'s github space, and if needed - ask devops for permissions.</SectionBannerDescription>
+    </SectionBannerContent>
+</SectionBannerRoot>
+
+## Setting Up
+
+The design-system has a main context that is passed to its components, so you need to wrap your application with it.<br />
+
+```tsx
+// App.tsx
+
+import { PennyProvider } from '@melio/penny';
+import { theme } from './my-theme';
+
+export const App = () => (
+  <PennyProvider theme={theme}>
+    <TheRestOfMyApp />
+  </PennyProvider>
+);
+```
+
+<SectionBannerRoot variant="informative">
+    <SectionBannerIcon />
+    <SectionBannerContent>
+        <SectionBannerDescription>There is some mandatory information you must pass to the theme.<br />Read about it and what else you can do with the theme on the <a href="/docs/theme--docs">theme page</a>.</SectionBannerDescription>
+    </SectionBannerContent>
+</SectionBannerRoot>
+
+This will set you up with a design system in our default theme. <br />
+
+Now all you need to do is build your application using our vast component-library and utilities.
+
+## Theme
+
+Read about theming and how to configure your own theme on [this page](/docs/theme--docs).
+
+## How Storybook is Organized
+
+There are several sections in the storybook, each aggregates components sharing a common denominator.
+
+<table>
+  <thead>
+    <tr>
+      <th style={{ textAlign: 'start' }}>Section</th>
+      <th style={{ textAlign: 'start' }}>Description</th>
+      <th style={{ textAlign: 'start' }}>Internal?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Foundations</td>
+      <td>
+        Everything related to the design-tokens and things you use along with components (like colors, spaces,
+        breakpoints, etc.)
+      </td>
+      <td />
+    </tr>
+    <tr>
+      <td>Containers</td>
+      <td>Components that hold content and help you position content or a group of contents</td>
+      <td />
+    </tr>
+    <tr>
+      <td>Layouts</td>
+      <td>Components that help you build a screen and position content on the page</td>
+      <td />
+    </tr>
+    <tr>
+      <td>Action Components</td>
+      <td>Components that help you perform some actions, like buttons</td>
+      <td />
+    </tr>
+    <tr>
+      <td>Navigation Components</td>
+      <td>Components that help you navigate through the application, like links, tabs, etc.</td>
+      <td />
+    </tr>
+    <tr>
+      <td>Data Display Components</td>
+      <td>Components that help you display data, like a list, avatars, badges, etc.</td>
+      <td />
+    </tr>
+    <tr>
+      <td>Media Components</td>
+      <td>Components that help you display media, like images, videos, etc.</td>
+      <td />
+    </tr>
+    <tr>
+      <td>Feedback Components</td>
+      <td>Components that help you display feedback to the user, like a toast or a progress bar</td>
+      <td />
+    </tr>
+    <tr>
+      <td>Selection & Inputs Components</td>
+      <td>Components that help you recieve user input</td>
+      <td />
+    </tr>
+    <tr>
+      <td>Form</td>
+      <td>One-stop-shop for everything you need in order to put a form on your page</td>
+      <td />
+    </tr>
+    <tr>
+      <td>Table</td>
+      <td>One-stop-shop for everything you need in order to put a table on your page</td>
+      <td />
+    </tr>
+     <tr>
+      <td>Penny Utils</td>
+      <td>Set of hooks and utilities that are used internally by the design-system and are exposed for consumption</td>
+      <td />
+    </tr>
+    <tr>
+      <td>Internal Components</td>
+      <td>Internal components that are not exposed for consumption, but are used as utilities for the design-system</td>
+      <td>🔒</td>
+    </tr>
+    <tr>
+      <td>Chromatic</td>
+      <td>Used for visual testing for the design-system team</td>
+      <td>🔒</td>
+    </tr>
+  </tbody>
+</table>
+
+## How to Use Storybook
+
+Here are some tips on what you will find on storybook and how to reach it.
+
+### Finding a Component
+
+The main thing you'd do is to look for a component you need for your feature.<br />
+Use the sidebar to browse through different sections or use the search bar if you know how the component is called.
+
+### Component Documentation
+
+Once you find your component, you will land on its documentation page.<br />
+There you will see, aside from description and usage examples of the component, a control panel with all the properties the component receives.<br />
+You can play with the controls and try different component settings.<br />
+In the documentation page of a component, the controls only affect the main story (the one above the controls).
+
+### Change Theme
+
+To view how the component looks and feels in different themes, use the toggle at the top bar to switch between themes.<br />
+
+<img src="/assets/theme-switcher.gif" style={{ maxWidth: '50%' }} />
+<br />
+
+<SectionBannerRoot variant="warning">
+    <SectionBannerIcon />
+    <SectionBannerContent>
+        <SectionBannerTitle>Note</SectionBannerTitle>
+        <SectionBannerDescription>The design-system is not responsible for supplying the themes.<br />Storybook just shows the supported capabilities with several demo theme examples.<br />These themes don't affect the actual product, and it's the responsibility of the product developer to define the theme and pass it to <Storybook.Code label="PennyProvider" />.</SectionBannerDescription>
+    </SectionBannerContent>
+</SectionBannerRoot>
+
+### Particular Story
+
+You can choose a specific story of a component to further inspect it.<br />
+Click on a story in the sidebar to navigate to that story page.<br />
+You can still access the controls of the story by pressing `a` on your keyboard.
+
+<Video
+  height="500px"
+  src="https://storybook.js.org/752a95ee0d200b6c5f599afa51e2a0fb/addon-controls-demo-optimized.mp4"
+  hideControls
+  autoPlay
+  loop
+/>
+
+### Viewports
+
+When you access a particular story, you can play with it and see how it looks on different viewports/breakpoints.<br />
+See what breakpoints are available for the design-system and what they mean on their designated [page](/docs/foundations-breakpoints--docs).<br />
+
+<img src="/assets/viewports-switcher.png" style={{ maxWidth: '30%' }} />

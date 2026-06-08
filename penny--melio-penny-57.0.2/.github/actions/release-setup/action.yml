@@ -1,0 +1,41 @@
+name: Release Setup
+description: Sets up Node.js environment, configures npm authentication for GitHub Packages, installs dependencies with pnpm, and configures Git user settings.
+
+inputs:
+  npm-token:
+    required: true
+    description: GitHub Packages token
+
+runs:
+  using: "composite"
+  steps:
+    - name: Use Node
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: .nvmrc
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+
+    - name: Setup npm
+      shell: bash
+      env:
+        NPM_TOKEN: ${{ inputs.npm-token }}
+      run: |
+        npm set @melio:registry=https://npm.pkg.github.com/melio
+        npm set "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}"
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        pnpm install --ignore-scripts
+        if ! git diff --exit-code pnpm-lock.yaml; then
+          echo "Changes were detected in pnpm-lock.yaml file after running 'pnpm install', which is not expected. Please run 'pnpm install' locally and commit the changes.";
+          exit 1;
+        fi
+
+    - name: Setup git
+      shell: bash
+      run: |
+        git config user.name "${{ github.actor }}"
+        git config user.email "${{ github.actor}}@users.noreply.github.com"

@@ -1,0 +1,1 @@
+export { PromotionalModalBody } from './PromotionalModalBody';

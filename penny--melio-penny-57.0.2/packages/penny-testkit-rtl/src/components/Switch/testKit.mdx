@@ -1,0 +1,76 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Switch/RTL Test Kit" />
+
+# Switch RTL Test Kit
+---
+
+Testing utilities for the `Switch` component that provide easy access to component interactions, states, and accessibility features for Rtl (React Testing Library).
+
+## Import
+
+```typescript
+import { createSwitchTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the DOM element | \`HTMLDivElement\` |
+| \`getInputElement()\` | Direct access to the input element | \`HTMLInputElement\` |
+| \`getIsReadOnly()\` | Checks if the switch is read-only | \`boolean\` |
+| \`getIsDisabled()\` | Checks if the switch is disabled | \`boolean\` |
+| \`getIsRequired()\` | Checks if the switch is required | \`boolean\` |
+| \`getIsChecked()\` | Checks if the switch is checked | \`boolean\` |
+| \`getLabelText()\` | Gets the switch label text | \`string\` |
+| \`toggle(isChecked?: boolean)\` | Toggles the switch state. Pass true to turn it on, false to turn it off. If no argument is provided, it simply toggles the current state. | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createSwitchTestKit } from '@melio/penny-testkit-rtl';
+
+describe('Switch Component', () => {
+  it('should be checked', () => {
+    const testKit = createSwitchTestKit({ dataTestId: 'custom-datatestid' });
+    render(<Switch defaultIsChecked aria-label="switch" data-testid="custom-datatestid" />);
+
+    expect(testKit.getIsChecked()).toBe(true);
+  });
+
+  it('should be disabled', () => {
+    const testKit = createSwitchTestKit({ dataTestId: 'custom-datatestid' });
+    render(<Switch isDisabled aria-label="switch" data-testid="custom-datatestid" />);
+
+    expect(testKit.getIsDisabled()).toBe(true);
+  });
+
+  it('should check the switch', async () => {
+    const testKit = createSwitchTestKit({ dataTestId: 'custom-datatestid' });
+    render(<Switch aria-label="switch" data-testid="custom-datatestid" />);
+
+    await testKit.toggle(true);
+    expect(testKit.getIsChecked()).toBe(true);
+  });
+
+  it('should get label text', () => {
+    const testKit = createSwitchTestKit({ dataTestId: 'custom-datatestid' });
+    render(<Switch label="Enable notifications" aria-label="switch" data-testid="custom-datatestid" />);
+
+    expect(testKit.getLabelText()).toBe('Enable notifications');
+  });
+
+  it('should be read-only', () => {
+    const testKit = createSwitchTestKit({ dataTestId: 'custom-datatestid' });
+    render(<Switch isReadOnly aria-label="switch" data-testid="custom-datatestid" />);
+
+    expect(testKit.getIsReadOnly()).toBe(true);
+  });
+});
+```

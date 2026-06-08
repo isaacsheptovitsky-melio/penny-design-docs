@@ -1,0 +1,97 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as ExternalLayoutStories from './ExternalLayout.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={ExternalLayoutStories} />
+
+<PageHero
+  category="Layouts"
+  title="External Layout"
+  badge="Healthy"
+  description="A layout for pages viewed by external users, such as vendors or guest payers — a fixed branded header above a centered content column."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="DS Layouts"
+      url="https://www.figma.com/file/GiHqIZlAdki88gha423JZ7/%F0%9F%A4%8D-DS-Layouts-%F0%9F%A4%8D?node-id=1502-64"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/9850c0-extrenal-layout"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={ExternalLayoutStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={ExternalLayoutStories.Playground} />
+</div>
+
+## Usage
+
+- Use External Layout for pages **viewed by your users' customers** — vendors, guest payers, and other unauthenticated visitors.
+- Put auxiliary actions like **"Login" or "Help"** in the `header` slot (the top-right area).
+- Keep the `content` focused on a **single task** — the content column is capped at 600px so forms and confirmations stay readable.
+- Use the `footer` for **legal disclaimers, copyright, or secondary links**.
+
+## Anatomy
+
+The External Layout is made up of four parts:
+
+- **Header** — the area positioned at the top right. Use it for auxiliary actions like "Login" or "Help".
+- **Logo** — displays the Melio logo by default, anchored top-left. Can be overridden for partner branding.
+- **Content** — the primary workspace, where form inputs, payment details, or confirmation messages live.
+- **Footer** — the bottom section, typically legal disclaimers, copyright info, or secondary links.
+
+## Logo
+
+By default the layout renders the **Melio wordmark** in the top-left of the fixed header.
+
+### Override the logo
+
+Pass a custom element to the `logo` prop to replace Melio's branding — use this for **white-labeled experiences** where the page should carry a partner's logo.
+
+<Canvas of={ExternalLayoutStories.OverrideLogo} />
+
+<Callout variant="tip">When creating white-labeled experiences for partners, use the `logo` prop to swap in the partner's logo so the page feels native to their brand.</Callout>
+
+### Hide the logo
+
+Pass an empty element (`logo={<></>}`) to remove the logo entirely.
+
+<Canvas of={ExternalLayoutStories.HideLogo} />
+
+## Loading state
+
+Set `isLoading` to overlay the layout with a centered Loader, preventing interaction during critical background updates.
+
+<Canvas of={ExternalLayoutStories.LoadingState} />
+
+## Mobile usage
+
+<Callout variant="note">The layout is fully responsive. On mobile, the internal padding tightens to maximize screen space, and the content and footer stack vertically while remaining legible on small touchscreens.</Callout>
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>

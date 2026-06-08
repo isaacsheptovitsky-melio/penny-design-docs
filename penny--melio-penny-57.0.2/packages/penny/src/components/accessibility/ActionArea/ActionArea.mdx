@@ -1,0 +1,166 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Accessibility Components/ActionArea & useActionArea Hook" />
+
+# `ActionArea` & `useActionArea` Hook
+
+---
+
+## Why we built this
+
+Screen‑reader and keyboard users get confused when one interactive element (button, link, etc.) contains another one.
+The pair **ActionArea** and **useActionArea** helps you avoid accessibility issues by ensuring that all focusable elements that appear one on top of the other stay at the same DOM depth (instead of being nested). This allows you to create complex interactive layouts without violating WCAG rules or confusing assistive technologies.
+In short: **use a sibling, not a nested child**.
+
+> **Never** place an interactive element inside another interactive element (e.g.: `Button` inside of `InteractiveCard`)
+> Instead, use `ActionArea` to represent the clickable area, and ensure any other interactive elements (like links or buttons) are placed next to it, as siblings—not descendants.
+
+---
+
+## Usage
+
+### Clickable tag with a separate “remove” button
+
+Imagine you need to implement a clickable tag that contains a remove (x) button.
+
+<img src="/assets/actionArea/interactiveTag.gif" style={{ maxWidth: '60%' }} />
+
+A naive implementation might look like this:
+
+```tsx
+const InteractiveTag = ({ onRemove }) => {
+  return (
+    <Button onClick={() => console.log('Tag clicked')}>
+      <Group>
+        Label
+        <IconButton size="extra-small" variant="naked" icon="close-mini" onClick={onRemove} />
+      </Group>
+    </Button>
+  );
+};
+```
+
+This will raise an [ADA/WCAG accessibility violation](https://accessibilityinsights.io/info-examples/web/nested-interactive/): interactive controls like **IconButton** must not be nested within another interactive element like **Button**.
+
+✅ Instead, use **ActionArea** to isolate the click target from the remove button:
+
+```tsx
+const InteractiveTag = ({ onRemove }) => {
+  const { containerProps, actionAreaProps } = useActionArea({
+    onClick: () => console.log('Tag clicked'),
+  });
+
+  return (
+    <Container {...containerProps}>
+      <ActionArea {...actionAreaProps} />
+      <Group>
+        Label
+        <IconButton
+          size="small"
+          variant="naked"
+          icon="close-mini"
+          onClick={(e) => {
+            e.stopPropagation(); // don't bubble to the tag click
+            onRemove();
+          }}
+        />
+      </Group>
+    </Container>
+  );
+};
+```
+
+Each interactive element (ActionArea, IconButton) sits side‑by‑side: no nested focusable descendants, full compliance.
+
+## API reference
+
+### `useActionArea(options)`
+
+`useActionArea` is a hook for managing hover, focus, and keyboard interactions on interactive elements.
+
+- Handles hover, focus-visible, and keyboard states.
+- All keyboard duties (`Space`/`Enter` activating click, `Tab` tracking for focus-visible, etc.) are handled for you.
+- Includes refs and ARIA attributes for accessibility.
+
+```ts
+const { containerProps, actionAreaProps } = useActionArea({
+  id,
+  isDisabled,
+  onClick,
+  // …mouse & keyboard overrides
+});
+```
+
+### Props
+
+<Markdown>
+  {`
+| Option           | Type                | Purpose                                           |
+| ---------------- | ------------------- | ------------------------------------------------- |
+| \`id\`           | \`string\`          | Provide your own id (optional).                   |
+| \`isDisabled\`   | \`boolean\`         | Disable all interactions.                         |
+| \`onClick\`      | \`(event) => void\` | Optional override, runs **after** internal logic. |
+| \`onMouseEnter\` | \`(event) => void\` | Optional override, runs **after** internal logic. |
+| \`onMouseLeave\` | \`(event) => void\` | Optional override, runs **after** internal logic. |
+| \`onFocus\`      | \`(event) => void\` | Optional override, runs **after** internal logic. |
+| \`onBlur\`       | \`(event) => void\` | Optional override, runs **after** internal logic. |
+| \`onMouseDown\`  | \`(event) => void\` | Optional override, runs **after** internal logic. |
+| \`onKeyDown\`    | \`(event) => void\` | Optional override, runs **after** internal logic. |
+`}
+</Markdown>
+
+#### Return value
+
+<Markdown>
+  {`
+| Key               | Contains                                                                  |
+| ----------------- | ------------------------------------------------------------------------- |
+| \`containerProps\`  | object | \`{ id, 'data-hover', 'data-focus-visible' }\`                           |
+| \`actionAreaProps\` | object | \`{ ref, 'aria-labelledby', disabled, onClick, onMouseEnter, onMouseLeave, onFocus, onBlur, onMouseDown, onKeyDown }\` |
+`}
+</Markdown>
+> **Important:** do **not** put other focusable elements **inside** the node that receives \`actionAreaProps\`.
+---
+### `<ActionArea>`
+
+`ActionArea` is a component that renders as a button and gets all the `actionAreaProps` from the hook.
+
+```tsx
+<ActionArea onClick={() => console.log('Clicked!')}>Click me</ActionArea>
+```
+
+### Props
+
+<Markdown>
+  {`
+| Prop          | Type         | Description                                                                 |
+| ------------- | ------------ | --------------------------------------------------------------------------- |
+| \`children\`    | \`ReactNode\`  | Visible content.                                                            |
+| \`onClick\`     | \`() => void\` | Fires when clicked or when focus is on it and user presses \`Enter\`/\`Space\`. |
+| \`data-testid\` | \`string\`     | Test id.                                                                    |
+`}
+</Markdown>
+---
+
+## Styling
+
+Because hover & focus states are expressed via `data-*` attributes, you can style it in the theme files:
+
+```css
+_hover: {
+  backgroundcolor: 'semantic.action.inverseTertiary.hover';
+}
+
+'&[data-focus-visible="true"]': {
+  outlinecolor: 'semantic.focus.primary';
+}
+```
+
+---
+
+## Checklist for validating accessibility when using `ActionArea`:
+
+1. No element with `role="button"` (or native `<button>`) has focusable descendants.
+2. When tabbing, the focus stops on each control exactly once (no double tabs/focus).
+3. Pressing **Space** or **Enter** on the ActionArea activates it.
+4. Hover & focus‑visible styles are perceivable.

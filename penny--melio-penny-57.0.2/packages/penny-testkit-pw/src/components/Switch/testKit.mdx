@@ -1,0 +1,77 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Switch/Playwright Test Kit" />
+
+# Switch Playwright Test Kit
+---
+
+Testing utilities for the `Switch` component that provide easy access to component interactions, states, and accessibility features for Playwright testing.
+
+## Import
+
+```typescript
+import { createSwitchTestKit } from '@melio/penny-testkit-pw';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the DOM element | \`Locator\` |
+| \`getInputElement()\` | Direct access to the input element | \`Locator\` |
+| \`getIsReadOnly()\` | Checks if the switch is read-only | \`Promise<boolean>\` |
+| \`getIsDisabled()\` | Checks if the switch is disabled | \`Promise<boolean>\` |
+| \`getIsRequired()\` | Checks if the switch is required | \`Promise<boolean>\` |
+| \`getIsChecked()\` | Checks if the switch is checked | \`Promise<boolean>\` |
+| \`getLabelText()\` | Gets the switch label text | \`Promise<string>\` |
+| \`toggle(isChecked?: boolean)\` | Toggles the switch state. Pass true to turn it on, false to turn it off. If no argument is provided, it simply toggles the current state. | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { test, expect } from '@playwright/test';
+import { createSwitchTestKit } from '@melio/penny-testkit-pw';
+
+test.describe('Switch Component', () => {
+  test('should be checked', async ({ page }) => {
+    const testKit = createSwitchTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    expect(await testKit.getIsChecked()).toBe(true);
+  });
+
+  test("shouldn't be disabled", async ({ page }) => {
+    const testKit = createSwitchTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    expect(await testKit.getIsDisabled()).toBe(false);
+  });
+
+  test('should check the switch', async ({ page }) => {
+    const testKit = createSwitchTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    await testKit.toggle(true);
+    expect(await testKit.getIsChecked()).toBe(true);
+  });
+
+  test('should get label text', async ({ page }) => {
+    const testKit = createSwitchTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    expect(await testKit.getLabelText()).toBe('Enable notifications');
+  });
+
+  test('should be read-only', async ({ page }) => {
+    const testKit = createSwitchTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    expect(await testKit.getIsReadOnly()).toBe(true);
+  });
+});
+```

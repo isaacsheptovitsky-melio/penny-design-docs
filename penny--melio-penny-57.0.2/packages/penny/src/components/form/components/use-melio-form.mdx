@@ -1,0 +1,253 @@
+import { CodeOrSourceMdx, Meta } from '@storybook/addon-docs/blocks';
+import { tableBorderStyles, tableHeaderStyles, tableRowBackgroundStyles } from 'storybook-utils';
+
+<Meta title="Form/useMelioForm" />
+
+# Form - `useMelioForm`
+
+The `useMelioForm` hook is a one-stop-shop hook to create all the logic of the form.<br />
+
+### Generic
+The hook receives a generic that tells the structure of the form data.
+
+```tsx
+import { useMelioForm } from '@melio/penny';
+
+type MyFormFields = {
+  vendorId: string;
+  billAmount: string;
+  billNumber: string;
+  dueDate: Date;
+  note: string;
+};
+
+const { /* ... */ } = useMelioForm<MyFormFields>({ /* ... */ });
+```
+
+### Parameters
+Here's a list of what you can pass to the `useMelioForm` hook:
+
+<table style={tableBorderStyles}>
+  <thead style={tableHeaderStyles}>
+    <tr>
+      <th style={{ textAlign: 'start' }}>Option</th>
+      <th style={{ textAlign: 'start' }}>Description</th>
+      <th style={{ textAlign: 'start' }}>Default Value</th>
+      <th style={{ textAlign: 'start' }}>Type</th>
+      <th style={{ textAlign: 'start' }}>Required?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={tableRowBackgroundStyles}>
+      <td>`onSubmit`</td>
+      <td>
+        Handles the submit action of the form.<br />
+        The structure of the `data` submitted is according to the generic passed to the `useMelioForm`.
+      </td>
+      <td>-</td>
+      <td>`(data: T) => void`</td>
+      <td>✅</td>
+    </tr>
+    <tr style={tableRowBackgroundStyles}>
+      <td>`onError`</td>
+      <td>
+        Handles submission with validation errors.<br />
+      </td>
+      <td>-</td>
+      <td>`SubmitErrorHandler`</td>
+      <td>-</td>
+    </tr>
+    <tr style={tableRowBackgroundStyles}>
+      <td>`schema`</td>
+      <td>Attach a validation schema using [yup](https://github.com/jquense/yup).</td>
+      <td>-</td>
+      <td>`yup` schema </td>
+      <td>-</td>
+    </tr>
+    <tr style={tableRowBackgroundStyles}>
+      <td>`defaultValues`</td>
+      <td>
+        The default values that will populate the fields.<br />
+        The structure of the object is according to the generic passed to the `useMelioForm`.
+      </td>
+      <td>-</td>
+      <td>Record&lt;T, any&gt;</td>
+      <td>-</td>
+    </tr>
+    <tr style={tableRowBackgroundStyles}>
+      <td>`onSubmissionStateChange`</td>
+      <td>
+        In case the submission/cancellation buttons are not in the same component as the form, you can connect them to the form using the property.<br />
+        See [useFormSubmissionController](/docs/form-useFormSubmissionController--docs).
+      </td>
+      <td>-</td>
+      <td>OnSubmissionStateChange&lt;T&gt;</td>
+      <td>-</td>
+    </tr>
+    <tr style={tableRowBackgroundStyles}>
+      <td>`isSaving`</td>
+      <td>Sets the form to be in submitting state.</td>
+      <td>`false`</td>
+      <td>`boolean`</td>
+      <td>-</td>
+    </tr>
+    <tr style={tableRowBackgroundStyles}>
+      <td>`subscribeToDefaultValuesChanges`</td>
+      <td>
+        By default the `defaultValues` does not update the form values when it is changed.<br />
+        If you wish that changes in the `defaultValues` will update the fields value, turn this property on.
+      </td>
+      <td>`false`</td>
+      <td>`boolean`</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table>
+
+### Output
+
+
+<table style={tableBorderStyles}>
+  <thead style={tableHeaderStyles}>
+  <tr>
+    <th style={{ textAlign: 'start' }}>Option</th>
+    <th style={{ textAlign: 'start' }}>Description</th>
+    <th style={{ textAlign: 'start' }}>Type</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr style={tableRowBackgroundStyles}>
+    <td>`registerField`</td>
+    <td>
+      A field registration function that returns ready-to-go properties for the field.<br />
+      To register a field - call this function with the name of the field you want it to have, and spread the returned value (the field properties and event handlers).<br />
+      The following are the returned properties:<br />
+        <ul>
+          <li>`onChange` - This event handler will update the field's value when changed.</li>
+          <li>`onBlur` - This event handler will handle blur events for the field.</li>
+          <li>`name` - The name of the field to register to the form.</li>
+          <li>`ref` - A ref handler to the field.</li>
+          <li>`error` - An error message in case the field is invalid.</li>
+        </ul>
+    </td>
+    <td>`(fieldName: string) => object`</td>
+  </tr>
+  <tr style={tableRowBackgroundStyles}>
+    <td>`formProps`</td>
+    <td>Aggregates the required props to pass to the `Form`.</td>
+    <td>
+      <CodeOrSourceMdx>
+        \{<br />
+          &nbsp;&nbsp;inputRef: RefObject\<HTMLInputElement\>;<br />
+          &nbsp;&nbsp;onSubmit: (event: FormEvent) => void;<br />
+          &nbsp;&nbsp;isDisabled?: boolean;<br />
+          &nbsp;&nbsp;isReadOnly?: boolean;<br />
+          &nbsp;&nbsp;isLoading?: boolean;<br />
+        \}
+      </CodeOrSourceMdx>
+    </td>
+  </tr>
+  <tr style={tableRowBackgroundStyles}>
+    <td>`handleSubmit`</td>
+    <td>A function to manually submit the form.</td>
+    <td>`(target?: string) => VoidFunction`</td>
+  </tr>
+  <tr style={tableRowBackgroundStyles}>
+    <td>`submitButtonProps`</td>
+    <td>Supply the submit button properties according to the state of the form.</td>
+    <td>
+        <CodeOrSourceMdx>
+            \{<br />
+              &nbsp;&nbsp;onClick: (event?: MouseEvent, target?: string) => void;<br />
+              &nbsp;&nbsp;isDisabled: boolean;<br />
+              &nbsp;&nbsp;isLoading?: boolean;<br />
+            \}
+        </CodeOrSourceMdx>
+    </td>
+  </tr>
+  <tr style={tableRowBackgroundStyles}>
+    <td>`cancelButtonProps`</td>
+    <td>Supply the cancel button properties according to the state of the form.</td>
+    <td>`{ isDisabled: boolean; }`</td>
+  </tr>
+  </tbody>
+</table>
+
+### Usage
+
+```tsx
+// MyForm.tsx
+import { Button, Form, FormField, useMelioForm } from '@melio/penny';
+
+export type MyFormFields = {
+  vendorId: string;
+  billAmount: string;
+  billNumber: string;
+  dueDate: Date;
+  note: string;
+};
+
+type MyFormProps = {
+  onSubmit: (data: MyFormFields) => void;
+}
+
+export const MyForm: VFC<MyFormProps> = ({ onSubmit }) => {
+  const {
+    formProps,
+    registerField,
+    submitButtonProps,
+    cancelButtonProps
+  } = useMelioForm<MyFormFields>({ onSubmit });
+
+  return (
+    <Group variant="vertical">
+       <Form columns={2} {...formProps}>
+          <FormField
+            {...registerField('vendorId')}
+            colSpan={2}
+            isRequired
+            labelProps={{ label: "Vendor's business name" }}
+            render={(props) => <SelectNew {...props} placeholder="Search or add a vendor" options={vendorOption} />}
+          />
+
+          <FormField
+            {...registerField('billAmount')}
+            colSpan={2}
+            isRequired
+            labelProps={{ label: 'Bill amount' }}
+            render={(props) => <AmountField {...props} placeholder="$0.00" />}
+          />
+
+          <FormField
+            {...registerField('billNumber')}
+            labelProps={{ label: 'Invoice #' }}
+            render={(props) => <TextField {...props} placeholder="e.g. 200000" />}
+          />
+
+          <FormField
+            {...registerField('dueDate')}
+            isRequired
+            labelProps={{ label: 'Due date' }}
+            render={(props) => <DateField {...props} placeholder="Select due date" />}
+          />
+
+          <FormField
+            {...registerField('note')}
+            colSpan={2}
+            labelProps={{ label: 'Note to self' }}
+            render={(props) => <TextField {...props} placeholder="e.g. invoice #, office expenses" />}
+          />
+       </Form>
+
+       <Button {...submitButtonProps} label="Submit"></Button>
+       <Button {...cancelButtonProps} label="Cancel"></Button>
+    </Group>
+  );
+}
+```
+
+## Advanced Usages
+
+### Connecting Buttons Outside of the Form
+See [useFormSubmissionController](/docs/form-useFormSubmissionController--docs).
+

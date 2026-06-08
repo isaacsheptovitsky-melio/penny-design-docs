@@ -1,0 +1,94 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Segmented Control [new]/Segmented Control/Playwright Test Kit" />
+
+# SegmentedControl Playwright Test Kit
+---
+
+Testing utilities for the `SegmentedControl` component that provide easy access to component interactions, states, and accessibility features for Playwright.
+
+## Import
+
+```typescript
+import { createSegmentedControlTestKit } from '@melio/penny-testkit-pw';
+```
+
+## Main Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Returns the container element locator | \`Locator\` |
+| \`getRole()\` | Returns the ARIA role (radiogroup or group) | \`Promise<string>\` |
+| \`getIsMulti()\` | Checks if the control is in multi-select mode | \`Promise<boolean>\` |
+| \`getSegment(dataTestId)\` | Returns a testkit for a specific segment item | \`SegmentItemTestKit\` |
+`}
+</Markdown>
+
+## Segment Item Methods
+
+Methods available on the object returned by `getSegment(dataTestId)`:
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`getInputElement()\` | Returns the input element locator | \`Locator\` |
+| \`getLabelElement()\` | Returns the label element locator | \`Locator\` |
+| \`getIsChecked()\` | Checks if the segment is selected | \`Promise<boolean>\` |
+| \`getIsDisabled()\` | Checks if the segment is disabled | \`Promise<boolean>\` |
+| \`getIsReadOnly()\` | Checks if the segment is read-only | \`Promise<boolean>\` |
+| \`getValue()\` | Gets the segment value | \`Promise<string>\` |
+| \`click()\` | Clicks the segment input | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { test, expect } from '@playwright/test';
+import { createSegmentedControlTestKit } from '@melio/penny-testkit-pw';
+
+test.describe('SegmentedControl Component', () => {
+  test('should select a segment on click', async ({ page }) => {
+    await page.goto('/segmented-control-story');
+
+    const testKit = createSegmentedControlTestKit(page, { dataTestId: 'my-control' });
+    const segment = testKit.getSegment('my-control.segment-1');
+    
+    await segment.click();
+
+    expect(await segment.getIsChecked()).toBe(true);
+  });
+
+  test('should be in single select mode by default', async ({ page }) => {
+    await page.goto('/segmented-control-story');
+
+    const testKit = createSegmentedControlTestKit(page, { dataTestId: 'my-control' });
+
+    expect(await testKit.getIsMulti()).toBe(false);
+    expect(await testKit.getRole()).toBe('radiogroup');
+  });
+
+  test('should support multi-select mode', async ({ page }) => {
+    await page.goto('/segmented-control-multi-story');
+
+    const testKit = createSegmentedControlTestKit(page, { dataTestId: 'my-control' });
+
+    expect(await testKit.getIsMulti()).toBe(true);
+    expect(await testKit.getRole()).toBe('group');
+  });
+
+  test('should get segment value', async ({ page }) => {
+    await page.goto('/segmented-control-story');
+
+    const testKit = createSegmentedControlTestKit(page, { dataTestId: 'my-control' });
+    const segment = testKit.getSegment('my-control.segment-1');
+
+    expect(await segment.getValue()).toBe('option-1');
+  });
+});
+```
+

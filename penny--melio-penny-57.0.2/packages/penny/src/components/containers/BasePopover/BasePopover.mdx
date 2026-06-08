@@ -1,0 +1,41 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Containers/Base Popover/Popover Parts Documentation" />
+
+# API Reference: BasePopover Parts
+
+The following components are provided to structure the content of `BasePopover`:
+
+- `BasePopoverHeader`: Open slot that renders the header part. Associates with `aria-labelledby` for accessibility.
+- `BasePopoverBody`: Open slot that renders the body part. Associates with `aria-describedby` for accessibility.
+- `BasePopoverFooter`: Open slot that renders the footer part, typically for actions or additional info.
+
+## BasePopoverHeader
+
+Open slot that renders the header part. When present, it sets `aria-labelledby` on popover for accessibility.
+
+| Prop         | Type                          | Default               | Description                    |
+| ------------ | ---------------------------- | --------------------- | ------------------------------ |
+| children     | ReactNode                    | —                     | Content of the header.         |
+| as           | string                       | `div`                 | The element type to render.    |
+| data-testid  | string                       | `base-popover-header` | Test id for the header.        |
+
+## BasePopoverBody
+
+Open slot that renders the body part. When present, it sets `aria-describedby` on popover for accessibility.
+
+| Prop         | Type                          | Default               | Description                    |
+| ------------ | ---------------------------- | --------------------- | ------------------------------ |
+| children     | ReactNode                    | —                     | Content of the body.           |
+| as           | string                       | `div`                 | The element type to render.    |
+| data-testid  | string                       | `base-popover-body`   | Test id for the body.          |
+
+## BasePopoverFooter
+
+Open slot that renders the footer part, typically for actions or additional info.
+
+| Prop         | Type                          | Default               | Description                    |
+| ------------ | ---------------------------- | --------------------- | ------------------------------ |
+| children     | ReactNode                    | —                     | Content of the footer.         |
+| as           | string                       | `div`                 | The element type to render.    |
+| data-testid  | string                       | `'base-popover-footer'` | Test id for the footer.        |

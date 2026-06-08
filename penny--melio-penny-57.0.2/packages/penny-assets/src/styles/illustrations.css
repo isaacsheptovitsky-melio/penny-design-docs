@@ -1,0 +1,81 @@
+/* 
+ * Illustration styles for penny-assets package.
+ * Colors are duplicated from packages/penny/src/theme/foundations/tokens/ to avoid package dependencies.
+ * If semantic tokens change, update these values manually to maintain consistency
+ * 
+ * Token mapping reference:
+ * - semantic.illustration.border: global.neutral.1000 (#18191b)
+ * - semantic.illustration.background: global.neutral.100 (#ffffff)
+ * - semantic.illustration.critical: global.critical.700 (#d80e25)
+ * - semantic.illustration.success: global.success.700 (#028838)
+ * - semantic.illustration.brand.secondary: global.brand.100 (#f6f2fd)
+ * - semantic.illustration.brand.primary: global.brand.700 (#7849ff)
+ */
+
+.penny-illustration-border {
+  fill: #18191b;
+}
+
+.penny-illustration-background {
+  fill: #ffffff;
+}
+
+.penny-illustration-primary {
+  fill: #3b82f6;
+}
+
+.penny-illustration-secondary {
+  fill: #6b7280;
+}
+
+.penny-illustration-accent {
+  fill: #f59e0b;
+}
+
+.penny-illustration-success {
+  fill: #028838;
+}
+
+.penny-illustration-warning {
+  fill: #f59e0b;
+}
+
+.penny-illustration-error {
+  fill: #ef4444;
+}
+
+.penny-illustration-critical {
+  fill: #d80e25;
+}
+
+.penny-illustration-brand-secondary {
+  fill: #f6f2fd;
+}
+
+.penny-illustration-brand-primary {
+  fill: #7849ff;
+}
+
+.penny-illustration-stroke-border {
+  stroke: #18191b;
+}
+
+.penny-illustration-stroke-background {
+  stroke: #ffffff;
+}
+
+.penny-illustration-stroke-critical {
+  stroke: #d80e25;
+}
+
+.penny-illustration-stroke-success {
+  stroke: #028838;
+}
+
+.penny-illustration-stroke-brand-secondary {
+  stroke: #f6f2fd;
+}
+
+.penny-illustration-stroke-brand-primary {
+  stroke: #7849ff;
+}

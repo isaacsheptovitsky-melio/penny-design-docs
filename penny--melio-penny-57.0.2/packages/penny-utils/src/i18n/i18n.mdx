@@ -1,0 +1,49 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Penny Utils/i18n/useIntl" />
+
+# `useIntl`
+
+The `useIntl` hook provides internationalization (i18n) utilities for formatting currency, dates, date ranges, and numbers based on the current locale and timezone.
+
+## Return Value
+
+An object containing the following properties:
+
+<Markdown>
+  {`
+| Property              | Type             | Description                                                          |
+| --------------------- | ---------------- | -------------------------------------------------------------------- |
+| locale                | string           | The current locale used for formatting.                              |
+| timeZone              | string           | The current timezone used for formatting dates and times.            |
+| formatCurrency        | FormatCurrency   | A function to format currency values.                                |
+| formatDate            | Function         | A function to format dates based on the current locale.              |
+| formatDateTimeRange   | Function         | A function to format date ranges.                                    |
+| formatNumberToParts   | Function         | A function that formats numbers and returns their parts as an array. |
+`}
+</Markdown>
+
+## Usage
+
+```typescript
+import { useIntl } from '@melio/penny-utils';
+
+const MyComponent = () => {
+  const { locale, timeZone, formatCurrency, formatDate, formatDateTimeRange } = useIntl();
+
+  const amount = 1234.56;
+  const formattedCurrency = formatCurrency(amount, 'USD'); // e.g., "$1,234.56"
+  const formattedDate = formatDate(new Date()); // e.g., "9/23/2024"
+  const formattedDateRange = formatDateTimeRange(new Date('2024-09-01'), new Date('2024-09-23')); // e.g., "Sep 1 – 23, 2024"
+
+  return (
+    <div>
+      <p>Locale: {locale}</p>
+      <p>Timezone: {timeZone}</p>
+      <p>Formatted Currency: {formattedCurrency}</p>
+      <p>Formatted Date: {formattedDate}</p>
+      <p>Formatted Date Range: {formattedDateRange}</p>
+    </div>
+  );
+};
+```

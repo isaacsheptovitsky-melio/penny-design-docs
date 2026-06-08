@@ -1,0 +1,95 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Checkbox/Playwright Test Kit" />
+
+# Checkbox Playwright Test Kit
+
+---
+
+Testing utilities for the `Checkbox` component that provide easy access to component interactions, states, and accessibility features for Playwright testing.
+
+## Import
+
+```typescript
+import { createCheckboxTestKit } from '@melio/penny-testkit-pw';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the container DOM element | \`Locator\` |
+| \`getInputElement()\` | Direct access to the input element with role="checkbox" | \`Locator\` |
+| \`getIsDisabled()\` | Checks if the checkbox is disabled | \`Promise<boolean>\` |
+| \`getIsRequired()\` | Checks if the checkbox is required | \`Promise<boolean>\` |
+| \`getIsChecked()\` | Checks if the checkbox is checked | \`Promise<boolean>\` |
+| \`getIsIndeterminate()\` | Checks if the checkbox is in indeterminate state | \`Promise<boolean>\` |
+| \`getIsReadOnly()\` | Checks if the checkbox is read-only | \`Promise<boolean>\` |
+| \`getIsInvalid()\` | Checks if the checkbox is invalid | \`Promise<boolean>\` |
+| \`getLabelText()\` | Gets the checkbox label text | \`Promise<string>\` |
+| \`click()\` | Clicks on the checkbox input | \`Promise<void>\` |
+| \`toggle(isChecked?: boolean)\` | Toggles the checkbox state. Pass true to check, false to uncheck. If no argument is provided, it simply toggles the current state. | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { test, expect } from '@playwright/test';
+import { createCheckboxTestKit } from '@melio/penny-testkit-pw';
+
+test.describe('Checkbox Component', () => {
+  test('should be checked', async ({ page }) => {
+    const testKit = createCheckboxTestKit(page, { dataTestId: 'my-checkbox' });
+
+    await page.goto('/some-page');
+    expect(await testKit.getIsChecked()).toBe(true);
+  });
+
+  test('should not be disabled', async ({ page }) => {
+    const testKit = createCheckboxTestKit(page, { dataTestId: 'my-checkbox' });
+
+    await page.goto('/some-page');
+    expect(await testKit.getIsDisabled()).toBe(false);
+  });
+
+  test('should check the checkbox', async ({ page }) => {
+    const testKit = createCheckboxTestKit(page, { dataTestId: 'my-checkbox' });
+
+    await page.goto('/some-page');
+    await testKit.toggle(true);
+    expect(await testKit.getIsChecked()).toBe(true);
+  });
+
+  test('should get label text', async ({ page }) => {
+    const testKit = createCheckboxTestKit(page, { dataTestId: 'my-checkbox' });
+
+    await page.goto('/some-page');
+    expect(await testKit.getLabelText()).toBe('Accept terms');
+  });
+
+  test('should be read-only', async ({ page }) => {
+    const testKit = createCheckboxTestKit(page, { dataTestId: 'my-checkbox' });
+
+    await page.goto('/some-page');
+    expect(await testKit.getIsReadOnly()).toBe(true);
+  });
+
+  test('should be in indeterminate state', async ({ page }) => {
+    const testKit = createCheckboxTestKit(page, { dataTestId: 'my-checkbox' });
+
+    await page.goto('/some-page');
+    expect(await testKit.getIsIndeterminate()).toBe(true);
+  });
+
+  test('should be invalid', async ({ page }) => {
+    const testKit = createCheckboxTestKit(page, { dataTestId: 'my-checkbox' });
+
+    await page.goto('/some-page');
+    expect(await testKit.getIsInvalid()).toBe(true);
+  });
+});
+```

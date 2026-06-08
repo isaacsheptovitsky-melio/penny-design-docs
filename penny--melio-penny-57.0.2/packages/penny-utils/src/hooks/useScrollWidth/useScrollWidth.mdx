@@ -1,0 +1,109 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Penny Utils/Hooks/useScrollWidth" />
+
+# `useScrollWidth`
+
+Track an element's `scrollWidth` property.
+
+Useful for determining the total width of an element's content,
+including content not visible due to overflow.
+
+The hook also automatically updates when the window is resized.
+
+## Hook Options
+
+<Markdown>
+  {`
+| Option | Type   | Description                                           | Default |
+|--------|--------|-------------------------------------------------------|---------|
+| delay  | number | Debounce delay (in ms) for the resize event handler   | 500     |
+`}
+</Markdown>
+
+## Return Value
+
+<Markdown>
+  {`
+| Name       | Type                            | Description                                           |
+|------------|--------------------------------|-------------------------------------------------------|
+| ref        | RefObject<HTMLDivElement>      | A ref to be attached to the element you want to measure |
+| scrollWidth | number \\| undefined           | The current scrollWidth of the referenced element      |
+`}
+</Markdown>
+
+## Notes
+
+- The hook uses `window.addEventListener('resize', ...)` to detect size changes, so it will update when the window is resized.
+- The returned `scrollWidth` may be `undefined` before the component mounts or if no element is attached to the ref.
+- The resize handler is debounced to improve performance by avoiding excessive updates during resize operations.
+
+## Usage Examples
+
+### Basic Usage
+
+The most common use case is to determine if an element's content is overflowing and requires scrolling:
+
+```tsx
+import { useScrollWidth } from '@melio/penny-utils';
+
+const ScrollWidthExample = () => {
+  const { ref, scrollWidth } = useScrollWidth();
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  // Track the actual container width for comparison
+  useEffect(() => {
+    if (!ref.current) return;
+    setContainerWidth(ref.current.clientWidth);
+  }, []);
+
+  // Determine if content is overflowing
+  const hasHorizontalOverflow = scrollWidth ? scrollWidth > containerWidth : false;
+
+  return (
+    <div>
+      <div
+        ref={ref}
+        style={{
+          width: '300px',
+          overflowX: 'auto',
+          whiteSpace: 'nowrap',
+          border: '1px solid #ccc',
+        }}
+      >
+        {/* Content that might overflow */}
+        <div style={{ display: 'inline-block', width: '600px' }}>This content is wider than its container</div>
+      </div>
+
+      <div style={{ marginTop: '10px' }}>
+        <p>Container width: {containerWidth}px</p>
+        <p>Content width: {scrollWidth}px</p>
+        <p>Has horizontal overflow: {hasHorizontalOverflow ? 'Yes' : 'No'}</p>
+      </div>
+    </div>
+  );
+};
+```
+
+### Custom Debounce Delay
+
+You can customize the debounce delay for the resize event handler:
+
+```tsx
+import { useScrollWidth } from '@melio/penny-utils';
+
+const FastUpdateExample = () => {
+  // Use a shorter 100ms debounce delay for more responsive updates
+  const { ref, scrollWidth } = useScrollWidth({ delay: 100 });
+
+  return (
+    <div>
+      <div ref={ref} style={{ width: '100%', overflowX: 'auto' }}>
+        {/* Content */}
+      </div>
+      <p>Scroll width: {scrollWidth}px</p>
+      <p>Try resizing the window to see fast updates</p>
+    </div>
+  );
+};
+```

@@ -1,0 +1,68 @@
+import { Markdown, Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Amount Field/Playwright Test Kit" />
+
+# AmountField Playwright Test Kit
+---
+
+Testing utilities for the `AmountField` component that provide easy access to component interactions, states, and accessibility features for Playwright testing.
+
+## Import
+
+```typescript
+import { createAmountFieldTestKit } from '@melio/penny-testkit-pw';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the DOM element | \`Locator\` |
+| \`getIsViewMode()\` | Checks if the field is in view mode | \`Promise<boolean>\` |
+| \`getIsLoading()\` | Checks if the field is in loading state | \`Promise<boolean>\` |
+| \`getIsReadOnly()\` | Checks if the field is read-only | \`Promise<boolean>\` |
+| \`getIsDisabled()\` | Checks if the field is disabled | \`Promise<boolean>\` |
+| \`getIsInvalid()\` | Checks if the field is invalid | \`Promise<boolean>\` |
+| \`getIsRequired()\` | Checks if the field is required | \`Promise<boolean>\` |
+| \`getValue()\` | Gets the current value of the field | \`Promise<string \| null>\` |
+| \`getPlaceholder()\` | Gets the placeholder text | \`Promise<string \| null>\` |
+| \`getIsPlaceholderVisible()\` | Checks if placeholder is visible | \`Promise<boolean>\` |
+| \`type(text)\` | Types text into the field | \`Promise<void>\` |
+| \`click()\` | Clicks on the field | \`Promise<void>\` |
+| \`clear()\` | Clear the field | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { test, expect } from '@playwright/test';
+import { createAmountFieldTestKit } from '@melio/penny-testkit-pw';
+
+test.describe('AmountField Component', () => {
+  test('should get field value with currency sign', async ({ page }) => {
+    const testKit = createAmountFieldTestKit(page, { dataTestId: 'custom-datatestid' });
+
+    await page.goto('/some-page');
+    await testKit.type('1000');
+    expect(await testKit.getValue()).toBe('$1,000');
+  });
+
+  test("shouldn't be disabled", async ({ page }) => {
+    const testKit = createAmountFieldTestKit(page, { dataTestId: 'custom-datatestid' });
+
+    await page.goto('/some-page');
+    expect(await testKit.getIsDisabled()).toBeFalsy();
+  });
+
+  test('should show placeholder when empty', async ({ page }) => {
+    const testKit = createAmountFieldTestKit(page, { dataTestId: 'custom-datatestid' });
+
+    await page.goto('/some-page');
+    expect(await testKit.getIsPlaceholderVisible()).toBeTruthy();
+  });
+});
+```

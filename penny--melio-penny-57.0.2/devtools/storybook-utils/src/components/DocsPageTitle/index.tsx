@@ -1,0 +1,1 @@
+export { DocsPageTitle } from './DocsPageTitle';

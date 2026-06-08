@@ -1,0 +1,92 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Form/Form Field/RTL Test Kit" />
+
+# FormField RTL Test Kit
+---
+
+Testing utilities for the `FormField` component that provide easy access to component interactions, states, and accessibility features for Rtl (React Testing Library).
+
+## Import
+
+```typescript
+import { createFormFieldTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the DOM element | \`HTMLDivElement \| HTMLLIElement\` |
+| \`getLabelText()\` | Gets the label text content | \`string\` |
+| \`getErrorMessage()\` | Gets the error message text content | \`string\` |
+| \`getHelperText()\` | Gets the helper text content | \`string\` |
+| \`getMaxCharsCounter()\` | Gets the max characters counter text content | \`string\` |
+| \`getIsLabelHidden()\` | Checks if the label is hidden | \`boolean\` |
+| \`getIsDisabled()\` | Checks if the field is disabled | \`boolean\` |
+| \`getIsReadOnly()\` | Checks if the field is read-only | \`boolean\` |
+| \`getIsViewMode()\` | Checks if the field is in view mode | \`boolean\` |
+| \`getIsInvalid()\` | Checks if the field is invalid | \`boolean\` |
+| \`getIsRequired()\` | Checks if the field is required | \`boolean\` |
+| \`getIsLabelHasOptionalIndicator()\` | Checks if the label has optional indicator | \`boolean\` |
+| \`clickLabel()\` | Clicks on the label | \`Promise<void>\` |
+| \`input\` | Test kit for the specific input type | \`typeof createTextField\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createFormFieldTestKit } from '@melio/penny-testkit-rtl';
+
+describe('FormField Component', () => {
+  it('should get label text and field value', () => {
+    const testKit = createFormFieldTestKit('TextField');
+    
+    render(
+      <FormField
+        labelProps={{ label: 'Test Label' }}
+        render={(props) => <TextField {...props} value="Test Content" />}
+        helperText="Test helper text"
+      />
+    );
+
+    expect(testKit.getElement()).toBeInTheDocument();
+    expect(testKit.getLabelText()).toBe('Test Label');
+    expect(testKit.input.getValue()).toBe('Test Content');
+    expect(testKit.getHelperText()).toBe('Test helper text');
+  });
+
+  it('should be disabled', () => {
+    const testKit = createFormFieldTestKit('TextField');
+    
+    render(
+      <FormField
+        labelProps={{ label: 'Test Label' }}
+        render={(props) => <TextField {...props} />}
+        isDisabled
+      />
+    );
+
+    expect(testKit.getIsDisabled()).toBeTruthy();
+  });
+
+  it('should show error message', () => {
+    const testKit = createFormFieldTestKit('TextField');
+    
+    render(
+      <FormField
+        labelProps={{ label: 'Test Label' }}
+        render={(props) => <TextField {...props} />}
+        error={{ message: 'Test error message' }}
+      />
+    );
+
+    expect(testKit.getIsInvalid()).toBeTruthy();
+    expect(testKit.getErrorMessage()).toBe('Test error message');
+  });
+});
+```

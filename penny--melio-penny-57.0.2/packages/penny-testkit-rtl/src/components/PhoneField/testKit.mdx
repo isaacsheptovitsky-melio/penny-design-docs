@@ -1,0 +1,60 @@
+import { Markdown, Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Phone Field/RTL Test Kit" />
+
+# PhoneField RTL Test Kit
+---
+
+Testing utilities for the `PhoneField` component that provide easy access to component interactions, states, and accessibility features for Rtl (React Testing Library).
+
+## Import
+
+```typescript
+import { createPhoneFieldTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the DOM element | \`HTMLInputElement\` |
+| \`getIsViewMode()\` | Checks if the field is in view mode | \`boolean\` |
+| \`getIsLoading()\` | Checks if the field is in loading state | \`boolean\` |
+| \`getIsReadOnly()\` | Checks if the field is read-only | \`boolean\` |
+| \`getIsDisabled()\` | Checks if the field is disabled | \`boolean\` |
+| \`getIsInvalid()\` | Checks if the field is invalid | \`boolean\` |
+| \`getIsRequired()\` | Checks if the field is required | \`boolean\` |
+| \`getMaxChars()\` | Gets the maximum character limit | \`number\` |
+| \`getValue()\` | Gets the current value of the field | \`string \| null\` |
+| \`getPlaceholder()\` | Gets the placeholder text | \`string \| null\` |
+| \`getIsPlaceholderVisible()\` | Checks if placeholder is visible | \`boolean\` |
+| \`type(text, options?)\` | Types text into the field | \`Promise<void>\` |
+| \`click()\` | Clicks on the field | \`Promise<void>\` |
+| \`clear()\` | Clear the field | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createPhoneFieldTestKit } from '@melio/penny-testkit-rtl';
+
+describe('PhoneField Component', () => {
+  it('should mask the phone number correctly', async () => {
+    const testKit = createPhoneFieldTestKit({ dataTestId: 'custom-datatestid' });
+    render(<PhoneField data-testid="custom-datatestid" value="5551234567" />);
+
+    expect(testKit.getValue()).toBe('(555) 123-4567');
+  });
+
+  it('should be disabled', () => {
+    const testKit = createPhoneFieldTestKit({ dataTestId: 'custom-datatestid' });
+    render(<PhoneField isDisabled aria-label="phone field" data-testid="custom-datatestid" />);
+
+    expect(testKit.getIsDisabled()).toBeTruthy();
+  });
+});
+```

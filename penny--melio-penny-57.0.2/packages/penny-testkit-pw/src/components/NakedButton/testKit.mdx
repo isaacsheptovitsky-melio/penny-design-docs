@@ -1,0 +1,64 @@
+import { Markdown, Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Action Components/Naked Button/Playwright Test Kit" />
+
+# NakedButton Playwright Test Kit
+---
+
+Testing utilities for the `NakedButton` component that provide easy access to component interactions, states, and accessibility features for Playwright testing.
+
+## Import
+
+```typescript
+import { createNakedButtonTestKit } from '@melio/penny-testkit-pw';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the DOM element | \`Locator\` |
+| \`click()\` | Clicks on the element | \`Promise<void>\` |
+| \`getDisabled()\` | Checks if the element is disabled | \`Promise<boolean>\` |
+| \`getIsLink()\` | Checks if the element is a link tag | \`Promise<boolean>\` |
+| \`getHref()\` | Gets the element's href (when rendered as link) | \`Promise<string | null>\` |
+| \`getLabelText()\` | Gets the element's text content | \`Promise<string>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { test, expect } from '@playwright/test';
+import { createNakedButtonTestKit } from '@melio/penny-testkit-pw';
+
+test.describe('NakedButton Component', () => {
+  test('should be disabled', async ({ page }) => {
+    const testKit = createNakedButtonTestKit(page, { dataTestId: 'custom-datatestid' });
+
+    await page.goto('/some-page');
+
+    expect(await testKit.getDisabled()).toBe(true);
+  });
+
+  test('should render as link', async ({ page }) => {
+    const testKit = createNakedButtonTestKit(page, { dataTestId: 'custom-datatestid' });
+
+    await page.goto('/some-page');
+
+    expect(await testKit.getIsLink()).toBe(true);
+    expect(await testKit.getHref()).toBe('/path-to-page');
+  });
+
+  test('should get label text', async ({ page }) => {
+    const testKit = createNakedButtonTestKit(page, { dataTestId: 'custom-datatestid' });
+
+    await page.goto('/some-page');
+
+    expect(await testKit.getLabelText()).toBe('Submit');
+  });
+});
+```

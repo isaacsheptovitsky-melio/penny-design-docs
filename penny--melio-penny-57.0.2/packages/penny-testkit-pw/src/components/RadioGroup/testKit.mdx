@@ -1,0 +1,79 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Radio Group/Playwright Test Kit" />
+
+# RadioGroup Playwright Test Kit
+
+---
+
+Testing utilities for the `RadioGroup` component that provide easy access to component interactions, states, and accessibility features for Playwright.
+
+## Import
+
+```typescript
+import { createRadioGroupTestKit } from '@melio/penny-testkit-pw';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the radio group container element | \`Locator\` |
+| \`getIsDisabled()\` | Checks if the radio group is disabled | \`Promise<boolean>\` |
+| \`getIsInvalid()\` | Checks if the radio group is invalid | \`Promise<boolean>\` |
+| \`getIsViewMode()\` | Checks if the radio group is in view mode | \`Promise<boolean>\` |
+| \`getAllRadios()\` | Gets all radios as an array of radioTestKits | \`Promise<RadioTestKit[]>\` |
+| \`radio(value)\` | Gets a specific radio option testkit by its value | \`RadioTestKit\` |
+| \`getSelectedOption()\` | Gets the currently selected option value | \`Promise<string \\| undefined>\` |
+| \`selectOption(value)\` | Selects a radio option by its value | \`Promise<void>\` |
+| \`getAllValues()\` | Gets all option values in the group | \`Promise<string[]>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createRadioGroupTestKit } from '@melio/penny-testkit-pw';
+import { test, expect } from '@playwright/test';
+
+test.describe('RadioGroup Component', () => {
+  test('should have the correct selected value', async ({ page }) => {
+    const testKit = createRadioGroupTestKit(page);
+    await page.goto('/radio-group-page');
+
+    expect(await testKit.getSelectedOption()).toBe('2');
+  });
+
+  test('should select a radio by value', async ({ page }) => {
+    const testKit = createRadioGroupTestKit(page);
+    await page.goto('/radio-group-page');
+
+    await testKit.selectOption('2');
+    expect(await testKit.getSelectedOption()).toBe('2');
+  });
+
+  test('should get all option values', async ({ page }) => {
+    const testKit = createRadioGroupTestKit(page);
+    await page.goto('/radio-group-page');
+
+    expect(await testKit.getAllValues()).toEqual(['1', '2']);
+  });
+
+  test('should be disabled', async ({ page }) => {
+    const testKit = createRadioGroupTestKit(page);
+    await page.goto('/radio-group-page');
+
+    expect(await testKit.getIsDisabled()).toBe(true);
+  });
+
+  test('should access individual radio testkits', async ({ page }) => {
+    const testKit = createRadioGroupTestKit(page);
+    await page.goto('/radio-group-page');
+
+    expect(await testKit.radio('1').getIsChecked()).toBe(true);
+  });
+});
+```

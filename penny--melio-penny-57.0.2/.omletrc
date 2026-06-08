@@ -1,0 +1,11 @@
+{
+  "workspaces": {
+    "@melio/penny": {
+      "exports": {
+        ".": "src/index.ts"
+      }
+    }
+  },
+  "ignore": ["devtools/**"],
+  "include": ["packages/penny/**"]
+}

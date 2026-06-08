@@ -1,0 +1,52 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Penny Utils/Hooks/useAutoFocus" />
+
+# `useAutoFocus`
+
+The `useAutoFocus` hook provides a simple way to handle auto-focus behavior in custom input components. It's particularly useful for non-native inputs where you need to manage focus programmatically.
+
+## Hook Parameters
+
+<Markdown>
+{`
+| Parameter  | Type                    | Description                                                | Default |
+|------------|-------------------------|------------------------------------------------------------|---------|
+| inputRef   | \`RefObject<HTMLElement>\` | A ref object pointing to the HTML element to be focused    | -       |
+| autoFocus  | \`boolean\`             | Whether the element should be focused on mount/update      | \`false\` |
+`}
+</Markdown>
+
+## Return Value
+
+This hook doesn't return any value. It's a utility hook that handles the focus behavior internally.
+
+## Usage Example
+
+```tsx
+import { useAutoFocus } from '@melio/penny-utils';
+import { useRef } from 'react';
+
+const CheckboxInput = ({ autoFocus = false }) => {
+  const checkboxRef = useRef<HTMLDivElement>(null);
+  
+  useAutoFocus(checkboxRef, autoFocus);
+
+  return (
+    <div
+      ref={checkboxRef}
+      role="checkbox"
+      tabIndex={0}
+    >
+      <span className="checkbox-icon" />
+    </div>
+  );
+};
+```
+
+## Notes
+
+- The hook uses `useEffect` internally to handle the focus behavior
+- The focus is applied both on mount and when the `autoFocus` prop changes
+- If the ref is not attached to an element or is null, the hook will safely handle this case
+- This hook is particularly useful for custom input components where you need to manage focus programmatically 

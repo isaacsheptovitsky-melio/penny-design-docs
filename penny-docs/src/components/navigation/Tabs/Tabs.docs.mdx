@@ -1,0 +1,110 @@
+import { Canvas, Controls, Meta, Story } from '@storybook/addon-docs/blocks';
+import * as TabsStories from './Tabs.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={TabsStories} />
+
+<PageHero
+  category="Navigation"
+  title="Tabs"
+  badge="Healthy"
+  description="Tabs let users switch between related content sections that are on the same level, helping organize information within a single view."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="DS Components"
+      url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=2-100"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/795906-tabs"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={TabsStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={TabsStories.Playground} />
+</div>
+
+## Usage
+
+- Use Tabs to switch between views or categories that are **conceptually related and parallel in hierarchy** (e.g. Vendors, Bills, Payments).
+- Ideal when the number of tabs is limited and all options are important enough to be visible.
+- Tab labels should be **short, clear, and ideally one or two words**.
+- Avoid nesting tabs within tabs to prevent confusion and cognitive overload.
+
+<Callout variant="tip">Use Tabs when content changes without refreshing or routing the page. If navigation causes a full page refresh, consider using a navigation bar instead.</Callout>
+
+## Applying a bottom border
+
+To achieve visual separation, the Tabs component must be enclosed within a parent container element. Apply a `border-bottom` style to this container so the boundary spans the full width of the component. The border should be `1px` using the `semantic.border.static` color.
+
+<Canvas of={TabsStories.BottomBorder} />
+
+## Variants
+
+### Full width
+
+Tabs stretch across the full width of their container. **Use when** tabs need to be evenly spaced or when you have fewer tabs and want a balanced layout.
+
+<Canvas of={TabsStories.FullWidth} />
+
+### Neutral
+
+A low-emphasis style that avoids using the Melio purple brand colour. **Use when** tabs are part of a secondary or less prominent navigation section.
+
+<Canvas of={TabsStories.Neutral} />
+
+### With counters
+
+Shows item counts in each tab. **Use when** it's helpful for users to see how many items are in each category at a glance (e.g. unread, pending).
+
+<Canvas of={TabsStories.WithCounters} />
+
+### With pills
+
+Adds status indicators like "New" or "Pending Approval" as pills next to tab labels. **Use when** you want to highlight urgent or special-attention items without showing exact counts.
+
+<Canvas of={TabsStories.WithPills} />
+
+### With pills and counter by breakpoints
+
+Pills are shown on larger screens and automatically collapse into counters on mobile. **Use when** you want rich tab labels on desktop while keeping things compact and readable on mobile. Pass a responsive value for the tab's `pills` / `counters`.
+
+## Mobile usage
+
+Avoid using too many tabs on mobile; consider collapsing into a dropdown if space is too limited.
+
+## Do's and don'ts
+
+<Story of={TabsStories.DosAndDonts} />
+
+## Related components
+
+<Story of={TabsStories.RelatedComponentsBlock} />
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>

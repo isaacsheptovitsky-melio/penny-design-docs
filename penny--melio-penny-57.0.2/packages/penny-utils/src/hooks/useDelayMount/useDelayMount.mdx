@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Penny Utils/Hooks/useDelayMount" />
+
+# `useDelayMount`
+
+The `useDelayMount` is a hook that delays the mounting of a component to allow smoother enter animations.
+
+### How It Works
+
+- Accepts `isOpen` and an optional `delay`.
+- Maintains `isMounted` state to control rendering.
+- If `isOpen` is true, `isMounted` is set to true after the specified delay.
+- If `isOpen` is false, `isMounted` is set to false immediately.
+- Clears timeout if state changes before mounting is complete.
+
+### Hook Parameters
+
+- **`isOpen`**: boolean (required) – Controls the mounting of the component.
+- **`delay`**: number (optional) – Delay before mounting the component (default: 500ms).
+
+### Return Value
+
+Returns **`boolean`** – Whether the component should be mounted after the delay.
+
+## Usage Example
+
+```tsx
+const isMounted = useDelayMount({ isOpen, delay: 700 });
+isMounted && <div className="animated">Content</div>;
+```

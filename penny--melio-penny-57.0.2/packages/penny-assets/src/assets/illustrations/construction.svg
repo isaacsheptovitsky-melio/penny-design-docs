@@ -1,0 +1,15 @@
+<svg viewBox="0 0 144 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11 11V38.5H13.8L38.58 11H11Z" fill="currentColor" class="penny-illustration-brand-primary"/>
+<path d="M81.72 11L56.94 38.5H100.07L124.85 11H81.72Z" fill="currentColor" class="penny-illustration-brand-primary"/>
+<path d="M135 42.5C136.1 42.5 137 41.6 137 40.5V9C137 7.9 136.1 7 135 7H9C7.9 7 7 7.9 7 9V40.5C7 41.6 7.9 42.5 9 42.5H20.5V65.5H9C7.9 65.5 7 66.4 7 67.5V99C7 100.1 7.9 101 9 101H20.5V135C20.5 136.1 21.4 137 22.5 137H49.5C50.6 137 51.5 136.1 51.5 135V101H92.5V135C92.5 136.1 93.4 137 94.5 137H121.5C122.6 137 123.5 136.1 123.5 135V101H135C136.1 101 137 100.1 137 99V67.5C137 66.4 136.1 65.5 135 65.5H123.5V42.5H135ZM47.5 133H24.5V109.34L44.93 101H47.5V133ZM119.5 133H96.5V109.44L119.5 101.77V133ZM124.85 69.5H133V97H11V69.5H124.85ZM24.5 65.5V50.94L47.5 43.27V65.5H24.5ZM51.5 65.5V42.5H92.5V65.5H51.5ZM96.5 65.5V51.57L119.5 43.34V65.5H96.5ZM11 38.5V11H133V38.5H11Z" fill="currentColor" class="penny-illustration-border"/>
+<path d="M11 69.5V97H13.8L38.58 69.5H11Z" fill="currentColor" class="penny-illustration-brand-primary"/>
+<path d="M56.94 97H100.07L124.85 69.5H81.72L56.94 97Z" fill="currentColor" class="penny-illustration-brand-primary"/>
+<path d="M96.5 133H119.5V101.77L96.5 109.44V133Z" fill="currentColor" class="penny-illustration-background"/>
+<path d="M96.5 51.57V65.5H119.5V43.34L96.5 51.57Z" fill="currentColor" class="penny-illustration-background"/>
+<path d="M47.5 43.27L24.5 50.94V65.5H47.5V43.27Z" fill="currentColor" class="penny-illustration-background"/>
+<path d="M24.5 109.34V133H47.5V101H44.93L24.5 109.34Z" fill="currentColor" class="penny-illustration-background"/>
+<path d="M38.58 11L13.8 38.5H56.94L81.72 11H38.58Z" fill="currentColor" class="penny-illustration-background"/>
+<path d="M133 11H124.85L100.07 38.5H133V11Z" fill="currentColor" class="penny-illustration-background"/>
+<path d="M133 97V69.5H124.85L100.07 97H133Z" fill="currentColor" class="penny-illustration-background"/>
+<path d="M38.58 69.5L13.8 97H56.94L81.72 69.5H38.58Z" fill="currentColor" class="penny-illustration-background"/>
+</svg>

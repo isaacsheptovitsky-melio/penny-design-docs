@@ -1,0 +1,1 @@
+export { getButtonLinkProps } from './getButtonLinkProps';

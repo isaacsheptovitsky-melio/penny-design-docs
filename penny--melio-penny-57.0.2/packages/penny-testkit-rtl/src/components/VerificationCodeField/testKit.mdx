@@ -1,0 +1,70 @@
+import { Markdown, Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Verification Code Field/RTL Test Kit" />
+
+# VerificationCodeField RTL Test Kit
+---
+
+Testing utilities for the `VerificationCodeField` component that provide easy access to component interactions, states, and accessibility features for Rtl (React Testing Library).
+
+## Import
+
+```typescript
+import { createVerificationCodeFieldTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the DOM element | \`HTMLFormElement\` |
+| \`getValue()\` | Gets the current value of the field | \`string\` |
+| \`getIsInvalid()\` | Checks if the field is invalid | \`boolean\` |
+| \`getErrorMessage()\` | Gets the error message when field is invalid | \`string \| null\` |
+| \`type(code, options?)\` | Types code into the field | \`Promise<void>\` |
+| \`clear()\` | Clear the field | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createVerificationCodeFieldTestKit } from '@melio/penny-testkit-rtl';
+
+describe('VerificationCodeField Component', () => {
+  it('should show value', async () => {
+    const testKit = createVerificationCodeFieldTestKit({ dataTestId: 'custom-datatestid' });
+    render(<VerificationCodeField data-testid="custom-datatestid" onComplete={vi.fn()} />);
+
+    await testKit.type('1234');
+
+    expect(testKit.getValue()).toBe('1234');
+  });
+
+  it('should be invalid', async () => {
+    const onComplete = vi.fn().mockResolvedValue(false);
+    const invalidErrorMessages = 'Invalid code';
+    const testKit = createVerificationCodeFieldTestKit({ dataTestId: 'custom-datatestid' });
+    render(<VerificationCodeField data-testid="custom-datatestid" onComplete={onComplete} invalidErrorMessages={invalidErrorMessages} />);
+
+    await testKit.type('4321');
+
+    expect(testKit.getIsInvalid()).toBeTruthy();
+    expect(testKit.getErrorMessage()).toBe(invalidErrorMessages);
+  });
+
+  it('should clear the field', async () => {
+    const testKit = createVerificationCodeFieldTestKit({ dataTestId: 'custom-datatestid' });
+    render(<VerificationCodeField data-testid="custom-datatestid" onComplete={vi.fn()} />);
+
+    await testKit.type('123');
+    expect(testKit.getValue()).toBe('123');
+
+    await testKit.clear();
+    expect(testKit.getValue()).toBe('');
+  });
+});
+```

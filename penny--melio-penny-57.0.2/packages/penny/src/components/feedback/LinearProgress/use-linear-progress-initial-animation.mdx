@@ -1,0 +1,93 @@
+import { CodeOrSourceMdx, Meta, Markdown, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { tableBorderStyles, tableHeaderStyles, tableRowBackgroundStyles } from 'storybook-utils';
+
+<Meta title="Feedback Components/Linear Progress [composable]/useLinearProgressInitialAnimation" />
+
+<Title>useLinearProgressInitialAnimation</Title>
+
+The `useLinearProgressInitialAnimation` hook provides a simple way to animate a `LinearProgress` value from an initial value to a target value. This is particularly useful for creating smooth initial animations when a progress bar first appears.
+
+## Parameters
+
+<table style={tableBorderStyles}>
+  <thead style={tableHeaderStyles}>
+    <tr>
+      <th style={{ textAlign: 'start' }}>Parameter</th>
+      <th style={{ textAlign: 'start' }}>Description</th>
+      <th style={{ textAlign: 'start' }}>Default Value</th>
+      <th style={{ textAlign: 'start' }}>Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={tableRowBackgroundStyles}>
+      <td>`initialValue`</td>
+      <td>Starting value for the progress animation</td>
+      <td>`0`</td>
+      <td>`number`</td>
+    </tr>
+    <tr style={tableRowBackgroundStyles}>
+      <td>`targetValue`</td>
+      <td>Target value to transition to after the delay</td>
+      <td>`100`</td>
+      <td>`number`</td>
+    </tr>
+    <tr style={tableRowBackgroundStyles}>
+      <td>`delay`</td>
+      <td>Delay in milliseconds before updating to targetValue</td>
+      <td>`20`</td>
+      <td>`number`</td>
+    </tr>
+  </tbody>
+</table>
+
+## Return Value
+
+The hook returns an object with the following property:
+
+<table style={tableBorderStyles}>
+  <thead style={tableHeaderStyles}>
+    <tr>
+      <th style={{ textAlign: 'start' }}>Property</th>
+      <th style={{ textAlign: 'start' }}>Description</th>
+      <th style={{ textAlign: 'start' }}>Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={tableRowBackgroundStyles}>
+      <td>`value`</td>
+      <td>The current progress value that starts at `initialValue` and transitions to `targetValue` after the specified delay</td>
+      <td>`number`</td>
+    </tr>
+  </tbody>
+</table>
+
+## Usage Example
+
+```tsx
+import { useLinearProgressInitialAnimation } from '@melio/penny';
+import { LinearProgressIndicator, LinearProgressRoot, LinearProgressTrack } from '@melio/penny';
+
+const Example = () => {
+  const { value } = useLinearProgressInitialAnimation({ 
+    initialValue: 0, 
+    targetValue: 60 
+  });
+
+  return (
+    <LinearProgressRoot value={value}>
+      <LinearProgressTrack>
+        <LinearProgressIndicator />
+      </LinearProgressTrack>
+    </LinearProgressRoot>
+  );
+};
+```
+
+You can see this example in action in the [With Initial Animation story](/story/feedback-components-linear-progress--with-initial-animation).
+
+## Notes
+
+- The hook uses `useState` and `useEffect` internally to manage the animation
+- The value transitions from `initialValue` to `targetValue` after the specified `delay`
+- The timer is automatically cleaned up when the component unmounts or when dependencies change
+

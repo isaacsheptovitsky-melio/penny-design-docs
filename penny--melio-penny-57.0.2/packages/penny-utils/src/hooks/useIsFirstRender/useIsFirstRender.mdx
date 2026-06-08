@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Penny Utils/Hooks/useIsFirstRender" />
+
+# `useIsFirstRender`
+
+The `useIsFirstRender` hook determines if the current render is the first one. It returns `true` on the first render and `false` on subsequent renders.
+
+## Usage
+
+```tsx
+import { useIsFirstRender } from '@melio/penny-utils';
+
+const ExampleComponent = () => {
+  const isFirstRender = useIsFirstRender();
+
+  return (
+    <div>
+      {isFirstRender ? (
+        <p>This is the first render!</p>
+      ) : (
+        <p>This is not the first render.</p>
+      )}
+    </div>
+  );
+};

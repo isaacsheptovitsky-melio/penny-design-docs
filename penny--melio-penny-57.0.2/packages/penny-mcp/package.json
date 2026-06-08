@@ -1,0 +1,44 @@
+{
+    "name": "@melio/penny-mcp",
+    "version": "1.4.9",
+    "type": "module",
+    "description": "Model Context Protocol server for Penny Design System",
+    "main": "dist/index.js",
+    "bin": {
+        "mcpenny": "dist/index.js"
+    },
+    "files": [
+        "dist",
+        "README.md"
+    ],
+    "scripts": {
+        "typecheck": "tsc --noEmit",
+        "lint": "eslint .",
+        "dev": "node esbuild.config.mjs --watch",
+        "build": "pnpm run build:js && pnpm run build:types",
+        "build:js": "node esbuild.config.mjs",
+        "build:types": "tsc --emitDeclarationOnly --outDir dist",
+        "start": "node dist/index.js",
+        "inspector": "npx -y @modelcontextprotocol/inspector npx --package=@melio/penny-mcp mcpenny",
+        "inspector:local": "npx -y @modelcontextprotocol/inspector node dist/index.js"
+    },
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.24.3",
+        "axios": "^1.13.2",
+        "axios-retry": "^4.5.0",
+        "zod": "^4.2.0"
+    },
+    "devDependencies": {
+        "@melio/eslint-config-penny": "workspace:*"
+    },
+    "engines": {
+        "node": ">=20.0.0"
+    },
+    "keywords": [
+        "mcp",
+        "design-system",
+        "penny"
+    ],
+    "author": "Melio",
+    "license": "UNLICENSED"
+}

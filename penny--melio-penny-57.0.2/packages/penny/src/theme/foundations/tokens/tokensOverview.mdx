@@ -1,0 +1,41 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+import { Storybook } from 'storybook-utils';
+
+<Meta title="Design Tokens" />
+
+# 🎨 Design tokens
+
+Design tokens are variables that define the visual style of our system—such as colors, borders and border radius (with support for typography, spacing, and more coming soon). They help maintain consistency across products and make it easy to customize themes for different partners.
+
+Tokens serve as a shared language between designers and developers, enabling smoother collaboration and more efficient design updates. Most importantly, they allow us to support partner-specific theming—ensuring products can maintain visual consistency while adapting to each partner’s brand.
+
+## 🧱 Token levels
+
+Our token system is organized into three levels:
+
+- **Global tokens** - The complete set of raw, reusable style values available in the design system. These tokens are independent of specific components or contexts and serve as the foundation for all design decisions.
+
+- **Semantic tokens** - Tokens that represent design decisions based on usage or intent. Each one is named according to how or where it’s used (e.g., semantic.text.primary, surface.secondary.hover), giving the system meaning and consistency.
+
+- **Component tokens** - Tokens that are scoped to individual components. These build upon semantic or global tokens, enabling flexible customization without altering the underlying design foundations.
+
+> ⚠️ **Note:** Currently, token levels are only implemented for **colors**, **borders** and **border radius**. Support for other properties is planned for future updates.
+
+This structure helps us scale design decisions across the system while keeping everything themeable, consistent, and flexible.
+
+### Example: Color token usage in a secondary naked button
+
+Let’s look at how the **Secondary Naked Button** defines its label color using the token system:
+
+The button’s **label color** is controlled by a **component-level token** tailored specifically for the secondary naked button in its default (rest) state. This component token references a **semantic token**, such as `semantic.text.brand.rest`, which then maps to a **global color token** like `global.brand.700`. Finally, that global token resolves to the actual hex value `#7849ff`.
+
+Here’s a breakdown of the token structure:
+
+<img src="/assets/tokens/token_types.png" style={{ maxWidth: '50%' }} />
+
+## 🔧 Overriding tokens
+
+The design system comes with a set of default design tokens values, but it also supports partner-level customization through theme token overrides. This gives product teams the flexibility to configure foundational styles—such as colors, border radii, typography, and more—so they align with a partner’s unique brand identity.
+
+For more information on how to override design tokens and other styles, check out our [Theme](/docs/theme--docs#overriding-default-values) documentation.

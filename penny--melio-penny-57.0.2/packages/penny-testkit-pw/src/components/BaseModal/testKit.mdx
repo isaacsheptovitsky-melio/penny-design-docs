@@ -1,0 +1,67 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Containers/Modals/Base Modal/Playwright Test Kit" />
+
+# BaseModal Playwright Test Kit
+---
+
+Testing utilities for the `BaseModal` component that provide easy access to component interactions, states, and accessibility features for Playwright testing.
+
+## Import
+
+```typescript
+import { createBaseModalTestKit } from '@melio/penny-testkit-pw';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value 
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the modal's root element | \`Locator\` |
+| \`getVisible()\` | Checks if the element is visible | \`Promise<boolean>\` |
+| \`getIsLoading()\` | Checks if the element is in loading state | \`Promise<boolean>\` |
+| \`getRole()\` | Gets the element's role attribute | \`Promise<string | null>\` |
+| \`clickOverlay()\` | Clicks on the element's overlay | \`Promise<void>\` |
+| \`pressEscape()\` | Simulates pressing the 'Escape' key | \`Promise<void>\` |
+| \`closeButton\` | The test kit for the close button | [IconButtonTestKit](?path=/docs/action-components-icon-button-playwright-test-kit--docs) |
+`}
+</Markdown>
+
+### Examples
+```typescript
+import { test, expect } from '@playwright/test';
+import { createBaseModalTestKit } from '@melio/penny-testkit-pw';
+
+test.describe('BaseModal Component', () => {
+  test('should interact with the modal', async ({ page }) => {
+    const testKit = createBaseModalTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    
+    expect(await testKit.getVisible()).toBe(true);
+    await testKit.pressEscape();
+    expect(await testKit.getVisible()).toBe(false);
+  });
+
+  test('should check loading state', async ({ page }) => {
+    const testKit = createBaseModalTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    
+    expect(await testKit.getIsLoading()).toBe(true);
+  });
+
+  test('should close when overlay is clicked', async ({ page }) => {
+    const testKit = createBaseModalTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    
+    expect(await testKit.getVisible()).toBe(true);
+    await testKit.clickOverlay();
+    expect(await testKit.getVisible()).toBe(false);
+  });
+});
+```

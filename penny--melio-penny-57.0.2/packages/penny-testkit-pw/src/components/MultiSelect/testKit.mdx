@@ -1,0 +1,81 @@
+import { Markdown, Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Multi Select/Playwright Test Kit" />
+
+# MultiSelect Playwright Test Kit
+---
+
+Testing utilities for the `MultiSelect` component that provide easy access to component interactions, states, and accessibility features for Playwright testing.
+
+## Import
+
+```typescript
+import { createMultiSelectTestKit } from '@melio/penny-testkit-pw';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Get the root element | \`Locator\` |
+| \`click()\` | Click the trigger to toggle the menu | \`Promise<void>\` |
+| \`clickOutside()\` | Click outside to close menu | \`Promise<void>\` |
+| \`getValue()\` | Get the data-value attribute | \`Promise<string>\` |
+| \`getPlaceholder()\` | Get the placeholder text | \`Promise<string>\` |
+| \`getIsDisabled()\` | Check if component is disabled | \`Promise<boolean>\` |
+| \`getIsInvalid()\` | Check if component is invalid | \`Promise<boolean>\` |
+| \`getIsReadOnly()\` | Check if component is read-only | \`Promise<boolean>\` |
+| \`getIsRequired()\` | Check if component is required | \`Promise<boolean>\` |
+| \`getIsViewMode()\` | Check if component is in view mode | \`Promise<boolean>\` |
+| \`getIsLoading()\` | Check if component is loading | \`Promise<boolean>\` |
+| \`getIsMenuOpen()\` | Check if menu is open | \`Promise<boolean>\` |
+| \`clickOptionByText(text: string)\` | Clicks the option by text | \`Promise<void>\` |
+| \`clickOptionByIndex(index: number)\` | Clicks the option by index | \`Promise<void>\` |
+| \`clickOptionByTestId(testId: string)\` | Clicks the option by test id | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+### Basic Usage
+
+```typescript
+import { test, expect } from '@playwright/test';
+import { createMultiSelectTestKit } from '@melio/penny-testkit-pw';
+
+test('should show placeholder', async ({ page }) => {
+  const testKit = createMultiSelectTestKit(page, { dataTestId: 'custom-datatestid' });
+  await page.goto('/your-page');
+
+  expect(await testKit.getPlaceholder()).toBe('Selected option');
+});
+
+test('should select multiple options', async ({ page }) => {
+  const testKit = createMultiSelectTestKit(page, { dataTestId: 'custom-datatestid' });
+
+  await page.goto('/your-page');
+  await testKit.click();
+
+  expect(await testKit.getIsMenuOpen()).toBe(true);
+
+  await testKit.clickOptionByText('Option 1');
+  await testKit.clickOptionByText('Option 3');
+
+  expect(await testKit.getValue()).toEqual('1, 3');
+});
+
+test('should not open when disabled', async ({ page }) => {
+  const testKit = createMultiSelectTestKit(page, { dataTestId: 'custom-datatestid' });
+
+  await page.goto('/your-page');
+
+  expect(await testKit.getIsDisabled()).toBe(true);
+
+  await testKit.click();
+
+  expect(await testKit.getIsMenuOpen()).toBe(false);
+});
+```

@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": null,
+    "emitDeclarationOnly": true,
+    "resolveJsonModule": true,
+    "rootDir": "src",
+  },
+  "include": ["src"],
+  "exclude": ["test/**/*", "**/*.spec.ts", "**/__*__", "**/*.stories.tsx", "node_modules", "**/*/dist"]
+}

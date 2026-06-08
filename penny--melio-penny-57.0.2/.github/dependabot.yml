@@ -1,0 +1,40 @@
+# Dependabot Configuration - Security Vulnerabilities Only
+#
+# NOTE: Regular package version updates are handled by Renovate (see .github/renovate.json5)
+# Dependabot is configured here ONLY for security vulnerability alerts.
+
+version: 2
+
+registries:
+  private-npm:
+    type: npm-registry
+    url: https://npm.pkg.github.com/
+    token: ${{secrets.DEPENDABOT_TOKEN}}
+
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    registries:
+      - private-npm
+    schedule:
+      # Daily checks for security vulnerabilities
+      interval: 'daily'
+      time: '06:00'
+      timezone: 'Asia/Jerusalem'
+    open-pull-requests-limit: 10
+    # Ignore all version updates - only security updates will be processed
+    ignore:
+      - dependency-name: '*'
+        update-types:
+          - 'version-update:semver-major'
+          - 'version-update:semver-minor'
+          - 'version-update:semver-patch'
+      - dependency-name: '@melio/*'
+    labels:
+      - 'dependencies'
+      - 'patch'
+      - 'security'
+      - 'vulnerability'
+    commit-message:
+      prefix: 'chore(deps)'
+      prefix-development: 'chore(dev-deps)'

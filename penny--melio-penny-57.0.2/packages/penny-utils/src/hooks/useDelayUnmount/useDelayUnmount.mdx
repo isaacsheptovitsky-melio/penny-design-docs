@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Penny Utils/Hooks/useDelayUnmount" />
+
+# `useDelayUnmount`
+
+The `useDelayUnmount` is a hook that delays the unmounting of a component to allow animations to complete.
+
+### How It Works
+
+- Accepts `isOpen` and an optional `delay`.
+- Maintains `isMounted` state to control rendering.
+- If `isOpen` is true, `isMounted` is set to true immediately.
+- If `isOpen` is false, `isMounted` is set to false after the delay.
+- Clears timeout if reopened before unmounting.
+
+### Hook Parameters
+
+- **`isOpen`**: boolean (required) – Controls visibility.
+- **`delay`**: number (optional) – Delay before unmounting (default: 500ms).
+
+### Return Value
+
+Returns **`boolean`** – Whether the component should remain mounted.
+
+## Usage Example
+
+```tsx
+const isMounted = useDelayUnmount({ isOpen, delay: 700 });
+isMounted && <div className="animated">Content</div>;
+```

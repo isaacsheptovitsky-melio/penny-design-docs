@@ -1,0 +1,240 @@
+import { Markdown, Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Penny Utils/Date" />
+
+# Date utils
+
+## **Types:**
+
+<Markdown>
+  {`
+| Type                    | Example                                                                                                                                                                            |
+|-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| \`DateType\`              | 1. \`Date\` - JS date object (\`new Date()\`)<br/>2. \`number\` - time in milliseconds since epoch (\`1704067200000\`)<br/>3. \`string\` - date in ISO format (\`"2024-02-21"\`) |
+| \`TimeZone\`              | [IANA time zone name](https://en.wikipedia.org/wiki/Daylight_saving_time#IANA_time_zone_database) (e.g. America/Los_Angeles)                                                     |
+| \`DateTimeOptions\`       | \`{timeZone?: TimeZone}\`                                                                                                                                                        |
+| \`DateTimeFormatOptions\` | \`{timeZone?: TimeZone, format?: string}\`                                                                                                                                       |
+`}
+</Markdown>
+
+> **Time zones:** The date should be in UTC, do not do any time zone manipulation.
+> Time zone can be specified in all function's using `options` argument, default is local timezone.
+
+## **Hooks:**
+
+1. [useDateUtils](#1-istodaydate-options)
+
+## **Util functions:**
+
+1. [isToday](#1-istodaydate-options)
+2. [isTomorrow](#2-istomorrowdate-options)
+3. [formatDateTime](#3-formatdatetimedate-options)
+4. [formatDateRange](#4-formatdaterangestartdate-enddate-options)
+5. [createDate](#5-createdatestr)
+
+## Hooks:
+
+### 1. `useDateUtils()`
+
+**Description:**
+A custom hook that provides various utility functions for working with dates in a specific timezone and locale. It uses the `useIntl` hook to retrieve the current timezone and locale and offers several date-related utilities such as creating dates, checking date equality, and validating scheduled dates.
+
+**Return value:**
+
+- **`createDate`** (type: `(dateStr?: string) => Date`): Creates a `Date` object in the specified timezone using an ISO date string. If no date string is provided, the current date is used.
+- **`isValidScheduledDate`** (type: `(scheduledDate: Date | string) => boolean`): Checks if the given scheduled date is valid (i.e., it is today or in the future). Returns `true` if valid, otherwise `false`.
+- **`isEqualDate`** (type: `(dateLeft: Date | number | string, dateRight: Date | number | string) => boolean`): Compares two dates and checks if they are equal. Returns `true` if equal, otherwise `false`.
+- **`isDatePartEqual`** (type: `(dateLeft: Date, dateRight: Date) => boolean`): Compares the date part (ignoring time) of two `Date` objects in the current locale and timezone. Returns `true` if equal, otherwise `false`.
+
+**Parameters:**
+
+- `dateStr` (optional, type: `string`): An ISO date string used for creating a date in the specified timezone.
+- `scheduledDate` (type: `Date | string`): The date to be validated as a scheduled date.
+- `date` (type: `Date | number | string`): The date to be converted or compared.
+- `dateLeft` (type: `Date | number | string`): The first date for comparison.
+- `dateRight` (type: `Date | number | string`): The second date for comparison.
+
+**Example:**
+
+```typescript
+import { useDateUtils } from '@melio/penny-utils';
+
+const { createDate, isValidScheduledDate, isEqualDate, isDatePartEqual } = useDateUtils();
+
+// Create a date in the specified timezone
+const date = createDate('2024-09-23');
+console.log(date); // Outputs: Date object for 2024-09-23 in the specified timezone
+
+// Check if a scheduled date is valid (today or future)
+const isValid = isValidScheduledDate('2024-10-01');
+console.log(isValid); // Outputs: true if the date is valid, otherwise false
+
+// Check if two dates are equal
+const isEqual = isEqualDate('2024-09-23', new Date());
+console.log(isEqual); // Outputs: true or false based on date equality
+
+// Check if the date part (ignoring time) of two dates are equal
+const isDateEqual = isDatePartEqual(new Date('2024-09-23'), new Date('2024-09-23T10:00:00Z'));
+console.log(isDateEqual); // Outputs: true
+```
+
+## Util functions:
+
+### 1. `isToday(date, options)`
+
+**Description:**
+Checks if the given date is today.
+
+**Parameters:**
+
+- `date` (type: `DateType`): The input date to check.
+- `options` (type: `DateTimeOptions`, optional): An options object.
+
+**Return value:**
+
+`true` when given date is today, otherwise, `false`.
+
+**Example:**
+
+```typescript
+import { isToday } from '@melio/penny-utils';
+
+const today = new Date();
+const result = isToday(today, { timezone: 'America/New_York' });
+console.log(result); // true or false
+```
+
+### 2. `isTomorrow(date, options)`
+
+**Description:**
+Checks if the given date is tomorrow.
+
+**Parameters:**
+
+- `date` (type: `DateType`): The input date to check.
+- `options` (type: `DateTimeOptions`, optional): An options object.
+
+**Return value:**
+
+`true` when given date is tomorrow, otherwise, `false`.
+
+**Example:**
+
+```typescript
+import { isTomorrow } from '@melio/penny-utils';
+
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+const result = isTomorrow(tomorrow, { timezone: 'Europe/London' });
+console.log(result); // true or false
+```
+
+### 3. `formatDateTime(date, options)`
+
+**Description:**
+Formats the given date as a string. Returns an empty string when undefined / null.
+
+**Parameters:**
+
+- `date` (type: `DateType` | `undefined` | `null`): The input date to format.
+- `options` (type: `DateTimeFormatOptions`, optional): An options object.
+
+**Return value:**
+
+a string representing the given date formatted according to format and timezone options.
+
+**Example:**
+
+```typescript
+import { formatDateTime } from '@melio/penny-utils';
+
+const date = '2024-02-21';
+const formattedDate = formatDateTime(date, { timezone: 'Asia/Tokyo', format: 'EEEE, MMM d, yyyy' });
+console.log(formattedDate); // Wednesday, Feb 21, 2024
+```
+
+#### **Available formats:**
+
+<Markdown>
+  {`
+| Format                     | Example                |
+|----------------------------|------------------------|
+| \`MMM d, yyyy\`            | Apr 22, 1995           |
+| \`EEE, MMM d, yyyy\`       | Sat, Apr 22, 1995      |
+| \`EEEE, MMM d, yyyy\`      | Saturday, Apr 22, 1995 |
+| \`MM/dd/yyyy\`             | 04/22/1995             |
+| \`MM/dd/yyyy, hh:mm aa\`   | 04/22/1995, 09:30 PM   |
+| \`MM/yyyy\`                | 04/1995                |
+`}
+</Markdown>
+
+### 4. `formatDateRange(startDate, endDate, options)`
+
+**Description:**
+Formats the given dates as a string.
+
+**Parameters:**
+
+- `startDate` (type: `DateType`): The input start date to format.
+- `endDate` (type: `DateType`): The input end date to format.
+- `options` (type: `DateTimeOptions`, optional): An options object.
+
+**Return value:**
+
+a string representing the given dates range formatted according to timezone option.
+
+**Example:**
+
+```typescript
+import { formatDateRange } from '@melio/penny-utils';
+
+const startDate = '2023-01-01';
+const endDate = '2023-02-01';
+const formattedRange = formatDateRange(startDate, endDate, { timezone: 'Asia/Tokyo' });
+console.log(formattedRange); // Jan 1 – Feb 1, 2023
+```
+
+**Formats:**
+
+Range format is fixed, it is set according the given dates:
+
+- When same day
+  - current year - `MMM d` (`Jan 1`)
+  - else - `MMM d, yyyy` (`Jan 1, 2023`)
+- When the same month and year
+  - current year - `MMM d – d` (`Jan 1 – 2`)
+  - else - `MMM d – d, yyyy` (`Jan 1 – 2, 2023`)
+- When same year
+  - current year - `MMM d – MMM d` (`Jan 1 – Feb 1`)
+  - else - `MMM d – MMM d, yyyy` (`Jan 1 – Feb 1, 2023`)
+- When not same year
+  - `MMM d, yyyy – MMM d, yyyy` (`Jan 1, 2022 – Feb 1, 2023`)
+
+**Note:** the format is using special ascii chars for [space](url:https://www.compart.com/en/unicode/U+2009) and [dash](https://www.compart.com/en/unicode/U+2013).
+
+### 5. `createDate(str)`
+
+**Description:**
+Creates a `Date` object for a given date string in the format `YYYY-MM-DD`.
+If no string is provided, it returns the current date set to 12:00 PM UTC.
+
+**Parameters:**
+
+- `str` _(optional)_: A date string in the format `YYYY-MM-DD`.
+  If provided, the function validates the string and constructs a `Date` object with the
+  time set to 12:00 PM UTC on the specified date.
+
+**Return value:**
+
+- `Date`: A `Date` object representing either the specified date or the current date,
+  with the time set to 12:00 PM UTC.
+
+**Example:**
+
+```typescript
+// Creates a Date object for July 20, 2023, at 12:00 PM UTC
+const date1 = createDate('2023-07-20');
+
+// Creates a Date object for the current date at 12:00 PM UTC
+const date2 = createDate();
+```

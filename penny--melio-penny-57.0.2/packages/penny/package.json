@@ -1,0 +1,73 @@
+{
+  "name": "@melio/penny",
+  "version": "57.0.2",
+  "description": "Melio Design-system",
+  "author": "Amir Tugendhaft <tugi@melio.com>",
+  "license": "UNLICENSED",
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:melio/penny.git",
+    "directory": "packages/penny"
+  },
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "dist/penny.js",
+    "module": "dist/penny.mjs",
+    "types": "dist/index.d.ts",
+    "access": "public"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest -c vite.config.ts",
+    "test:ci": "circleci tests glob \"src/**/*.spec.*\" | circleci tests run --command=\"xargs pnpm test --coverage --passWithNoTests\" --verbose",
+    "lint": "eslint . --cache",
+    "build": "vite build",
+    "omlet:analyze": "npx @omlet/cli analyze",
+    "prepack": "dev-scripts prepack",
+    "package": "dev-scripts package",
+    "postpack": "dev-scripts postpack",
+    "generate-metadata": "tsx scripts/generate-metadata/index.ts",
+    "analyze": "ANALYZE_BUNDLE=true vite build",
+    "deps-cli": "madge --ts-config tsconfig.json --extensions ts,tsx",
+    "circular-deps": "pnpm deps-cli --circular ${MADGE_TARGET:-${npm_config_target:-src}}",
+    "circular-deps:json": "sh -c 'pnpm deps-cli --circular --json ${MADGE_TARGET:-${npm_config_target:-src}} > ${MADGE_JSON:-${npm_config_json:-../../artifacts/deps.json}}'"
+  },
+  "peerDependencies": {
+    "@chakra-ui/react": "2.10.4",
+    "@emotion/react": ">=11",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^14.6.1",
+    "react": ">=18",
+    "react-dom": ">=18",
+    "react-intl": "^6"
+  },
+  "dependencies": {
+    "@floating-ui/react": "^0.27.17",
+    "@hookform/resolvers": "^2.7.0",
+    "@melio/penny-utils": "workspace:*",
+    "@tanstack/react-table": "^8.5.11",
+    "dompurify": "^3.3.1",
+    "downshift": "9.0.8",
+    "flat": "^5.0.2",
+    "lottie-react": "^2.4.0",
+    "react-currency-input-field": "^3.8.0",
+    "react-floater": "^0.9.4",
+    "react-hook-form": "7.47.0",
+    "react-inlinesvg": "^4.1.5",
+    "react-resizable-panels": "^0.0.63",
+    "react-text-mask": "^5.4.3",
+    "use-deep-compare-effect": "^1.8.1",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "@melio/dev-scripts": "workspace:*",
+    "@melio/eslint-config-penny": "workspace:*",
+    "@melio/penny-testkit-rtl": "workspace:*",
+    "@types/flat": "^5.0.1",
+    "@types/react-text-mask": "^5.4.11",
+    "storybook-utils": "workspace:*"
+  },
+  "lernaPackageWeight": 6
+}

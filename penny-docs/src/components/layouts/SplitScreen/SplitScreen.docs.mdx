@@ -1,0 +1,94 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as SplitScreenStories from './SplitScreen.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={SplitScreenStories} />
+
+<PageHero
+  category="Layouts"
+  title="Split Screen"
+  badge="Healthy"
+  description="Unlike other layouts, the Split Screen doesn't convey a specific function or meaning — it simply organizes elements into two horizontally arranged panels."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="DS Layouts"
+      url="https://www.figma.com/file/GiHqIZlAdki88gha423JZ7/%F0%9F%A4%8D-DS-Layouts-%F0%9F%A4%8D?node-id=1502-72"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/9191e9-split-layout"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={SplitScreenStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={SplitScreenStories.Playground} />
+</div>
+
+## Usage
+
+- Use Split Screen to **pair two related areas** side by side — most commonly a **job with an asset** (e.g. an invoice on the left, actions on the right).
+- Each panel is **independently scrollable**, so a long form in one panel won't push the other off screen.
+- Provide content to `panelA` and `panelB`. On large screens panel A is the **left** panel; on small screens it becomes the **top** panel.
+- Optional layout-level `header` and `footer` span the **full width** above and below both panels.
+
+## Variants
+
+Three ratios control how the horizontal space is divided between the two panels.
+
+- **`1:1`** — equal panels. Best when both sides carry comparable weight (e.g. share-invoice).
+- **`1:2`** — narrow left, wide right (the default). Use when the right panel holds the primary workspace.
+- **`2:1`** — wide left, narrow right. Use when the left panel is the focus and the right is supporting.
+
+<Canvas of={SplitScreenStories.Variants} />
+
+## Container width
+
+Each panel has its own container, so each side can constrain its content to its own max-width — keep forms readable on the workspace side while letting a preview fill its panel. Panel A also accepts `minWidth` and `maxWidth` as percentage numbers to bound how far it can shrink or grow.
+
+## Common use
+
+The most common use is pairing a job with an asset — for example a **share-invoice** screen, where the invoice appears on the left and the actions on the right.
+
+<Canvas of={SplitScreenStories.CommonUse} />
+
+## Loading state
+
+Set `isLoading` on the whole layout to replace both panels with a single centered Loader. Each panel also accepts its own `isLoading` to load independently.
+
+<Canvas of={SplitScreenStories.LoadingState} />
+
+## Mobile usage
+
+On mobile, the two panels are rearranged into a **vertical stack** — panel A on top, panel B below, separated by a divider. The horizontal ratio no longer applies.
+
+<Canvas of={SplitScreenStories.MobileStacking} />
+
+<Callout variant="note">The switch between the side-by-side and stacked layouts happens automatically at the `l` (1240px) breakpoint — you don't need to pass anything to trigger it.</Callout>
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>

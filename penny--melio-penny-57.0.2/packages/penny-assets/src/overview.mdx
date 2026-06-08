@@ -1,0 +1,51 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Penny Assets/Overview" />
+
+# Penny Assets
+
+Welcome to the **Penny Assets** package! This package contains all **default** design system assets including icons, brands, illustrations, and flags that are used across the Penny design system.
+
+## 🎯 Purpose
+
+The Penny Assets package serves as a centralized repository for all visual assets used in the design system. It provides:
+
+- **Storybook Documentation** - Visual gallery of all available assets
+- **Development Preview** - Local asset serving for development
+
+## 🚀 How It Works
+
+### Development Mode
+
+In development, assets are served statically from the local `src/assets/` directory and displayed in these Storybook stories.
+
+### Asset Generation
+
+The `codegen` script scans the asset directories and generates:
+
+- TypeScript types for all asset keys
+- Mapping functions for both local and CDN paths
+- Type-safe asset consumption
+
+## 📁 Asset Structure
+
+```
+src/assets/
+├── icons/
+│   ├── small/          # 16px icons
+│   └── medium/         # 24px icons
+├── brands/             # Partner logos
+├── brand-symbols/      # Brand symbols
+├── illustrations/      # Decorative illustrations
+└── flags/             # Country flags
+```
+
+## 🔧 Development Workflow
+
+1. **Add Assets** - Place SVG files in appropriate directories, ensuring each asset meets the constraints outlined [here](https://www.notion.so/meliopayments/Upload-Static-Assets-to-CDN-13066d69640a800ebdb1fd353ab95218?pvs=9).
+2. **Generate Types** - Run `pnpm run codegen:assets` from the root of `penny` to update TypeScript types
+3. **Preview** - View assets in Storybook stories
+
+---
+
+_This package is part of the Penny Design System and is optimized for development only._

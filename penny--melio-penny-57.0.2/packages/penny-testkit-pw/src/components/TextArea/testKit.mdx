@@ -1,0 +1,69 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Text Area/Playwright Test Kit" />
+
+# TextArea Playwright Test Kit
+---
+
+Testing utilities for the `TextArea` component that provide easy access to component interactions, states, and accessibility features for Playwright testing.
+
+## Import
+
+```typescript
+import { createTextAreaTestKit } from '@melio/penny-testkit-pw';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the DOM element | \`Locator\` |
+| \`getIsLoading()\` | Checks if the field is in loading state | \`Promise<boolean>\` |
+| \`getIsReadOnly()\` | Checks if the field is read-only | \`Promise<boolean>\` |
+| \`getIsDisabled()\` | Checks if the field is disabled | \`Promise<boolean>\` |
+| \`getIsInvalid()\` | Checks if the field is invalid | \`Promise<boolean>\` |
+| \`getIsEditable()\` | Checks if the field is editable | \`Promise<boolean>\` |
+| \`getIsViewMode()\` | Checks if the field is view-mode | \`Promise<boolean>\` |
+| \`getMaxChars()\` | Gets the maximum character limit | \`Promise<number>\` |
+| \`getValue()\` | Gets the current value of the field | \`Promise<string>\` |
+| \`getPlaceholder()\` | Gets the placeholder text | \`Promise<string>\` |
+| \`getIsPlaceholderVisible()\` | Checks if placeholder is visible | \`Promise<boolean>\` |
+| \`type(text)\` | Types text into the field | \`Promise<void>\` |
+| \`click()\` | Clicks on the field | \`Promise<void>\` |
+| \`clear()\` | Clear the field | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { test, expect } from '@playwright/test';
+import { createTextAreaTestKit } from '@melio/penny-testkit-pw';
+
+describe('TextArea Component', () => {
+  test('should be in loading state', async ({ page }) => {
+    const testKit = createTextAreaTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    expect(await testKit.getIsLoading()).toBeTruthy();
+  });
+
+  test("shouldn't be disabled", async ({ page }) => {
+    const testKit = createTextAreaTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    expect(await testKit.getIsDisabled()).toBeFalsy();
+  });
+
+  test('should get field value', async ({ page }) => {
+    const testKit = createTextAreaTestKit(page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    await testKit.type('test value');
+    expect(await testKit.getValue()).toBe('test value');
+  });
+});
+```

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+  <g clip-path="url(#bouvet-island__a)">
+    <mask id="bouvet-island__b" width="24" height="24" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:luminance">
+      <path fill="#fff" d="M0 0h24v24H0z"/>
+    </mask>
+    <g mask="url(#bouvet-island__b)">
+      <path fill="#E31D1C" fill-rule="evenodd" d="M0 0v24h24V0H0Z" clip-rule="evenodd"/>
+      <mask id="bouvet-island__c" width="24" height="24" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:luminance">
+        <path fill="#fff" fill-rule="evenodd" d="M0 0v24h24V0H0Z" clip-rule="evenodd"/>
+      </mask>
+      <g mask="url(#bouvet-island__c)">
+        <path fill="#2E42A5" stroke="#F7FCFF" d="M7.5-.5H7v10H-.5v5H7v10h4v-10h13.5v-5H11v-10H7.5Z"/>
+      </g>
+    </g>
+  </g>
+  <defs>
+    <clipPath id="bouvet-island__a">
+      <path fill="#fff" d="M0 12C0 5.373 5.373 0 12 0s12 5.373 12 12-5.373 12-12 12S0 18.627 0 12Z"/>
+    </clipPath>
+  </defs>
+</svg>

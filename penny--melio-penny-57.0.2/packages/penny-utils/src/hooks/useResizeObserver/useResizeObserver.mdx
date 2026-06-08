@@ -1,0 +1,48 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Penny Utils/Hooks/useResizeObserver" />
+
+# `useResizeObserver`
+
+This is a wrapper hook for `use-resize-observer` library. It allows you to use a `ResizeObserver` to measure an element's size. See the [documentation](https://github.com/ZeeCoder/use-resize-observer) for more information.
+
+## Hook Options
+
+<Markdown>
+{`
+| Option   | Type                                                                      | Description                                                   | Default        |
+| -------- | ------------------------------------------------------------------------- | ------------------------------------------------------------- | -------------- |
+| ref      | \`undefined | RefObject | HTMLElement\`                                   | A ref or element to observe.                                  | \`undefined\`  |
+| box      | \`undefined | "border-box" | "content-box" | "device-pixel-content-box"\` | The [box model](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver/observe#syntax) to use for observation. | \`"content-box"\` |
+| onResize | \`undefined | ({ width?: number, height?: number }) => void\`             | A callback receiving the element size. If given, then the hook will not return the size, and instead will call this callback. | \`undefined\` |
+| round    | \`undefined | (n: number) => number\`                                     | A function to use for rounding values instead of the default. | \`Math.round()\` |
+`}
+</Markdown>
+
+## Return Value
+
+<Markdown>
+{`
+| Name   | Type                   | Description                                    |
+| ------ | ---------------------- | ---------------------------------------------- |
+| ref    | \`RefCallback<T>\`     | A callback to be passed to React's "ref" prop. |
+| width  | \`undefined | number\` | The width (or "inlineSize") of the element.    |
+| height | \`undefined | number\` | The height (or "blockSize") of the element.    |
+`}
+</Markdown>
+
+## Usage Example
+
+```tsx
+import { useResizeObserver } from '@melio/penny-utils';
+
+const ResizeObserverDemo = () => {
+  const { ref, width, height } = useResizeObserver();
+
+  return (
+    <div ref={ref}>
+      Size: {width}x{height}
+    </div>
+  );
+};
+```

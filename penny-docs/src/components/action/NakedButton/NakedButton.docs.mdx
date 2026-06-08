@@ -1,0 +1,111 @@
+import { Canvas, Controls, Meta, ArgTypes, Story } from '@storybook/addon-docs/blocks';
+import * as NakedButtonStories from './NakedButton.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={NakedButtonStories} />
+
+<PageHero
+  category="Action"
+  title="Naked Button"
+  badge="Healthy"
+  description="A low-emphasis button for secondary or tertiary actions. It has no background or border — just a coloured text label."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="DS Components"
+      url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=2-59&p=f&t=T7ujipi8u9DvQgaF-11"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/34f24e-naked-button"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={NakedButtonStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={NakedButtonStories.Playground} />
+</div>
+
+## Usage
+
+- Use for **non-primary, low-visibility actions** — the naked button draws minimal visual attention.
+- It works well in dense UIs alongside stronger button variants to support the hierarchy.
+- Supports optional `leftElement` and `rightElement` slots for icons.
+- Use `isDisabled` to prevent interaction when an action is temporarily unavailable.
+
+<Callout variant="note">The naked button is ideal for inline actions such as "Learn more", "Edit details", or "View invoice" — where a full button weight would distract from the primary action.</Callout>
+
+## Variants
+
+### Hierarchy
+
+<Story of={NakedButtonStories.VariantHierarchy} />
+
+### States
+
+All variants share the same set of states: rest, hover, pressed, and disabled. There is no loading state on the naked button.
+
+<Story of={NakedButtonStories.NakedButtonStates} />
+
+## Sizes
+
+Two sizes are available — `medium` is the default.
+
+<Canvas of={NakedButtonStories.Sizes} />
+
+## Left and right elements
+
+The naked button has two optional slots — `leftElement` and `rightElement` — typically used for icons that clarify the button's purpose or suggest UI behaviour.
+
+<Story of={NakedButtonStories.ElementsGuide} />
+
+</DocTab>
+
+<DocTab label="Development">
+
+## Naked button as link
+
+When clicking the button navigates the user to another route or external page, pass a `link` prop. Penny renders an `<a>` tag under the hood while keeping the visual appearance of a naked button.
+
+```tsx
+<NakedButton label="View invoice" link={{ href: '/invoices/123' }} />
+<NakedButton label="Open in new tab" link={{ href: 'https://example.com', target: '_blank' }} />
+```
+
+<Canvas of={NakedButtonStories.NakedButtonAsLink} />
+
+Even when a link is styled like a button, the underlying HTML must match the function. Screen readers rely on `<button>` vs `<a>` to tell users whether the element triggers an action or navigates. Passing `link` ensures the right element is rendered.
+
+## Props
+
+<ArgTypes of={NakedButtonStories} />
+
+</DocTab>
+
+<DocTab label="ADA">
+
+## Accessibility
+
+- **Keyboard**: `Tab` to focus, `Space`/`Enter` to activate.
+- **Focus ring**: a 2px offset focus ring renders on `:focus-visible`.
+- **Semantics**: renders as `<button>`; passing `link` prop switches to `<a>` so screen readers announce navigation correctly.
+- **Disabled**: uses the native `disabled` attribute, removing the button from focus order. For `link` buttons, `aria-disabled` is used instead.
+- **Ellipsis**: when `shouldSupportEllipsis` is enabled, the full label is available to screen readers even when visually truncated.
+
+</DocTab>
+
+</DocTabs>

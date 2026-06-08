@@ -1,0 +1,29 @@
+import { Markdown, Meta } from '@storybook/addon-docs/blocks';
+
+import { BorderRadius } from './utils/BorderRadius';
+
+<Markdown>
+  {/* 
+  This CSS rule hides the Table of Contents (TOC) in the Docs page
+  by targeting the sbdocs-wrapper and removing display when a TOC
+  is present, ensuring it doesn't appear in specific stories. 
+  https://github.com/storybookjs/storybook/discussions/23672 
+*/}
+</Markdown>
+
+<style>
+  {`
+    .sbdocs-wrapper > div:has(div > .toc-wrapper) {
+      display: none;
+    }
+  `}
+</style>
+
+<Meta title="Foundations/Border Radius" />
+
+# Border Radius
+
+The border-radius design tokens are essential for providing meaning and ensuring visual consistency across the design system.<br />
+Below are the border-radius tokens defined in our design system.<br />
+
+<BorderRadius />

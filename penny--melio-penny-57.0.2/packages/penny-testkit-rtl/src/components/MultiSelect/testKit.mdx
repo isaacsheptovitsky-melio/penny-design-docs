@@ -1,0 +1,85 @@
+import { Markdown, Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Selection & Inputs Components/Multi Select/RTL Test Kit" />
+
+# MultiSelect RTL Test Kit
+---
+
+Testing utilities for the `MultiSelect` component that provide easy access to component interactions, states, and accessibility features for RTL (React Testing Library).
+
+## Import
+
+```typescript
+import { createMultiSelectTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Get the root element | \`HTMLElement\` |
+| \`click()\` | Click the trigger to toggle the menu | \`Promise<void>\` |
+| \`clickOutside()\` | Click outside to close menu | \`Promise<void>\` |
+| \`getValue()\` | Get the data-value attribute | \`string\` |
+| \`getPlaceholder()\` | Get the placeholder text | \`string\` |
+| \`getIsDisabled()\` | Check if component is disabled | \`boolean\` |
+| \`getIsInvalid()\` | Check if component is invalid | \`boolean\` |
+| \`getIsReadOnly()\` | Check if component is read-only | \`boolean\` |
+| \`getIsRequired()\` | Check if component is required | \`boolean\` |
+| \`getIsMenuOpen()\` | Check if menu is open | \`boolean\` |
+| \`getIsViewMode()\` | Check if component is in view mode | \`boolean\` |
+| \`getIsLoading()\` | Check if component is loading | \`boolean\` |
+| \`clickOptionByText(text: string)\` | Select an option by accessible name | \`Promise<void>\` |
+| \`clickOptionByIndex(index: number)\` | Select an option by index | \`Promise<void>\` |
+| \`clickOptionByTestId(testId: string)\` | Select an option by custom test ID | \`Promise<void>\` |
+`}
+</Markdown>
+
+## Examples
+
+### Basic Usage
+
+```typescript
+import { render } from '@testing-library/react';
+import { createMultiSelectTestKit } from '@melio/penny-testkit-rtl';
+import { MultiSelect } from '@melio/penny';
+
+describe('MultiSelect Component', () => {
+    const options = [
+      { label: 'Option 1', value: '1' },
+      { label: 'Option 2', value: '2' },
+      { label: 'Option 3', value: '3' }
+    ];
+
+  it('should show placeholder', async () => {
+    const testKit = createMultiSelectTestKit({ dataTestId: 'custom-datatestid' });
+    render(<MultiSelect data-testid="custom-datatestid" options={options} />);
+
+    expect(testKit.getPlaceholder()).toBe('Selected option');
+  });
+
+  it('should select multiple options', async () => {
+    const testKit = createMultiSelectTestKit({ dataTestId: 'custom-datatestid' });
+    render(<MultiSelect data-testid="custom-datatestid" options={options} />);
+
+    expect(testKit.getIsMenuOpen()).toBe(true);
+
+    await testKit.clickOptionByText('Option 1');
+    await testKit.clickOptionByText('Option 3');
+
+    expect(testKit.getValue()).toEqual('1, 3');
+  });
+
+  it('should not open when disabled', async () => {
+    const testKit = createMultiSelectTestKit({ dataTestId: 'custom-datatestid' });
+    render(<MultiSelect data-testid="custom-datatestid" isDisabled options={options} />);
+
+    expect(testKit.getIsDisabled()).toBe(true);
+    await testKit.click();
+    expect(testKit.getIsMenuOpen()).toBe(false);
+  });
+});
+```

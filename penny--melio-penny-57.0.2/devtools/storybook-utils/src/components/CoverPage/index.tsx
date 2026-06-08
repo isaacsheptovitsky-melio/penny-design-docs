@@ -1,0 +1,1 @@
+export { CoverPage } from './CoverPage';

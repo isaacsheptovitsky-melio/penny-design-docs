@@ -1,0 +1,63 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Action Components/Button/RTL Test Kit" />
+
+# Button RTL Test Kit
+---
+
+Testing utilities for the `Button` component that provide easy access to component interactions, states, and accessibility features for Rtl (React Testing Library).
+
+## Import
+
+```typescript
+import { createButtonTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the DOM element | \`HTMLElement\` |
+| \`click()\` | Clicks on the element | \`Promise<void>\` |
+| \`getDisabled()\` | Checks if the element is disabled | \`boolean\` |
+| \`getIsLink()\` | Checks if the element is a link | \`boolean\` |
+| \`getHref()\` | Gets the element's href | \`string \| null\` |
+| \`getIsLoading()\` | Checks if the element is in loading state | \`boolean\` |
+| \`getLabelText()\` | Gets the element's text content | \`string\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createButtonTestKit } from '@melio/penny-testkit-rtl';
+
+describe('Button Component', () => {
+  it('should call onClick callback', async () => {
+    const onClick = vi.fn();
+    const testKit = createButtonTestKit({ dataTestId: 'custom-datatestid' });
+    render(<Button onClick={onClick} data-testid="custom-datatestid"/>);
+
+    await testKit.click();
+
+    expect(onClick).toHaveBeenCalledOnce();
+  });
+
+  it('should get button label', () => {
+    const testKit = createButtonTestKit({ dataTestId: 'custom-datatestid' });
+    render(<Button label="Submit Form" data-testid='custom-datatestid'/>);
+
+    expect(testKit.getLabelText()).toBe('Submit Form');
+  });
+
+  it('should be disabled', () => {
+    const testKit = createButtonTestKit({ dataTestId: 'custom-datatestid' });
+    render(<Button label="Submit" isDisabled data-testid='custom-datatestid'/>);
+
+    expect(testKit.getDisabled()).toBe(true);
+  });
+});
+```

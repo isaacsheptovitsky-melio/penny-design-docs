@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+  <g clip-path="url(#st-lucia__a)">
+    <path fill="#338AF3" d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12Z"/>
+    <path fill="#F3F3F3" d="M7.565 16.174h8.87L12 5.739 7.565 16.174Z"/>
+    <path fill="#333" d="M9.106 15.13 12 8.55l2.893 6.582H9.107Z"/>
+    <path fill="#FFDA44" d="M7.565 16.174h8.87L12 12l-4.435 4.174Z"/>
+  </g>
+  <defs>
+    <clipPath id="st-lucia__a">
+      <path fill="#fff" d="M0 12C0 5.373 5.373 0 12 0s12 5.373 12 12-5.373 12-12 12S0 18.627 0 12Z"/>
+    </clipPath>
+  </defs>
+</svg>

@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "outDir": "./dist"
+  },
+  "include": [
+    "src/**/*",
+    "esbuild.config.mjs",
+    ".eslintrc.cjs"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

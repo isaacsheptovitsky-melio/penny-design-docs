@@ -1,0 +1,88 @@
+import { Meta, CodeOrSourceMdx } from '@storybook/addon-docs/blocks';
+import { tableBorderStyles, tableHeaderStyles, tableRowBackgroundStyles} from 'storybook-utils';
+
+<Meta title="Form/useFormSubmissionController" />
+
+# Form - `useFormSubmissionController`
+Sometimes you have a form that has the fields in one component, and the submit/cancel button in another.<br />
+This hook allows you to connect the submission of the form to the submit/cancel button component.
+
+You can see an example of this in the [form's how-to-use guide](/docs/form-how-to-use--docs#connecting-buttons-to-the-form) component.
+
+Under the hood, what this hook does is to expose the output of the `useMelioForm` you connected using `onSubmissionStateChange`.<br />
+This allows you to connect the form to the buttons, and control the state of the form, even when you're not in the same component.
+
+
+### Output
+The hook will return everything that the [useMelioForm](http://localhost:6006/?path=/docs/form-usemelioform--docs#output) hook returns, plus the following:
+
+<table style={tableBorderStyles}>
+  <thead style={tableHeaderStyles}>
+  <tr>
+    <th style={{ textAlign: 'start' }}>Option</th>
+    <th style={{ textAlign: 'start' }}>Description</th>
+    <th style={{ textAlign: 'start' }}>Type</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr style={tableRowBackgroundStyles}>
+    <td>`onSubmissionStateChange`</td>
+    <td>
+      This is the "setter" function that you need to pass to a `useMelioForm` hook in order to connect it to the form.
+    </td>
+    <td>`useState`'s setter function</td>
+  </tr>
+  </tbody>
+</table>
+
+### Usage
+
+
+```tsx
+// MyScreen.tsx
+import { Button, Group, useFormSubmissionController } from '@melio/penny';
+
+import { MyFormComp } from './MyForm';
+import type { MyFormFields } from './MyForm';
+
+export const MyScreen: VFC = () => {
+  const { onSubmissionStateChange, submitButtonProps } =
+    useFormSubmissionController<MyFormFields>();
+
+  return (
+    <Group variant="vertical">
+      <MyFormComp onSubmit={console.log} onSubmissionStateChange={onSubmissionStateChange} />
+      <Button {...submitButtonProps}>Continue</Button>
+    </Group>
+  );
+}
+```
+
+```tsx
+// MyForm.tsx
+import { Form, useMelioForm } from '@melio/penny';
+import type { OnSubmissionStateChange } from '@melio/penny';
+
+export type MyFormFields = {
+  vendorId: string;
+  billAmount: string;
+  billNumber: string;
+  dueDate: Date;
+  note: string;
+};
+
+type MyFormProps = {
+  onSubmit: (data: MyFormFields) => void;
+  onSubmissionStateChange: OnSubmissionStateChange<MyFormFields>;
+}
+
+export const MyForm: VFC<MyFormProps> = ({ onSubmit }) => {
+  const { formProps, registerField } = useMelioForm<MyFormFields>({ onSubmit, onSubmissionStateChange });
+
+  return (
+    <Form columns={2} {...formProps}>
+      // ...Fields
+    </Form>
+  );
+}
+```

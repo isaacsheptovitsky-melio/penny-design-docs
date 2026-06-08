@@ -1,0 +1,489 @@
+version: 2.1
+orbs:
+  aws-cli: circleci/aws-cli@3.1.4
+  melio-orb: melio/base-cicd-node@1.0.2
+  slack: circleci/slack@4.12.5
+
+only_main: &only_main
+  filters:
+    branches:
+      only: main
+
+executor_conf: &executor_conf
+  resource_class: large
+  working_directory: /home/circleci/project
+  environment:
+    PNPM_HOME: /home/circleci/.local/share/pnpm
+
+commands:
+  setup:
+    description: 'Setup'
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+      - run:
+          name: Install pnpm
+          command: |
+            sudo corepack enable
+            corepack prepare pnpm@latest-10 --activate
+            pnpm config set store-dir .pnpm-store
+      - npm_auth
+  npm_auth:
+    description: 'NPM repository authentication '
+    steps:
+      - run:
+          name: Authenticate with npm registry
+          command: |
+            echo "@melio:registry=https://npm.pkg.github.com" > ~/.npmrc
+            echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> ~/.npmrc
+
+  slack-failure-notification:
+    steps:
+      - slack/notify:
+          channel: 'C0907QF5FUL'
+          event: fail
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ":warning: *Penny* build failed on $CIRCLE_BRANCH by $CIRCLE_USERNAME"
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn", 
+                      "text": "*Branch:*\n$CIRCLE_BRANCH"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Commit:*\n$CIRCLE_SHA1"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Build:*\n<$CIRCLE_BUILD_URL|#$CIRCLE_BUILD_NUM>"
+                    }
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View Pipeline",
+                        "emoji": true
+                      },
+                      "url": "$CIRCLE_BUILD_URL",
+                      "action_id": "view-pipeline"
+                    }
+                  ]
+                }
+              ]
+            }
+
+  slack-success-notification:
+    steps:
+      - slack/notify:
+          channel: 'C0907QF5FUL'
+          event: pass
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ":white_check_mark: *Penny* build recovered on $CIRCLE_BRANCH"
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Fixed by:*\n$CIRCLE_USERNAME"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Build:*\n<$CIRCLE_BUILD_URL|#$CIRCLE_BUILD_NUM>"
+                    }
+                  ]
+                }
+              ]
+            }
+
+executors:
+  ci-node:
+    <<: *executor_conf
+    docker:
+      - image: cimg/node:lts
+  ci-node-browsers:
+    <<: *executor_conf
+    docker:
+      - image: cimg/node:lts-browsers
+
+jobs:
+  install:
+    parameters:
+      key:
+        type: string
+    executor: ci-node
+    resource_class: xlarge
+    steps:
+      - checkout
+      - aws-cli/install
+      - run:
+          name: Install pnpm
+          command: |
+            sudo corepack enable
+            corepack prepare pnpm@latest-10 --activate
+            pnpm config set store-dir .pnpm-store
+      - npm_auth
+      - restore_cache:
+          name: Restore pnpm Package Cache
+          keys:
+            - pnpm-packages-{{ checksum "pnpm-lock.yaml" }}
+      - run:
+          name: Installing dependencies
+          command: |
+            pnpm install --ignore-scripts
+            if ! git diff --exit-code pnpm-lock.yaml; then
+              echo "Changes were detected in pnpm-lock.yaml file after running 'pnpm install', which is not expected. Please run 'pnpm install' locally and commit the changes.";
+              exit 1;
+            fi
+      - save_cache:
+          name: Save pnpm Package Cache
+          key: pnpm-packages-{{ checksum "pnpm-lock.yaml" }}
+          paths:
+            - .pnpm-store
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - project
+
+  circular-deps-penny:
+    executor: ci-node
+    resource_class: small
+    steps:
+      - setup
+      - run:
+          name: Analyze circular dependencies in theme (non-failing)
+          command: |
+            mkdir -p artifacts
+            pnpm circular-deps:penny || true
+            pnpm circular-deps:penny:json || true
+      - store_artifacts:
+          path: artifacts
+          destination: artifacts
+
+  lint:
+    executor: ci-node
+    resource_class: large
+    steps:
+      - setup
+      - run:
+          name: Running eslint
+          command: pnpm lint:ci
+      - store_test_results:
+          path: .reports
+
+  typecheck:
+    executor: ci-node
+    resource_class: large
+    steps:
+      - setup
+      - run:
+          name: Running typecheck
+          command: pnpm typecheck:ci
+      - store_test_results:
+          path: .reports
+
+  unit-tests:
+    executor: ci-node
+    resource_class: xlarge
+    steps:
+      - setup
+      - run:
+          name: Running tests
+          command: pnpm test:ci
+      - store_test_results:
+          path: .reports
+      - store_artifacts:
+          path: .coverage
+      # - melio-orb/upload-coverage # disabled: codecov GPG signature issue https://github.com/codecov/codecov-action/issues/1940
+
+  build-storybook:
+    executor: ci-node
+    resource_class: large
+    steps:
+      - setup
+      - run:
+          name: Building Storybook
+          command: pnpm build-storybook --quiet
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - project
+
+  chromatic:
+    executor: ci-node
+    resource_class: xlarge
+    steps:
+      - setup
+      - run:
+          name: Check if should skip visual change test
+          command: |
+            # Check if this is the changeset-release/main branch
+            if [ "<< pipeline.git.branch >>" = "changeset-release/main" ]; then
+              echo "This is changeset-release/main branch, setting skip flag"
+              echo 'export CHROMATIC_SKIP_VISUAL_CHANGE=true' >> "$BASH_ENV"
+            else
+              echo 'export CHROMATIC_SKIP_VISUAL_CHANGE=false' >> "$BASH_ENV"
+            fi
+      - run:
+          name: Verify and update Chromatic version
+          command: |
+            echo "====== Chromatic Version Check ======"
+
+            # Print currently installed version (if any)
+            echo "Currently installed Chromatic version:"
+            pnpm list chromatic --depth=0 || echo "Chromatic not found in pnpm list"
+
+            # Get the latest version from npm
+            echo "Fetching latest Chromatic version from npm..."
+            LATEST_VERSION=$(npm view chromatic version)
+            echo "Latest Chromatic version: $LATEST_VERSION"
+
+            # Install the latest version if needed
+            if pnpm list chromatic --depth=0 | grep -q "chromatic $LATEST_VERSION"; then
+              echo "Latest version of Chromatic ($LATEST_VERSION) already installed."
+            else
+              echo "Updating Chromatic to latest version ($LATEST_VERSION)..."
+              # Use pnpm add with exact version to avoid any resolution issues
+              pnpm add -D -w chromatic@$LATEST_VERSION --save-exact
+              
+              # Verify the update worked
+              echo "Verifying update..."
+              INSTALLED_VERSION=$(pnpm list chromatic --depth=0 | grep -o "chromatic [0-9]*\.[0-9]*\.[0-9]*" | cut -d' ' -f2)
+              echo "Installed version after update: $INSTALLED_VERSION"
+              
+              if [ "$INSTALLED_VERSION" = "$LATEST_VERSION" ]; then
+                echo "Successfully updated Chromatic to $LATEST_VERSION"
+              else
+                echo "Failed to update Chromatic. Installed: $INSTALLED_VERSION, Expected: $LATEST_VERSION"
+                echo "This is likely due to a version conflict. Continuing with installed version."
+              fi
+            fi
+
+            # Additional safety check - make sure Chromatic is actually available
+            echo "Confirming Chromatic is executable..."
+            if [ -f "./node_modules/.bin/chromatic" ]; then
+              echo "Chromatic binary found at ./node_modules/.bin/chromatic"
+            else
+              echo "Chromatic binary not found in expected location"
+            fi
+
+            echo "====== Chromatic Version Check Complete ======"
+      - run:
+          name: Avoid hosts unknown for github
+          command: mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+      - run:
+          name: Publishing to Chromatic using pre-built Storybook
+          command: |
+            if [ "$CHROMATIC_SKIP_VISUAL_CHANGE" = "true" ]; then
+              echo "Change not affecting visual changes, skipping visual tests"
+              pnpm publish-storybook:skip --project-token=${CHROMATIC_PROJECT_TOKEN} --auto-accept-changes=main --storybook-build-dir=storybook-static
+            else
+              echo "Change might affect visual changes, running Chromatic normally"
+              pnpm publish-storybook --project-token=${CHROMATIC_PROJECT_TOKEN} --auto-accept-changes=main --storybook-build-dir=storybook-static
+            fi
+
+  a11y-tests:
+    executor: ci-node-browsers
+    resource_class: xlarge
+    steps:
+      - setup
+      - run:
+          name: Install browser dependencies
+          command: |
+            # Update package lists first to get latest package versions
+            sudo apt-get update
+            # Install Playwright with dependencies, retry with --fix-missing if needed
+            echo "Installing browsers for Playwright version 1.48.2..."
+
+            # Install browsers for the newer @playwright/test version
+            pnpm exec playwright install chromium || echo "Failed to install for @playwright/test"
+
+            # Install browsers for Playwright version used by @storybook/test-runner
+            echo "Installing browsers for Playwright version used by test-runner..."
+            cd node_modules/playwright && npx playwright install chromium || {
+              echo "Trying alternative method for older playwright version..."
+              npx playwright@1.48.2 install chromium
+            }
+
+            # Go back to project root
+            cd "${CIRCLE_WORKING_DIRECTORY:-/home/circleci/project}"
+
+            # Verify installations
+            echo "Verifying browser installations..."
+            ls -la ~/.cache/ms-playwright/ || echo "Browser cache directory not found"
+
+            echo "Browser installation completed."
+      - run:
+          name: Clear Storybook cache
+          command: rm -rf node_modules/.cache/storybook
+      - run:
+          name: Run a11y tests
+          command: pnpm test:a11y
+      - store_test_results:
+          path: .reports
+
+  notify-recovery:
+    executor: ci-node
+    steps:
+      - run:
+          name: Check if previous build failed and send recovery notification
+          command: |
+            echo "=== Checking previous build status ==="
+
+            # Get recent builds for this branch
+            API_RESPONSE=$(curl -s \
+              -H "Circle-Token: ${CIRCLE_API_TOKEN}" \
+              "https://circleci.com/api/v2/project/gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pipeline?branch=${CIRCLE_BRANCH}" \
+              | jq -r '.items[0:5]')
+
+            echo "Recent pipelines:"
+            echo "$API_RESPONSE" | jq -r '.[] | "\(.number): \(.state) (\(.created_at))"'
+
+            # Get the previous pipeline
+            PREVIOUS_PIPELINE_ID=$(echo "$API_RESPONSE" | jq -r '.[1].id // empty')
+
+            if [ -z "$PREVIOUS_PIPELINE_ID" ]; then
+              echo "No previous pipeline found - this might be the first build or API issue"
+              echo "Skipping recovery notification"
+              exit 0
+            fi
+
+            echo "Previous pipeline ID: $PREVIOUS_PIPELINE_ID"
+
+            # Get workflows for the previous pipeline
+            WORKFLOWS_RESPONSE=$(curl -s \
+              -H "Circle-Token: ${CIRCLE_API_TOKEN}" \
+              "https://circleci.com/api/v2/pipeline/${PREVIOUS_PIPELINE_ID}/workflow")
+
+            echo "Previous pipeline workflows:"
+            echo "$WORKFLOWS_RESPONSE" | jq -r '.items[] | "\(.name): \(.status)"'
+
+            # Check if any workflow failed in the previous pipeline
+            FAILED_WORKFLOWS=$(echo "$WORKFLOWS_RESPONSE" | jq -r '.items[] | select(.status == "failed") | .name')
+
+            if [ -n "$FAILED_WORKFLOWS" ]; then
+              echo "Previous build had failed workflows: $FAILED_WORKFLOWS"
+              echo "Current build is successful - sending recovery notification"
+              export SEND_RECOVERY_NOTIFICATION=true
+            else
+              echo "Previous build was successful - no recovery notification needed"
+              export SEND_RECOVERY_NOTIFICATION=false
+            fi
+
+            echo "SEND_RECOVERY_NOTIFICATION=$SEND_RECOVERY_NOTIFICATION"
+
+            # Exit with halt if we shouldn't send notification
+            if [ "$SEND_RECOVERY_NOTIFICATION" = "false" ]; then
+              echo "Halting - no notification needed"
+              circleci step halt
+            fi
+      - slack-success-notification
+
+workflows:
+  build:
+    jobs:
+      - install:
+          key: v40-dependencies
+          context: melio-all
+      - circular-deps-penny:
+          context: melio-all
+          requires:
+            - install
+      - typecheck:
+          context: melio-all
+          requires:
+            - install
+          post-steps:
+            - when:
+                condition:
+                  and:
+                    - on_fail
+                    - equal: [main, << pipeline.git.branch >>]
+                steps:
+                  - slack-failure-notification
+      - lint:
+          context: melio-all
+          requires:
+            - install
+          post-steps:
+            - when:
+                condition:
+                  and:
+                    - on_fail
+                    - equal: [main, << pipeline.git.branch >>]
+                steps:
+                  - slack-failure-notification
+      - unit-tests:
+          context: melio-all
+          requires:
+            - install
+          post-steps:
+            - when:
+                condition:
+                  and:
+                    - on_fail
+                    - equal: [main, << pipeline.git.branch >>]
+                steps:
+                  - slack-failure-notification
+      - build-storybook:
+          context: melio-all
+          requires:
+            - install
+      - a11y-tests:
+          context: melio-all
+          requires:
+            - install
+          post-steps:
+            - when:
+                condition:
+                  and:
+                    - on_fail
+                    - equal: [main, << pipeline.git.branch >>]
+                steps:
+                  - slack-failure-notification
+      - chromatic:
+          context: melio-all
+          requires:
+            - build-storybook
+            - typecheck
+            - lint
+            - unit-tests
+          post-steps:
+            - when:
+                condition:
+                  and:
+                    - on_fail
+                    - equal: [main, << pipeline.git.branch >>]
+                steps:
+                  - slack-failure-notification
+      - notify-recovery:
+          context: melio-all
+          requires:
+            - typecheck
+            - lint
+            - unit-tests
+            - a11y-tests
+            - chromatic
+          <<: *only_main

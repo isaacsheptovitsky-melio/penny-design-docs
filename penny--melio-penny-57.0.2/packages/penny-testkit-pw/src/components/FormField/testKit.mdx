@@ -1,0 +1,68 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Form/Form Field/Playwright Test Kit" />
+
+# FormField Playwright Test Kit
+---
+
+Testing utilities for the `FormField` component that provide easy access to component interactions, states, and accessibility features for Playwright testing.
+
+## Import
+
+```typescript
+import { createFormFieldTestKit } from '@melio/penny-testkit-pw';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\` |
+| \`getElement()\` | Direct access to the DOM element | \`Locator\` |
+| \`getLabelText()\` | Gets the label text content | \`Promise<string>\` |
+| \`getErrorMessage()\` | Gets the error message text content | \`Promise<string>\` |
+| \`getHelperText()\` | Gets the helper text content | \`Promise<string>\` |
+| \`getMaxCharsCounter()\` | Gets the max characters counter text content | \`Promise<string>\` |
+| \`getIsLabelHidden()\` | Checks if the label is hidden | \`Promise<boolean>\` |
+| \`getIsDisabled()\` | Checks if the field is disabled | \`Promise<boolean>\` |
+| \`getIsReadOnly()\` | Checks if the field is read-only | \`Promise<boolean>\` |
+| \`getIsViewMode()\` | Checks if the field is in view mode | \`Promise<boolean>\` |
+| \`getIsInvalid()\` | Checks if the field is invalid | \`Promise<boolean>\` |
+| \`getIsRequired()\` | Checks if the field is required | \`Promise<boolean>\` |
+| \`getIsLabelHasOptionalIndicator()\` | Checks if the label has optional indicator | \`Promise<boolean>\` |
+| \`clickLabel()\` | Clicks on the label | \`Promise<void>\` |
+| \`input\` | Test kit for the specific input type | \`typeof createTextField\` |
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { test, expect } from '@playwright/test';
+import { createFormFieldTestKit } from '@melio/penny-testkit-pw';
+
+describe('FormField Component', () => {
+  test('should get label text', async ({ page }) => {
+    const testKit = createFormFieldTestKit('TextField', page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    expect(await testKit.getLabelText()).toBe('Field Label');
+  });
+
+  test('should be disabled', async ({ page }) => {
+    const testKit = createFormFieldTestKit('TextField', page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    expect(await testKit.getIsDisabled()).toBeTruthy();
+  });
+
+  test('should show error message', async ({ page }) => {
+    const testKit = createFormFieldTestKit('TextField', page, { dataTestId: 'custom-datatestid' });
+    
+    await page.goto('/some-page');
+    expect(await testKit.getErrorMessage()).toBe('This field is required');
+  });
+});
+```

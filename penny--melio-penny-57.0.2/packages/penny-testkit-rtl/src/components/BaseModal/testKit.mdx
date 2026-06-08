@@ -1,0 +1,72 @@
+import { Meta, Markdown } from '@storybook/addon-docs/blocks';
+
+<Meta title="Containers/Modals/Base Modal/RTL Test Kit" />
+
+# BaseModal RTL Test Kit
+---
+
+Testing utilities for the `BaseModal` component that provide easy access to component interactions, states, and accessibility features for Rtl (React Testing Library)
+
+## Import
+
+```typescript
+import { createBaseModalTestKit } from '@melio/penny-testkit-rtl';
+```
+
+## Methods
+
+<Markdown>
+  {`
+| Method | Description | Return value |
+|--------|-------------|--------------|
+| \`dataTestId\` | The data-testid used to identify the component | \`string\`
+| \`getElement()\` | Direct access to the modal's root element | \`HTMLElement\`
+| \`getVisible()\` | Checks if the element is visible | \`boolean\`
+| \`getIsLoading()\` | Checks if the element is in loading state | \`boolean\`
+| \`getRole()\` | Gets the element's role attribute | \`string \| null\`
+| \`clickOverlay()\` | Clicks on the element's overlay | \`Promise<void>\`
+| \`pressEscape()\` | Simulates pressing the 'Escape' key | \`Promise<void>\` 
+| \`closeButton\` | The test kit for the close button | [IconButtonTestKit](?path=/docs/action-components-icon-button-rtl-test-kit--docs)
+`}
+</Markdown>
+
+## Examples
+
+```typescript
+import { createBaseModalTestKit } from '@melio/penny-testkit-rtl';
+
+describe('BaseModal Component', () => {
+  it('should close modal on escape key', async () => {
+    const handleClose = vi.fn();
+    const testKit = createBaseModalTestKit({ dataTestId: 'custom-datatestid' });
+    render(<BaseModal isOpen onClose={handleClose} data-testid="custom-datatestid"/>);
+    
+    expect(testKit.getVisible()).toBe(true);
+    
+    testKit.pressEscape();
+
+    expect(handleClose).toHaveBeenCalled();
+    expect(testKit.getVisible()).toBe(false);
+  });
+
+  it('should close modal on close button click', async () => {
+    const handleClose = vi.fn();
+    const testKit = createBaseModalTestKit({ dataTestId: 'custom-datatestid' });
+    render(<BaseModal isOpen onClose={handleClose} data-testid="custom-datatestid"/>);
+
+    expect(testKit.getVisible()).toBe(true);
+
+    await testKit.closeButton.click();
+
+    expect(handleClose).toHaveBeenCalled();
+    expect(testKit.getVisible()).toBe(false);
+  });
+
+  it('should check loading state', () => {
+    const testKit = createBaseModalTestKit({ dataTestId: 'custom-datatestid' });
+    render(<BaseModal isOpen onClose={() => {}} isLoading data-testid="custom-datatestid"/>);
+
+    expect(testKit.getIsLoading()).toBe(true);
+  });
+});
+```
