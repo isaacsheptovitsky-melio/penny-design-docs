@@ -69,11 +69,21 @@ export const StatesGridCell: React.FC<StatesGridCellProps> = ({ dark = false, fo
       ? { 'data-hover': '' }
       : forceState === 'active'
         ? { 'data-active': '' }
-        : {};
+        : null;
+
+  // Penny components apply hover / pressed styles via Chakra's `_hover` / `_active`, which compile
+  // to selectors on the component element itself (`&[data-hover]`, `&[data-active]`). The attribute
+  // must therefore live on the rendered component — putting it on this wrapper div does nothing.
+  // Clone it onto the child: components spread unknown props onto their styled root, so the data
+  // attribute reaches the element and the forced state actually renders.
+  const content = stateAttr
+    ? React.Children.map(children, (child) =>
+        React.isValidElement(child) ? React.cloneElement(child, stateAttr as React.Attributes) : child
+      )
+    : children;
 
   return (
     <div
-      {...stateAttr}
       style={{
         display: 'flex',
         alignItems: 'center',
@@ -85,7 +95,7 @@ export const StatesGridCell: React.FC<StatesGridCellProps> = ({ dark = false, fo
         height: '100%',
       }}
     >
-      {children}
+      {content}
     </div>
   );
 };

@@ -5,11 +5,12 @@ import { forwardRef } from 'react';
 
 import { useButtonGroupContext } from '@/components/action/ButtonGroup/ButtonGroupContext';
 import { Icon } from '@/components/foundations/Icon';
+import { Spinner } from '@/components/foundations/Spinner';
 import { useStyleConfig } from '@/theme/hooks/use-style-config';
 
 import { getButtonLinkProps } from '../utils/getButtonLinkProps';
 import type { IconButtonProps } from './IconButton.types';
-import { DEFAULT_DATA_TEST_ID, DEFAULT_VARIANT, iconSizeMap, spinnerSizeMap } from './IconButton.utils';
+import { DEFAULT_DATA_TEST_ID, DEFAULT_VARIANT, iconSizeMap, spinnerSizeMap, spinnerVariantMap } from './IconButton.utils';
 
 /**
  * The IconButton is a compact button that displays only an icon, without a text label. It is typically used for less prominent actions, such as editing, deleting, or closing.
@@ -51,18 +52,10 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>((props,
       {...getTestId()}
     >
       {isLoading ? (
-        <span
-          aria-hidden
-          style={{
-            display: 'inline-block',
-            width:  spinnerSizeMap[size],
-            height: spinnerSizeMap[size],
-            border: '2px solid currentColor',
-            borderTopColor: 'transparent',
-            borderRadius: '50%',
-            animation: 'icon-button-spin 0.7s linear infinite',
-            flexShrink: 0,
-          }}
+        <Spinner
+          size={spinnerSizeMap[size]}
+          variant={spinnerVariantMap[variant as keyof typeof spinnerVariantMap] ?? 'neutral'}
+          {...getTestId('spinner')}
         />
       ) : (
         <Icon type={icon} size={iconSizeMap[size]} color="inherit" aria-hidden />

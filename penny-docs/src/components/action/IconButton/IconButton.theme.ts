@@ -8,6 +8,12 @@ import type { IconButtonProps } from './IconButton.types';
 export const iconButtonTheme: ComponentSingleStyleConfig<Pick<IconButtonProps, 'variant' | 'size'>> = {
   baseStyle: {
     flexShrink: 0,
+    // Reset native <button> defaults (grey background, outset border). Penny relies on Chakra's
+    // global CSS reset for this, which this docs project doesn't apply — so without these resets
+    // the `naked` / `naked-inverse` variants (the only ones that set no background or border) fall
+    // through to the browser's default button styling. Variants override these as needed.
+    backgroundColor: 'transparent',
+    border: 'global.none',
     transitionProperty: 'background-color,border-color,color',
     transitionDuration: '0.2s',
     display: 'flex',

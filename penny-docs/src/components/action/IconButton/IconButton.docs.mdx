@@ -1,4 +1,4 @@
-import { Canvas, Controls, Meta, ArgTypes, Story } from '@storybook/addon-docs/blocks';
+import { Canvas, Controls, Meta, Story } from '@storybook/addon-docs/blocks';
 import * as IconButtonStories from './IconButton.stories';
 import { Callout } from '@/storybook-utils/Callout';
 import { PageHero } from '@/storybook-utils/PageHero';
@@ -69,46 +69,17 @@ Four sizes are available — `medium` is the default. All sizes meet the WCAG 2.
 
 <Canvas of={IconButtonStories.Sizes} />
 
-## With tooltip
+## Related components
 
-Icon buttons support tooltips to make the action visible to sighted users on hover. The tooltip also appears for disabled icon buttons — ensuring the action is always discoverable.
-
-<Canvas of={IconButtonStories.WithTooltipDemo} />
-
-<Callout variant="note">Tooltip integration requires the `Tooltip` component (not yet vendored into this workspace). The stories above show the icon button in isolation; wire up `<Tooltip content="...">` around `<IconButton>` in your implementation.</Callout>
+<Story of={IconButtonStories.RelatedComponentsBlock} />
 
 </DocTab>
 
 <DocTab label="Development">
 
-## Icon button as link
-
-When clicking the button navigates the user to a route or external page, pass a `link` prop. Penny renders an `<a>` tag under the hood while keeping the visual appearance of an icon button.
-
-```tsx
-<IconButton icon="chevron-right" aria-label="Open invoice" link={{ href: '/invoices/123' }} />
-<IconButton icon="external-link" aria-label="Open in new tab" link={{ href: 'https://example.com', target: '_blank' }} />
-```
-
-<Canvas of={IconButtonStories.IconButtonAsLink} />
-
-## Props
-
-<ArgTypes of={IconButtonStories} />
-
 </DocTab>
 
 <DocTab label="ADA">
-
-## Accessibility
-
-- **Keyboard**: `Tab` to focus, `Space`/`Enter` to activate.
-- **Focus ring**: a 2px offset focus ring renders on `:focus-visible`.
-- **`aria-label` required**: there is no visible text, so every icon button must have an `aria-label` that describes the action (e.g. `"Edit vendor"`, not just `"Edit"`). Prefer action-specific labels over generic ones.
-- **Semantics**: renders as `<button>`; passing the `link` prop switches to `<a>` so screen readers announce navigation correctly.
-- **Disabled**: uses the native `disabled` attribute, removing the element from the focus order. For link variants, `aria-disabled` is used instead.
-- **Minimum target size**: all sizes meet the WCAG 2.2 SC 2.5.8 minimum of 24 × 24 px.
-- **Tooltip on disabled**: the tooltip is intentionally preserved on disabled icon buttons so users know the action exists even when unavailable.
 
 </DocTab>
 

@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+import { Button } from '@/components/action/Button';
+import { NakedButton } from '@/components/action/NakedButton';
+import { RelatedComponent, RelatedComponents } from '@/storybook-utils/RelatedComponents';
 import { StatesGrid, StatesGridCell, StatesGridRow } from '@/storybook-utils/StatesGrid';
 import { VariantCard, VariantCards } from '@/storybook-utils/VariantCard';
+import { VariantGrid, VariantGridItem } from '@/storybook-utils/VariantGrid';
 
 import { IconButton } from './IconButton';
 import { iconButtonVariants, type IconButtonSizes } from './IconButton.types';
@@ -203,13 +207,14 @@ export const Sizes: Story = {
     docs: { canvas: { sourceState: 'none' } },
   },
   render: () => (
-    <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-end', padding: '24px' }}>
-      {sizes.map((size) => (
-        <div key={size} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-          <IconButton icon="add" variant="primary" size={size} aria-label={`${size} icon button`} />
-          <span style={{ fontSize: '11px', color: '#6B7280' }}>{size}</span>
-        </div>
-      ))}
+    <div style={{ padding: '24px' }}>
+      <VariantGrid>
+        {sizes.map((size) => (
+          <VariantGridItem key={size} label={size}>
+            <IconButton icon="add" variant="primary" size={size} aria-label={`${size} icon button`} />
+          </VariantGridItem>
+        ))}
+      </VariantGrid>
     </div>
   ),
 };
@@ -288,35 +293,55 @@ export const IconButtonStates: Story = {
   ),
 };
 
-export const WithTooltipDemo: Story = {
-  name: 'With tooltip',
+// ─── Variants (consolidated) ───────────────────────────────────────────────────
+// Demonstrates the VariantGrid block: all variants spread out side by side with just a label —
+// the compact alternative to the VariantCards hierarchy, for when variants need no side text.
+
+export const VariantsConsolidated: Story = {
+  name: 'Variants (consolidated)',
   parameters: {
     controls: { disable: true },
     docs: { canvas: { sourceState: 'none' } },
   },
   render: () => (
-    <div style={{ display: 'flex', gap: '32px', alignItems: 'center', padding: '24px' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-        <IconButton icon="info" variant="naked" aria-label="More information" />
-        <span style={{ fontSize: '11px', color: '#6B7280' }}>enabled</span>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-        <IconButton icon="info" variant="naked" aria-label="More information" isDisabled />
-        <span style={{ fontSize: '11px', color: '#6B7280' }}>disabled</span>
-      </div>
+    <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <VariantGrid>
+        <VariantGridItem label="Primary"><IconButton icon="add" variant="primary" aria-label="Add" /></VariantGridItem>
+        <VariantGridItem label="Secondary"><IconButton icon="add" variant="secondary" aria-label="Add" /></VariantGridItem>
+        <VariantGridItem label="Tertiary"><IconButton icon="add" variant="tertiary" aria-label="Add" /></VariantGridItem>
+        <VariantGridItem label="Naked"><IconButton icon="add" variant="naked" aria-label="Add" /></VariantGridItem>
+        <VariantGridItem label="Critical"><IconButton icon="add" variant="critical" aria-label="Add" /></VariantGridItem>
+        <VariantGridItem label="Critical secondary"><IconButton icon="add" variant="critical-secondary" aria-label="Add" /></VariantGridItem>
+      </VariantGrid>
+      <VariantGrid dark>
+        <VariantGridItem label="Primary inverse"><IconButton icon="add" variant="primary-inverse" aria-label="Add" /></VariantGridItem>
+        <VariantGridItem label="Secondary inverse"><IconButton icon="add" variant="secondary-inverse" aria-label="Add" /></VariantGridItem>
+        <VariantGridItem label="Naked inverse"><IconButton icon="add" variant="naked-inverse" aria-label="Add" /></VariantGridItem>
+      </VariantGrid>
     </div>
   ),
 };
 
-export const IconButtonAsLink: Story = {
-  name: 'Icon button as link',
-  args: {
-    link: { href: 'https://www.google.com', target: '_blank' },
-    icon: 'chevron-right',
-    variant: 'tertiary',
-    'aria-label': 'Open link',
-  },
+// ─── Related components ─────────────────────────────────────────────────────────
+
+export const RelatedComponentsBlock: Story = {
+  name: 'Related components',
   parameters: {
+    controls: { disable: true },
     docs: { canvas: { sourceState: 'none' } },
   },
+  render: () => (
+    <RelatedComponents>
+      <RelatedComponent
+        name="Button"
+        url="/?path=/docs/components-action-button--docs"
+        preview={<Button label="Label" variant="primary" />}
+      />
+      <RelatedComponent
+        name="Naked Button"
+        url="/?path=/docs/components-action-naked-button--docs"
+        preview={<NakedButton label="Label" variant="primary" />}
+      />
+    </RelatedComponents>
+  ),
 };

@@ -54,7 +54,8 @@ export const RelatedComponent: React.FC<RelatedComponentProps> = ({ name, url, p
           justifyContent: 'center',
           minHeight: '160px',
           padding: '24px',
-          background: dark ? '#0F0728' : '#F8F9FA',
+          // White preview surface (component-preview surfaces are white by default); dark only for inverse.
+          background: dark ? '#0F0728' : '#FFFFFF',
           borderBottom: '1px solid #E2E8F0',
         }}
       >

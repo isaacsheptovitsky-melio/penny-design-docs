@@ -4,6 +4,7 @@ import { Callout } from '@/storybook-utils/Callout';
 import { Do, Dont } from '@/storybook-utils/RuleItem';
 import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 import { VariantCard, VariantCards } from '@/storybook-utils/VariantCard';
+import { VariantGrid, VariantGridItem } from '@/storybook-utils/VariantGrid';
 import { DoDont } from '@/storybook-utils/DoDont';
 import { SectionBox } from '@/storybook-utils/SectionBox';
 import { Label } from '@/storybook-utils/Label';
@@ -386,6 +387,29 @@ Used in the **Variants → Hierarchy** section of component pages. Left column =
     On dark/brand backgrounds — use the `dark` prop.
   </VariantCard>
 </VariantCards>
+
+---
+
+## VariantGrid
+
+The **consolidated** alternative to `VariantCards`. It spreads the previews evenly across the grid — the variants are not individually boxed — with just a label under each. Use it when variants are self-explanatory (sizes, simple variant sets); use `VariantCards` when each variant needs its own rationale.
+
+By default the grid draws no surface of its own (in a component page the `<Canvas>` already provides the white preview surface, so a self-drawn box would double-wrap). Pass `surface` when using it standalone, as below; pass `dark` for an inverse set.
+
+<VariantGrid surface>
+  <VariantGridItem label="Primary"><div style={{ width: '40px', height: '40px', borderRadius: '8px', background: '#7849ff' }} /></VariantGridItem>
+  <VariantGridItem label="Secondary"><div style={{ width: '40px', height: '40px', borderRadius: '8px', background: '#ffffff', border: '1px solid #7849ff' }} /></VariantGridItem>
+  <VariantGridItem label="Tertiary"><div style={{ width: '40px', height: '40px', borderRadius: '8px', background: '#ffffff', border: '1px solid #CBD5E1' }} /></VariantGridItem>
+  <VariantGridItem label="Critical"><div style={{ width: '40px', height: '40px', borderRadius: '8px', background: '#F43F5E' }} /></VariantGridItem>
+</VariantGrid>
+
+Pass `dark` for a set of `*-inverse` variants — the whole grid surface goes dark and the labels lighten to match:
+
+<VariantGrid dark>
+  <VariantGridItem label="Primary inverse"><div style={{ width: '40px', height: '40px', borderRadius: '8px', background: '#ffffff' }} /></VariantGridItem>
+  <VariantGridItem label="Secondary inverse"><div style={{ width: '40px', height: '40px', borderRadius: '8px', background: 'transparent', border: '1px solid rgba(255,255,255,0.4)' }} /></VariantGridItem>
+  <VariantGridItem label="Naked inverse"><div style={{ width: '40px', height: '40px', borderRadius: '8px', background: 'rgba(255,255,255,0.12)' }} /></VariantGridItem>
+</VariantGrid>
 
 ---
 

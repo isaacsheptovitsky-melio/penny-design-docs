@@ -142,10 +142,13 @@ Every component docs page follows this exact section order. Only omit a section 
    │   ├── ## [Feature]        — one section per significant feature (icons, loading, etc.)
    │   ├── ## [Pattern]        — UX patterns (critical confirmation flow, etc.)
    │   ├── ## Desktop usage    — width + placement + do/don't rules
-   │   └── ## Mobile usage     — width + stacking rules
+   │   ├── ## Mobile usage     — width + stacking rules
+   │   └── ## Related components — RelatedComponents card grid (the ZH "Related components" set), last in the Design tab
    ├── Development tab        — LEAVE EMPTY (do not populate)
    └── ADA tab                — LEAVE EMPTY (do not populate)
 ```
+
+> **Legacy pages**: some earlier pages populated the Development tab (e.g. "… as link", Props/`<ArgTypes>`) and the ADA tab (Accessibility). These predate the empty-tabs rule — when you touch such a page, **empty both tabs** and delete any stories that only fed them (e.g. an orphaned `…AsLink` story), keeping all Design-tab content.
 
 ---
 
@@ -297,6 +300,27 @@ Rules:
 
 ---
 
+#### `<VariantGrid>` + `<VariantGridItem>`
+The **consolidated** alternative to `VariantCards` — use it when variants are self-explanatory and don't each need a paragraph of side text. Instead of stacked two-column cards, it spreads the previews evenly across the width (wrapping as needed), each with just a label underneath — the same shape as a "Sizes" row.
+
+```tsx
+import { VariantGrid, VariantGridItem } from '@/storybook-utils/VariantGrid';
+
+<VariantGrid>
+  <VariantGridItem label="Primary"><IconButton icon="add" variant="primary" aria-label="Add" /></VariantGridItem>
+  <VariantGridItem label="Tertiary"><IconButton icon="add" variant="tertiary" aria-label="Add" /></VariantGridItem>
+  <VariantGridItem label="Naked inverse" dark><IconButton icon="add" variant="naked-inverse" aria-label="Add" /></VariantGridItem>
+</VariantGrid>
+```
+
+- **`VariantCards` vs `VariantGrid`**: reach for `VariantCards` when each variant needs its own rationale (logic, constraints, examples); reach for `VariantGrid` when you just want to show them all at a glance.
+- **Surface — off by default; don't double-wrap.** The grid draws no surface of its own; it inherits its container. In a component page the `<Canvas>` already provides the white preview surface, so leave `surface` off — adding it would box-in-a-box. Pass `surface` only when the grid is **standalone** (inline in MDX, no Canvas) and needs its own white card.
+- **`dark`** draws a dark surface (always — inverse variants need a dark backdrop against the white canvas) and lightens the labels. Mix light + inverse by using two grids: a plain `<VariantGrid>` and a `<VariantGrid dark>`.
+- `minItemWidth` (default 120) sets the item width before the grid wraps.
+- Like `VariantCards`, render it inside a story's `render()` (it wraps live components needing the theme provider).
+
+---
+
 #### `<StatesGrid>` + `<StatesGridRow>` + `<StatesGridCell>`
 Labeled grid showing all interactive states per variant. Default columns: Rest, Hover, Pressed, Loading, Disabled.
 
@@ -324,6 +348,8 @@ Use `dark` prop on `StatesGridCell` for inverse/invert variants:
 ```tsx
 <StatesGridCell dark><Button label="Button" variant="primary-inverse" /></StatesGridCell>
 ```
+
+`forceState="hover" | "active"` simulates those states. **It only works because `StatesGridCell` clones the `data-hover` / `data-active` attribute onto its child component** — Penny's `_hover` / `_active` compile to Chakra selectors on the element itself (`&[data-hover]`), so the attribute must land on the rendered component, not a wrapper. The component must spread unknown props onto its styled root (Button / IconButton / NakedButton all do) for the forced state to render. If a new component swallows props, `forceState` will silently show the rest appearance — verify hover/pressed actually differ (e.g. via `getComputedStyle().backgroundColor`), don't trust the screenshot alone.
 
 Always render inside a story. Reference from MDX with `<Story of={ComponentStories.ButtonStates} />`.
 
@@ -595,12 +621,17 @@ Group related do/don'ts under a `###` subheading. At most 3 per subheading.
 These are non-negotiable constraints established for the project. Never deviate from them.
 
 - **Borders**: always `1px solid #E2E8F0`. Never `rgba(...)`, never `2px`.
+- **Preview-surface backgrounds — white by default**: any block that displays **live components** uses a **white** (`#ffffff`) surface (VariantGrid, VariantCard preview column, states cells, the playground canvas). Components are designed for white/neutral surfaces, so white shows them truthfully. Use a **gray** surface (`#F3F4F6` / `#F8F9FA`) only when you're *not* previewing a component on it directly:
+  - **Simulating a real app page behind a component that has its own surface** (cards, modals, drawers, layouts, ActionBar — the STAGE pattern): gray represents the page so the white-surfaced component stands out instead of disappearing into it.
+  - **Non-preview docs chrome**: section/column headers, code blocks, the Controls wrapper.
+  - For variants that only make sense on dark/brand surfaces (`*-inverse`), use the **dark** surface (`#0F0728`), not white or gray.
 - **Fills, not strokes**: H2 headings, `<th>` cells, and Callouts use **background fill only** — no `borderBottom` or `border` on these elements.
 - **Border radius**: 8px everywhere (canvas boxes, tables, callouts, cards). Tables require `border-collapse: separate; border-spacing: 0` for `border-radius` to render.
 - **Font rules — two separate contexts**:
   - *Docs UI / MDX prose* (storybook-utils components, MDX headings, body text): **never** set `fontFamily` inline. Nunito Sans is inherited from `.sbdocs`; Penny components apply Poppins through their theme.
   - *Story `render()` mockup text* (the custom HTML elements you build to simulate a UI — labels, headings, body text in cards, drawers, modals): **always** set `fontFamily: 'Poppins, sans-serif'` on the outermost wrapper `div` so all mockup text inherits Poppins rather than the docs Nunito Sans. Penny components inside the story already receive Poppins from the theme — this rule only applies to the surrounding mockup HTML you write.
-- **Browser button resets**: Any component rendered as a native `<button>` must reset browser defaults in the theme's `baseStyle`: `border: 'none'`, `background: 'transparent'`, `padding: 0`, `cursor: 'pointer'`.
+- **Browser button resets**: Any component rendered as a native `<button>` must reset browser defaults in the theme's `baseStyle` (`background`, `border`, `padding`, `cursor`). Penny relies on Chakra's global CSS reset for this, which this docs project does **not** apply — so without the reset, the browser's default button styling (grey `#efefef` fill, `2px outset` border) leaks through. It only shows on variants that set **no background or border of their own** (e.g. IconButton `naked` / `naked-inverse`); variants with their own fill/border accidentally mask the bug, so check the bare variants specifically.
+  - **Use this project's type-clean token forms**, not the bare CSS values, or you'll get cascading `InternalCSSObject` type errors: `backgroundColor: 'transparent'` (not `background: 'transparent'`) and `border: 'global.none'` (not `border: 'none'`). `padding: 0` also errors — prefer a space token or omit it when fixed `width`/`height` + flex centering already position the content. (`NakedButton.theme.ts` uses the bare forms and carries baseline type errors as a result — don't copy that pattern.)
 
 ---
 
@@ -980,6 +1011,8 @@ Use this pattern for any story whose purpose is "show where/how the trigger appe
 ---
 
 - **Loader bug**: `isLoading` on `Button` crashes in Storybook (pre-existing). Omit Loading state from states grids; it's shown in a separate `LoadingState` story instead.
+- **Spinner** (for loading states): use the vendored `Spinner` foundation (`@/components/foundations/Spinner`), not a hand-rolled CSS spinner. Pick its `variant` (`neutral` | `brand` | `inverse`) to match the host's foreground — light-content surfaces (filled / `*-inverse`) want `inverse`; light surfaces want `neutral` (see IconButton's `spinnerVariantMap`). Caveat: `SpinnerContext` defaults to a **truthy empty object `{}`** when no `SpinnerProvider` is mounted (the case in this docs project), so the override branch (`if (spinnerOverride)`) fires and `createElement({})` throws "Element type is invalid". The vendored Spinner guards this by only treating the override as real when it's a function or forwardRef object — keep that guard. More generally: when vendoring a component that reads a Provider-backed override hook, check the context's **default value** isn't truthy.
+- **Variant lists — code is the source of truth, not ZeroHeight.** The implemented variant union (e.g. `iconButtonVariants`) may be **broader** than what the ZH page documents — IconButton ships `critical` / `critical-secondary` that ZH omits. Document what the component actually supports; flag ZH/code mismatches (and default-value mismatches, e.g. ZH "Large default size" vs code `medium`) to the user rather than silently trimming or following ZH.
 - **ZeroHeight MCP**: Must be called via direct `curl` with `Accept: application/json, text/event-stream` header. Response is SSE — strip `data: ` prefix. `pageId` must be a **number** (not string).
 - **Figma screenshots**: Anatomy images are not yet embedded. Use `<Callout variant="note">Image to be added…</Callout>`.
 - **Chakra context**: Never render Penny components inline in MDX — always wrap them in a story's `render()` function and reference with `<Story>` or `<Canvas>`. MDX inline JSX runs outside the Chakra provider.
@@ -1006,4 +1039,5 @@ Prefer a real asset from here over inventing markup or leaving a placeholder, bu
 - **Component with no ZeroHeight page of its own.** Some components (e.g. `Button Group`) have no dedicated ZH page, but a *pattern built on them* does (e.g. `Split Button`, an instance of `ButtonGroup`). Source the docs from the component's source API (`.types.ts`) for the props/Controls, and from the related pattern's ZH page for usage/variants/mobile guidance. Badge it `Healthy` and frame the page around the component, folding the pattern in as a section.
 - **Pasted images aren't files.** An image pasted into chat is NOT written to disk and can't be `import`ed. Ask the user to save it into `penny-docs/src/assets/<name>.png` (give the exact path), confirm it exists (`ls`/`file`), then add the `import … from '@/assets/<name>.png'` and render it. Don't add the import before the file exists — the running Vite dev server will fail to resolve it.
 - **Import `<Story>` before using it.** If you reference a story with `<Story of={…} />` in MDX (e.g. for a `VariantCards`/`RelatedComponents` block), add `Story` to the `@storybook/addon-docs/blocks` import. Forgetting it throws "Expected component `Story` to be defined: you likely forgot to import, pass, or provide it." — the page error-boundaries out.
-- **Story id ≠ display `name`.** A story's URL id derives from its **export name**, not its `name` parameter. `export const DisabledLinks` with `name: 'Disabled'` is at `…--disabled-links`, not `…--disabled`. Use the export name (camelCase → kebab-case) when navigating to a story; `--docs` is the auto-generated docs page id.
+- **Story id ≠ display `name`.** A story's URL id derives from its **export name**, not its `name` parameter. `export const DisabledLinks` with `name: 'Disabled'` is at `…--disabled-links`, not `…--disabled`. Use the export name (camelCase → kebab-case) when navigating to a story; `--docs` is the auto-generated docs page id. Titles with symbols keep them — `<Meta title="✦ Design Guidelines" />` has the sidebar node id `✦-design-guidelines`, so its docs path is `/?path=/docs/✦-design-guidelines--docs` and the `✦` must be `encodeURIComponent`'d. When unsure of an id, read the sidebar node's `id` attribute in the manager DOM.
+- **Verifying a fix in the live preview — trust the DOM, not the console.** `preview_console_logs` is **cumulative across reloads**: a crash from *before* your fix stays in the buffer and reads as current (you can see hundreds of stale `Element type is invalid` lines after the bug is already gone). To confirm a fix actually took, query the live iframe: `/Element type is invalid/.test(doc.body.textContent)` for the error-boundary fallback, and `getComputedStyle(el)` for the real visual (bg, border, etc.). A screenshot confirms layout but won't prove an earlier runtime error is resolved. Also: a full reload can drop the preview to the landing page and a non-Design tab — re-navigate to `…--docs` and click **Design** before asserting.

@@ -7,6 +7,7 @@ export { dividerTheme } from './dataDisplay/Divider/Divider.theme';
 export { textTheme } from './dataDisplay/Text/Text.theme';
 export { iconButtonTheme } from './action/IconButton/IconButton.theme';
 export { loaderTheme } from './foundations/Loader/Loader.theme';
+export { spinnerTheme } from './foundations/Spinner/Spinner.theme';
 export { nakedButtonTheme } from './action/NakedButton/NakedButton.theme';
 export { linkTheme } from './navigation/Link/Link.theme';
 export { panelTheme } from './containers/Panel/Panel.theme';

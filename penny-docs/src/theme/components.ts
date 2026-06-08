@@ -22,6 +22,7 @@ import {
   linkTheme,
   loaderTheme,
   loadingContainerTheme,
+  spinnerTheme,
   menuItemTheme,
   nakedButtonTheme,
   navigationItemTheme,
@@ -56,6 +57,7 @@ export type SingleStyleConfigComponents = typeof SingleStyleComponents;
 const MultiStyleComponents = {
   Button: buttonTheme,
   Loader: loaderTheme,
+  Spinner: spinnerTheme,
   NakedButton: nakedButtonTheme,
   Panel: panelTheme,
   ActionBar: actionBarTheme,

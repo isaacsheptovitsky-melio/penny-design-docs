@@ -5,6 +5,8 @@ interface PageHeroProps {
   title: string;
   description: string;
   badge?: string;
+  /** Classification pill shown next to the title, e.g. "Pattern". Distinct from the status `badge`. */
+  type?: string;
   figmaUrl?: string;
 }
 
@@ -15,7 +17,7 @@ const badge_colors: Record<string, { bg: string; text: string }> = {
   Experimental: { bg: '#F3E8FF', text: '#7C3AED' },
 };
 
-export const PageHero: React.FC<PageHeroProps> = ({ category, title, description, badge }) => {
+export const PageHero: React.FC<PageHeroProps> = ({ category, title, description, badge, type }) => {
   const badgeStyle = badge ? (badge_colors[badge] ?? { bg: '#F1F5F9', text: '#475569' }) : null;
 
   return (
@@ -43,6 +45,19 @@ export const PageHero: React.FC<PageHeroProps> = ({ category, title, description
         }}>
           {title}
         </h1>
+        {type && (
+          <span style={{
+            backgroundColor: '#F1F5F9',
+            color: '#64748B',
+            fontSize: '13px',
+            fontWeight: 600,
+            padding: '3px 10px',
+            borderRadius: '9999px',
+            whiteSpace: 'nowrap',
+          }}>
+            {type}
+          </span>
+        )}
         {badge && badgeStyle && (
           <span style={{
             backgroundColor: badgeStyle.bg,
