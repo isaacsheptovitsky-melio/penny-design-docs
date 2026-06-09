@@ -219,7 +219,7 @@ export const SemanticTokenTable: React.FC<SemanticTokenTableProps> = ({
                   borderBottom:
                     i < rows.length - 1 ? '1px solid #E2E8F0' : 'none',
                   fontFamily: '"SFMono-Regular", Consolas, monospace',
-                  color: dark ? '#b79eff' : '#7849ff',
+                  color: dark ? '#e4e7ec' : '#18191b',
                   fontSize: '12px',
                 }}
               >

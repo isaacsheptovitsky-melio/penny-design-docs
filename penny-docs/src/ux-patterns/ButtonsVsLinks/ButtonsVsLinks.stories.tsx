@@ -5,6 +5,7 @@ import Lottie from 'lottie-react';
 import { Button } from '@/components/action/Button';
 import { Link } from '@/components/navigation/Link';
 import { DoDont } from '@/storybook-utils/DoDont';
+import { RelatedComponent, RelatedComponents } from '@/storybook-utils/RelatedComponents';
 import createInvoiceAnimation from '@/assets/create-invoice.json';
 
 // ─── Placeholder component (pattern page — no single component) ───────────────
@@ -70,7 +71,7 @@ const MockLink: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     href="#"
     onClick={(e) => e.preventDefault()}
     style={{
-      color: '#5C3EC5',
+      color: '#7849ff',
       textDecoration: 'underline',
       fontSize: '14px',
       fontFamily: 'Poppins, sans-serif',
@@ -201,151 +202,6 @@ export const CorePrinciple: Story = {
   ),
 };
 
-// ─── Story: DecisionTable ─────────────────────────────────────────────────────
-
-export const DecisionTable: Story = {
-  name: 'Decision table',
-  parameters: {
-    controls: { disable: true },
-    docs: { canvas: { sourceState: 'none' } },
-  },
-  render: () => {
-    const rows: Array<{
-      scenario: string;
-      verdict: 'Button' | 'Link';
-      reason: string;
-    }> = [
-      {
-        scenario: 'Submit a payment',
-        verdict: 'Button',
-        reason: 'Triggers a state change — money moves',
-      },
-      {
-        scenario: 'Go to vendor details',
-        verdict: 'Link',
-        reason: 'Opens another page — navigation only',
-      },
-      {
-        scenario: 'Confirm deletion in a modal',
-        verdict: 'Button',
-        reason: 'Destructive action — irreversible state change',
-      },
-      {
-        scenario: '"Learn more" next to a field label',
-        verdict: 'Link',
-        reason: 'Opens help content or external docs',
-      },
-      {
-        scenario: 'Create a new bill',
-        verdict: 'Button',
-        reason: 'Starts a creation flow — changes application state',
-      },
-      {
-        scenario: '"View roles" in a settings description',
-        verdict: 'Link',
-        reason: 'Navigates to a reference page',
-      },
-      {
-        scenario: 'Cancel and return to previous screen',
-        verdict: 'Button',
-        reason: 'Closes/discards a flow — use tertiary variant',
-      },
-      {
-        scenario: 'Open Melio\'s terms of service',
-        verdict: 'Link',
-        reason: 'External URL — always a link, opens in new tab',
-      },
-    ];
-
-    const VERDICT_STYLES: Record<'Button' | 'Link', React.CSSProperties> = {
-      Button: {
-        background: '#EDE9FF',
-        color: '#5B21B6',
-        padding: '3px 10px',
-        borderRadius: '100px',
-        fontSize: '12px',
-        fontWeight: 600,
-        whiteSpace: 'nowrap',
-      },
-      Link: {
-        background: '#DCFCE7',
-        color: '#166534',
-        padding: '3px 10px',
-        borderRadius: '100px',
-        fontSize: '12px',
-        fontWeight: 600,
-        whiteSpace: 'nowrap',
-      },
-    };
-
-    return (
-      <div
-        style={{
-          padding: '32px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          fontFamily: 'Poppins, sans-serif',
-        }}
-      >
-        <div style={{ ...STAGE_LABEL, alignSelf: 'flex-start' }}>
-          Scenario → component decision
-        </div>
-
-        <div
-          style={{
-            width: '100%',
-            border: '1px solid #E2E8F0',
-            borderRadius: '12px',
-            overflow: 'hidden',
-          }}
-        >
-          {/* Header */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 100px 1fr',
-              background: '#F8FAFC',
-              borderBottom: '2px solid #E2E8F0',
-              padding: '10px 20px',
-              gap: '16px',
-            }}
-          >
-            {['Scenario', 'Use', 'Reason'].map((h) => (
-              <span
-                key={h}
-                style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#64748B' }}
-              >
-                {h}
-              </span>
-            ))}
-          </div>
-
-          {/* Rows */}
-          {rows.map((row, i) => (
-            <div
-              key={i}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 100px 1fr',
-                padding: '12px 20px',
-                gap: '16px',
-                alignItems: 'center',
-                borderBottom: i < rows.length - 1 ? '1px solid #F1F5F9' : 'none',
-                background: i % 2 === 0 ? '#fff' : '#FAFBFC',
-              }}
-            >
-              <span style={{ fontSize: '13px', color: '#18191b' }}>{row.scenario}</span>
-              <span style={VERDICT_STYLES[row.verdict]}>{row.verdict}</span>
-              <span style={{ fontSize: '13px', color: '#64748B' }}>{row.reason}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  },
-};
-
 // ─── Story: DoExamples ────────────────────────────────────────────────────────
 
 export const DoExamples: Story = {
@@ -387,24 +243,18 @@ export const DoExamples: Story = {
           },
           {
             type: 'do',
-            title: 'Button for "Activate Get paid"',
-            description: 'Starts a multi-step activation flow that modifies account settings — not navigation.',
+            title: 'Button-styled link as the only CTA',
+            description: 'When a navigation link is the singular, primary focus of a page or empty state, button styling is acceptable — there are no functional buttons for it to compete with.',
             imagePreview: true,
             preview: (
               <div style={{ background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '28px 24px', minHeight: '160px' }}>
-                <div style={{ background: '#EFF6FF', border: '1px solid #BFDBFE', borderRadius: '8px', padding: '16px', display: 'flex', alignItems: 'flex-start', gap: '12px', width: '100%', maxWidth: '320px' }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0, marginTop: '1px' }}>
-                    <circle cx="12" cy="12" r="11" fill="#3B82F6" />
-                    <rect x="11" y="7" width="2" height="6" rx="1" fill="white" />
-                    <circle cx="12" cy="16.5" r="1.25" fill="white" />
+                <div style={{ background: '#fff', border: '1px solid #e4e7ec', borderRadius: '12px', padding: '24px', width: '100%', maxWidth: '280px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', textAlign: 'center' }}>
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" style={{ color: '#028838' }}>
+                    <path fillRule="evenodd" clipRule="evenodd" d="M12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23ZM16.7809 9.62473C17.1259 9.19347 17.056 8.56418 16.6247 8.21917C16.1934 7.87416 15.5641 7.94408 15.2191 8.37534L11.0948 13.5307L8.68394 11.2705C8.28103 10.8928 7.6482 10.9132 7.27047 11.3161C6.89274 11.719 6.91315 12.3518 7.31606 12.7296L10.5161 15.7296C10.7195 15.9203 10.9933 16.0174 11.2714 15.9975C11.5495 15.9776 11.8067 15.8425 11.9809 15.6247L16.7809 9.62473Z" fill="currentColor" />
                   </svg>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
-                    <p style={{ margin: 0, fontSize: '13px', fontWeight: 600, color: '#1e3a8a' }}>Enable full plan capabilities</p>
-                    <p style={{ margin: 0, fontSize: '12px', color: '#1d4ed8', lineHeight: 1.5 }}>Activation of Get paid is required to send invoices.</p>
-                    <div>
-                      <Button label="Activate Get paid" variant="tertiary" size="small" onClick={() => {}} />
-                    </div>
-                  </div>
+                  <p style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: '#18191b' }}>Payment scheduled</p>
+                  {/* A navigation link, styled as a primary button because it is the sole CTA */}
+                  <a href="#" onClick={(e) => e.preventDefault()} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', height: '40px', padding: '0 20px', borderRadius: '8px', background: '#7849ff', color: '#fff', fontSize: '14px', fontWeight: 600, textDecoration: 'none', fontFamily: 'Poppins, sans-serif' }}>Back to dashboard</a>
                 </div>
               </div>
             ),
@@ -430,8 +280,8 @@ export const DontExamples: Story = {
         items={[
           {
             type: 'dont',
-            title: 'Button for "View roles"',
-            description: '"View roles" navigates to a page — use a Link so users can right-click, middle-click, and screen readers announce "link" not "button".',
+            title: 'Button for a navigation link',
+            description: '"View roles" simply loads a new page without changing data. Rendering it as a button confuses the user\'s expectation of "submitting" something — use a Link.',
             imagePreview: true,
             preview: (
               <div style={{ background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '28px 24px', minHeight: '160px' }}>
@@ -452,8 +302,8 @@ export const DontExamples: Story = {
           },
           {
             type: 'dont',
-            title: 'Two Buttons when one navigates',
-            description: '"View plans" is navigation — rendering it as a Button competes with "Upgrade" and collapses the action hierarchy.',
+            title: 'Link styled as a button, competing with a real one',
+            description: 'Styling "View plans" (navigation) as a button makes it compete with "Upgrade" (the real action) and clutters the visual hierarchy. Keep "View plans" a link.',
             imagePreview: true,
             preview: (
               <div style={{ background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '28px 24px', minHeight: '160px' }}>
@@ -572,5 +422,74 @@ export const LiveComparison: Story = {
         </p>
       </div>
     </div>
+  ),
+};
+
+// ─── Implementation stories — live component + code (As a button / As a link) ─
+
+/** Centered preview wrapper so the Canvas renders a clean, isolated element. */
+const ImplPreview: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div style={{ padding: '36px 32px', display: 'flex', justifyContent: 'center', fontFamily: 'Poppins, sans-serif' }}>
+    {children}
+  </div>
+);
+
+export const AsButtonExample: Story = {
+  name: 'As a button',
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      source: {
+        language: 'tsx',
+        code: '// Renders a native <button> — screen readers announce "button"\n<Button label="Add vendor" onClick={handleAddVendor} />',
+      },
+    },
+  },
+  render: () => (
+    <ImplPreview>
+      <Button label="Add vendor" variant="primary" size="medium" onClick={() => {}} />
+    </ImplPreview>
+  ),
+};
+
+export const AsLinkExample: Story = {
+  name: 'As a link',
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      source: {
+        language: 'tsx',
+        code: '// Renders an <a> with button styling — screen readers announce "link"\n<Button label="Back to dashboard" link={{ href: \'/dashboard\' }} />',
+      },
+    },
+  },
+  render: () => (
+    <ImplPreview>
+      <Button label="Back to dashboard" variant="primary" size="medium" link={{ href: '#' }} />
+    </ImplPreview>
+  ),
+};
+
+// ─── Related patterns ─────────────────────────────────────────────────────────
+
+export const RelatedPatternsBlock: Story = {
+  name: 'Related patterns',
+  parameters: {
+    controls: { disable: true },
+    docs: { canvas: { sourceState: 'none' } },
+  },
+  render: () => (
+    <RelatedComponents>
+      <RelatedComponent
+        name="Button"
+        url="/?path=/docs/components-action-button--docs"
+        preview={<Button label="Confirm payment" variant="primary" size="medium" />}
+      />
+      <RelatedComponent
+        name="Link"
+        url="/?path=/docs/components-navigation-link--docs"
+        preview={<Link href="#" label="View roles" variant="inline" color="default" />}
+      />
+    </RelatedComponents>
   ),
 };

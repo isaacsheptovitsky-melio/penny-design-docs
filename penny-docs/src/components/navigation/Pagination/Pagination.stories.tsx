@@ -1,4 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { RelatedComponent, RelatedComponents } from '@/storybook-utils/RelatedComponents';
+import { Tabs } from '@/components/navigation/Tabs';
+import { Link } from '@/components/navigation/Link';
 import { useState } from 'react';
 
 import { Pagination } from './Pagination';
@@ -66,32 +69,6 @@ export const Playground: Story = {
   },
 };
 
-// ─── In a table footer ──────────────────────────────────────────────────────
-
-/**
- * Pagination lives at the **bottom of a table or list** once the total number of
- * items exceeds the page size. The label shows the current range out of the total.
- */
-export const InTableFooter: Story = {
-  render: () => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const rows = ['Acme Corp', 'Globex', 'Initech', 'Umbrella', 'Soylent'];
-    return (
-      <div style={{ fontFamily: 'Poppins, sans-serif', width: '520px', border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden' }}>
-        {rows.map((r, i) => (
-          <div key={r} style={{ padding: '14px 20px', fontSize: '14px', color: '#18191b', borderBottom: i < rows.length - 1 ? '1px solid #EDF0F2' : 'none' }}>
-            {r}
-          </div>
-        ))}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '12px 20px', borderTop: '1px solid #E2E8F0', background: '#FBFCFD' }}>
-          <Pagination totalItems={128} pageSize={25} currentPage={currentPage} onPageChange={setCurrentPage} />
-        </div>
-      </div>
-    );
-  },
-  parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
-};
-
 // ─── Disabled ─────────────────────────────────────────────────────────────────
 
 /**
@@ -105,4 +82,25 @@ export const Disabled: Story = {
     </div>
   ),
   parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
+};
+
+// ─── Related components ──────────────────────────────────────
+
+export const RelatedComponentsBlock: StoryObj = {
+  name: 'Related components',
+  parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
+  render: () => (
+    <RelatedComponents>
+      <RelatedComponent
+        name="Tabs"
+        url="/?path=/docs/components-navigation-tabs--docs"
+        preview={<Tabs tabs={[{ name: 'vendors', label: 'Vendors' }, { name: 'bills', label: 'Bills' }]} activeTab="vendors" onChange={() => {}} />}
+      />
+      <RelatedComponent
+        name="Link"
+        url="/?path=/docs/components-navigation-link--docs"
+        preview={<Link href="#" label="View invoice" variant="standalone" />}
+      />
+    </RelatedComponents>
+  ),
 };

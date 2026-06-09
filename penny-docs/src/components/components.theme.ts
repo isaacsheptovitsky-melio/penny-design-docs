@@ -5,6 +5,7 @@ export { groupTheme } from './containers/Group/Group.theme';
 export { groupItemTheme } from './containers/Group/GroupItem.theme';
 export { dividerTheme } from './dataDisplay/Divider/Divider.theme';
 export { textTheme } from './dataDisplay/Text/Text.theme';
+export { sectionBannerTheme } from './dataDisplay/SectionBanner/SectionBanner.theme';
 export { iconButtonTheme } from './action/IconButton/IconButton.theme';
 export { loaderTheme } from './foundations/Loader/Loader.theme';
 export { spinnerTheme } from './foundations/Spinner/Spinner.theme';

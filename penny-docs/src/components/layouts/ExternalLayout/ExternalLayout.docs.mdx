@@ -1,4 +1,4 @@
-import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import { Canvas, Controls, Meta, Story } from '@storybook/addon-docs/blocks';
 import * as ExternalLayoutStories from './ExternalLayout.stories';
 import { Callout } from '@/storybook-utils/Callout';
 import { PageHero } from '@/storybook-utils/PageHero';
@@ -83,6 +83,10 @@ Set `isLoading` to overlay the layout with a centered Loader, preventing interac
 ## Mobile usage
 
 <Callout variant="note">The layout is fully responsive. On mobile, the internal padding tightens to maximize screen space, and the content and footer stack vertically while remaining legible on small touchscreens.</Callout>
+
+## Related components
+
+<Story of={ExternalLayoutStories.RelatedComponentsBlock} />
 
 </DocTab>
 

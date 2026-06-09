@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { RelatedComponent, RelatedComponents } from '@/storybook-utils/RelatedComponents';
 import { useState } from 'react';
 
 import { Button } from '@/components/action/Button';
@@ -354,4 +355,25 @@ export const SplitButtonGuide: Story = {
     controls: { disable: true },
     docs: { canvas: { sourceState: 'none' } },
   },
+};
+
+// ─── Related components ──────────────────────────────────────
+
+export const RelatedComponentsBlock: StoryObj = {
+  name: 'Related components',
+  parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
+  render: () => (
+    <RelatedComponents>
+      <RelatedComponent
+        name="Button"
+        url="/?path=/docs/components-action-button--docs"
+        preview={<Button label="Label" variant="primary" />}
+      />
+      <RelatedComponent
+        name="Icon Button"
+        url="/?path=/docs/components-action-icon-button--docs"
+        preview={<IconButton icon="edit" variant="primary" aria-label="Edit" />}
+      />
+    </RelatedComponents>
+  ),
 };

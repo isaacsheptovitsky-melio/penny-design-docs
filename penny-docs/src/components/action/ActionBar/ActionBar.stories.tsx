@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { RelatedComponent, RelatedComponents } from '@/storybook-utils/RelatedComponents';
+import { ButtonGroup } from '@/components/action/ButtonGroup';
 
 import { Button } from '@/components/action/Button';
 import { NakedButton } from '@/components/action/NakedButton';
@@ -270,5 +272,26 @@ export const MaxWidth: Story = {
         </Stage>
       </div>
     </div>
+  ),
+};
+
+// ─── Related components ──────────────────────────────────────
+
+export const RelatedComponentsBlock: StoryObj = {
+  name: 'Related components',
+  parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
+  render: () => (
+    <RelatedComponents>
+      <RelatedComponent
+        name="Button"
+        url="/?path=/docs/components-action-button--docs"
+        preview={<Button label="Label" variant="primary" />}
+      />
+      <RelatedComponent
+        name="Button Group"
+        url="/?path=/docs/components-action-button-group--docs"
+        preview={<ButtonGroup><Button label="Copy" /><Button label="Paste" /></ButtonGroup>}
+      />
+    </RelatedComponents>
   ),
 };

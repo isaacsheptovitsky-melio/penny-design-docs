@@ -2,6 +2,16 @@ import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Button } from '@/components/action/Button';
+import { IconButton } from '@/components/action/IconButton';
+import { StatusIconSolid } from '@/components/foundations/StatusIconSolid';
+import {
+  SectionBannerRoot,
+  SectionBannerIcon,
+  SectionBannerContent,
+  SectionBannerDescription,
+  SectionBannerCloseButton,
+} from '@/components/dataDisplay/SectionBanner';
+import { RelatedComponent, RelatedComponents } from '@/storybook-utils/RelatedComponents';
 import deleteFromResourceGif from '@/assets/delete-from-resource.gif';
 import deleteFromResourceDetailsGif from '@/assets/delete-from-resource-details.gif';
 
@@ -45,38 +55,6 @@ const VendorAvatar: React.FC<{ initials: string; bg?: string; color?: string; si
   >
     {initials}
   </div>
-);
-
-// ─── Warning circle icon (modal header) ──────────────────────────────────────
-const WarningCircleIcon: React.FC = () => (
-  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
-    <circle cx="11" cy="11" r="11" fill="#D80E25" />
-    <rect x="10" y="4.5" width="2" height="8" rx="1" fill="white" />
-    <circle cx="11" cy="16.5" r="1.25" fill="white" />
-  </svg>
-);
-
-// ─── Close (X) icon button ────────────────────────────────────────────────────
-const CloseIconBtn: React.FC<{ onClick: () => void }> = ({ onClick }) => (
-  <button
-    onClick={onClick}
-    style={{
-      background: 'none',
-      border: '1px solid #E2E8F0',
-      borderRadius: '6px',
-      cursor: 'pointer',
-      padding: '4px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      color: '#8B95A9',
-      flexShrink: 0,
-    }}
-  >
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-    </svg>
-  </button>
 );
 
 // ─── Shared mock styles ───────────────────────────────────────────────────────
@@ -171,26 +149,16 @@ export const ConfirmationModal: Story = {
               gap: '0',
             }}
           >
-            {/* Toast banner */}
-            <div
-              style={{
-                background: '#F0FDF5',
-                border: '1px solid #86EFAC',
-                borderRadius: '8px',
-                padding: '12px 16px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-              }}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: '#028838', flexShrink: 0 }}>
-                <path fillRule="evenodd" clipRule="evenodd" d="M12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23ZM16.7809 9.62473C17.1259 9.19347 17.056 8.56418 16.6247 8.21917C16.1934 7.87416 15.5641 7.94408 15.2191 8.37534L11.0948 13.5307L8.68394 11.2705C8.28103 10.8928 7.6482 10.9132 7.27047 11.3161C6.89274 11.719 6.91315 12.3518 7.31606 12.7296L10.5161 15.7296C10.7195 15.9203 10.9933 16.0174 11.2714 15.9975C11.5495 15.9776 11.8067 15.8425 11.9809 15.6247L16.7809 9.62473Z" fill="currentColor" />
-              </svg>
-              <span style={{ fontSize: '14px', fontWeight: 500, color: '#18191b', flex: 1 }}>
-                Acme Corp vendor deleted
-              </span>
-              <CloseIconBtn onClick={() => setStep('idle')} />
-            </div>
+            {/* Success feedback — real Penny Section Banner (compact) */}
+            <SectionBannerRoot variant="success" isCompact>
+              <SectionBannerIcon />
+              <SectionBannerContent>
+                <SectionBannerDescription>
+                  <strong>Acme Corp</strong> vendor deleted
+                </SectionBannerDescription>
+              </SectionBannerContent>
+              <SectionBannerCloseButton onClick={() => setStep('idle')} />
+            </SectionBannerRoot>
 
             {/* Restart button — centred in the remaining space */}
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -237,24 +205,14 @@ export const ConfirmationModal: Story = {
                 </div>
               </div>
 
-              {/* Kebab (⋮) menu button */}
-              <button
+              {/* Kebab menu trigger — naked IconButton */}
+              <IconButton
+                icon="more-vertical"
+                variant="naked"
+                size="small"
+                aria-label="Vendor actions"
                 onClick={() => setStep(step === 'menu' ? 'idle' : 'menu')}
-                style={{
-                  background: step === 'menu' ? '#F3F4F6' : 'none',
-                  border: '1px solid',
-                  borderColor: step === 'menu' ? '#E2E8F0' : 'transparent',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  padding: '4px 8px',
-                  fontSize: '18px',
-                  color: '#8B95A9',
-                  lineHeight: '1.1',
-                  flexShrink: 0,
-                }}
-              >
-                ⋮
-              </button>
+              />
 
               {/* Dropdown menu */}
               {step === 'menu' && (
@@ -313,7 +271,7 @@ export const ConfirmationModal: Story = {
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: 1 }}>
-                      <WarningCircleIcon />
+                      <StatusIconSolid variant="alert" size="large" />
                       <h2
                         style={{
                           margin: 0,
@@ -327,7 +285,7 @@ export const ConfirmationModal: Story = {
                         Delete Acme Corp?
                       </h2>
                     </div>
-                    <CloseIconBtn onClick={() => setStep('idle')} />
+                    <IconButton icon="close" variant="naked" size="small" aria-label="Close" onClick={() => setStep('idle')} />
                   </div>
 
                   {/* Modal body */}
@@ -500,12 +458,12 @@ export const ModalAnatomy: Story = {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <WarningCircleIcon />
+                <StatusIconSolid variant="alert" size="large" />
                 <h2 style={{ margin: 0, fontSize: '17px', fontWeight: 700, color: '#18191b', letterSpacing: '-0.01em' }}>
                   Delete Acme Corp?
                 </h2>
               </div>
-              <CloseIconBtn onClick={() => {}} />
+              <IconButton icon="close" variant="naked" size="small" aria-label="Close" onClick={() => {}} />
             </div>
 
             {/* Body */}
@@ -585,4 +543,32 @@ export const ModalAnatomy: Story = {
       </div>
     );
   },
+};
+
+// ─── Story: RelatedPatterns ───────────────────────────────────────────────────
+
+export const RelatedPatternsBlock: Story = {
+  name: 'Related patterns',
+  parameters: {
+    controls: { disable: true },
+    docs: { canvas: { sourceState: 'none' } },
+  },
+  render: () => (
+    <RelatedComponents>
+      <RelatedComponent
+        name="Error messages"
+        url="/?path=/docs/ux-patterns-feedback--docs"
+        preview={
+          <div style={{ width: '100%', maxWidth: '300px' }}>
+            <SectionBannerRoot variant="critical" isCompact>
+              <SectionBannerIcon />
+              <SectionBannerContent>
+                <SectionBannerDescription>1 of 15 vendors couldn&rsquo;t be imported</SectionBannerDescription>
+              </SectionBannerContent>
+            </SectionBannerRoot>
+          </div>
+        }
+      />
+    </RelatedComponents>
+  ),
 };

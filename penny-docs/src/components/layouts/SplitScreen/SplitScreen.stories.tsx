@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { RelatedComponent, RelatedComponents } from '@/storybook-utils/RelatedComponents';
 
 import { Button } from '@/components/action/Button';
 import { type ThemeBreakpointsKey } from '@/theme/foundations/breakpoints';
@@ -252,5 +253,46 @@ export const MobileStacking: Story = {
         />
       </Stage>
     </div>
+  ),
+};
+
+// ─── Related components ──────────────────────────────────────
+
+export const RelatedComponentsBlock: StoryObj = {
+  name: 'Related components',
+  parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
+  render: () => (
+    <RelatedComponents>
+      <RelatedComponent
+        name="Layout"
+        url="/?path=/docs/components-layouts-layout--docs"
+        preview={(
+        <div style={{ width: '140px', height: '92px', border: '1px solid #E2E8F0', borderRadius: '6px', overflow: 'hidden', display: 'flex', flexDirection: 'column', background: '#fff' }}>
+          <div style={{ height: '16px', background: '#7849ff' }} />
+          <div style={{ flex: 1, display: 'flex' }}>
+            <div style={{ width: '34px', background: '#F1F5F8', borderRight: '1px solid #E2E8F0' }} />
+            <div style={{ flex: 1, padding: '8px', display: 'flex', flexDirection: 'column', gap: '5px' }}>
+              <div style={{ height: '7px', width: '70%', background: '#EDF0F4', borderRadius: '3px' }} />
+              <div style={{ height: '7px', width: '90%', background: '#EDF0F4', borderRadius: '3px' }} />
+              <div style={{ height: '7px', width: '55%', background: '#EDF0F4', borderRadius: '3px' }} />
+            </div>
+          </div>
+        </div>
+      )}
+      />
+      <RelatedComponent
+        name="External Layout"
+        url="/?path=/docs/components-layouts-external-layout--docs"
+        preview={(
+        <div style={{ width: '140px', height: '92px', border: '1px solid #E2E8F0', borderRadius: '6px', overflow: 'hidden', background: '#F1F5F8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: '80px', height: '60px', background: '#fff', border: '1px solid #E2E8F0', borderRadius: '6px', display: 'flex', flexDirection: 'column', gap: '5px', padding: '8px', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '22px', height: '10px', borderRadius: '3px', background: '#7849ff' }} />
+            <div style={{ height: '6px', width: '80%', background: '#EDF0F4', borderRadius: '3px' }} />
+            <div style={{ height: '6px', width: '60%', background: '#EDF0F4', borderRadius: '3px' }} />
+          </div>
+        </div>
+      )}
+      />
+    </RelatedComponents>
   ),
 };

@@ -27,6 +27,7 @@ import {
   nakedButtonTheme,
   navigationItemTheme,
   panelTheme,
+  sectionBannerTheme,
   splitScreenTheme,
   tabsTheme,
   textTheme,
@@ -69,6 +70,8 @@ const MultiStyleComponents = {
   LoadingContainer: loadingContainerTheme,
   // Navigation components
   Tabs: tabsTheme,
+  // Data display
+  SectionBanner: sectionBannerTheme,
   // Layout components
   Layout: layoutTheme,
   SplitScreen: splitScreenTheme,

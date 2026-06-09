@@ -1,4 +1,4 @@
-import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import { Canvas, Controls, Meta, Story } from '@storybook/addon-docs/blocks';
 import * as SplitScreenStories from './SplitScreen.stories';
 import { Callout } from '@/storybook-utils/Callout';
 import { PageHero } from '@/storybook-utils/PageHero';
@@ -80,6 +80,10 @@ On mobile, the two panels are rearranged into a **vertical stack** — panel A o
 <Canvas of={SplitScreenStories.MobileStacking} />
 
 <Callout variant="note">The switch between the side-by-side and stacked layouts happens automatically at the `l` (1240px) breakpoint — you don't need to pass anything to trigger it.</Callout>
+
+## Related components
+
+<Story of={SplitScreenStories.RelatedComponentsBlock} />
 
 </DocTab>
 

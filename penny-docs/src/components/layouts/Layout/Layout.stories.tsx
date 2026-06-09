@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { RelatedComponent, RelatedComponents } from '@/storybook-utils/RelatedComponents';
 
 import { Layout } from './Layout';
 
@@ -126,7 +127,7 @@ const meta: Meta<typeof Layout> = {
     isLoading: false,
     header: defaultHeader,
     footer: defaultFooter,
-    children: <Placeholder label="Content" height={520} />,
+    children: <Placeholder label="Content" height={360} />,
     tabIndex: 0,
     'data-testid': 'layout',
   },
@@ -138,7 +139,7 @@ type Story = StoryObj<typeof Layout>;
 export const Playground: Story = {
   name: 'Playground',
   render: (args) => (
-    <Stage>
+    <Stage height={560}>
       <Layout {...args} />
     </Stage>
   ),
@@ -149,39 +150,115 @@ export const Playground: Story = {
   },
 };
 
+/**
+ * The fixed widths can't be shown at 1:1 — `1600px` alone would overflow the docs canvas, and
+ * `full` would be indistinguishable from it. Instead each variant is drawn as a centered bar
+ * scaled proportionally (relative to `1600px`) inside a track that stands in for the container,
+ * so the relative sizing — and the always-centered content area — reads at a glance.
+ */
+const maxWidthScale: { width: string; note?: string }[] = [
+  { width: 'full', note: 'spans the whole container' },
+  { width: '1600px', note: 'widest — expansive dashboards' },
+  { width: '1200px', note: 'dense, data-heavy pages' },
+  { width: '900px' },
+  { width: '800px' },
+  { width: '600px', note: 'focused, single-task pages' },
+  { width: '480px', note: 'narrowest — compact forms' },
+];
+
+const scalePercent = (width: string) => (width === 'full' ? 100 : (parseInt(width, 10) / 1600) * 90);
+
 export const MaxWidth: Story = {
   parameters: {
     controls: { disable: true },
     docs: { canvas: { sourceState: 'none' } },
   },
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', fontFamily: 'Poppins, sans-serif' }}>
-      {[
-        { width: 'full' as const, label: 'full — spans the whole container' },
-        { width: '1200px' as const, label: '1200px — dense, data-heavy pages' },
-        { width: '600px' as const, label: '600px — focused, single-task pages' },
-      ].map(({ width, label }) => (
-        <div key={width}>
-          <div
-            style={{
-              fontSize: '11px',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '0.07em',
-              color: '#8B95A9',
-              marginBottom: '8px',
-            }}
-          >
-            {label}
+    <div
+      style={{
+        fontFamily: 'Poppins, sans-serif',
+        background: '#F7FAFC',
+        border: '1px solid #E2E8F0',
+        borderRadius: '8px',
+        padding: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px',
+      }}
+    >
+      {maxWidthScale.map(({ width, note }) => {
+        const isFull = width === 'full';
+        return (
+          <div key={width} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div
+              style={{ width: '56px', flexShrink: 0, textAlign: 'right', fontSize: '12px', fontWeight: 700, color: '#475569' }}
+            >
+              {width}
+            </div>
+            <div
+              style={{
+                flex: 1,
+                height: '32px',
+                background: '#FFFFFF',
+                border: '1px solid #E2E8F0',
+                borderRadius: '6px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden',
+              }}
+            >
+              <div
+                style={{
+                  width: `${scalePercent(width)}%`,
+                  height: '100%',
+                  background: isFull ? '#7849ff' : '#C4B5FD',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {note && (
+                  <span
+                    style={{
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      color: isFull ? '#FFFFFF' : '#4C1D95',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      padding: '0 8px',
+                    }}
+                  >
+                    {note}
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
-          <Stage height={220}>
-            <Layout maxWidth={width} backgroundColor="lightest" paddingContent="m" tabIndex={0}>
-              <Placeholder label={`maxWidth="${width}"`} height="100%" />
-            </Layout>
-          </Stage>
-        </div>
-      ))}
+        );
+      })}
     </div>
+  ),
+};
+
+export const Structure: Story = {
+  parameters: {
+    controls: { disable: true },
+    docs: { canvas: { sourceState: 'none' } },
+  },
+  render: () => (
+    <Stage height={420}>
+      <Layout
+        maxWidth="600px"
+        backgroundColor="lightest"
+        header={{ isSticky: false, content: <Placeholder label="Header" height={56} tone="bar" /> }}
+        footer={{ isSticky: false, content: <Placeholder label="Footer" height={56} tone="bar" /> }}
+        tabIndex={0}
+      >
+        <Placeholder label="Content — the area constrained by maxWidth" height={260} />
+      </Layout>
+    </Stage>
   ),
 };
 
@@ -263,5 +340,44 @@ export const LoadingState: Story = {
         <Placeholder label="Content" height={520} />
       </Layout>
     </Stage>
+  ),
+};
+
+// ─── Related components ──────────────────────────────────────
+
+export const RelatedComponentsBlock: StoryObj = {
+  name: 'Related components',
+  parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
+  render: () => (
+    <RelatedComponents>
+      <RelatedComponent
+        name="Split Screen"
+        url="/?path=/docs/components-layouts-split-screen--docs"
+        preview={(
+        <div style={{ width: '140px', height: '92px', border: '1px solid #E2E8F0', borderRadius: '6px', overflow: 'hidden', display: 'flex', background: '#fff' }}>
+          <div style={{ width: '50%', background: '#F6F2FD', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '30px', height: '30px', borderRadius: '8px', background: '#7849ff' }} />
+          </div>
+          <div style={{ width: '50%', padding: '8px', display: 'flex', flexDirection: 'column', gap: '5px', justifyContent: 'center' }}>
+            <div style={{ height: '7px', width: '80%', background: '#EDF0F4', borderRadius: '3px' }} />
+            <div style={{ height: '7px', width: '60%', background: '#EDF0F4', borderRadius: '3px' }} />
+          </div>
+        </div>
+      )}
+      />
+      <RelatedComponent
+        name="External Layout"
+        url="/?path=/docs/components-layouts-external-layout--docs"
+        preview={(
+        <div style={{ width: '140px', height: '92px', border: '1px solid #E2E8F0', borderRadius: '6px', overflow: 'hidden', background: '#F1F5F8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: '80px', height: '60px', background: '#fff', border: '1px solid #E2E8F0', borderRadius: '6px', display: 'flex', flexDirection: 'column', gap: '5px', padding: '8px', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '22px', height: '10px', borderRadius: '3px', background: '#7849ff' }} />
+            <div style={{ height: '6px', width: '80%', background: '#EDF0F4', borderRadius: '3px' }} />
+            <div style={{ height: '6px', width: '60%', background: '#EDF0F4', borderRadius: '3px' }} />
+          </div>
+        </div>
+      )}
+      />
+    </RelatedComponents>
   ),
 };

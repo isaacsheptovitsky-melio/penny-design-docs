@@ -1,10 +1,9 @@
-import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import { Canvas, Meta, Story } from '@storybook/addon-docs/blocks';
 import * as DeleteStories from './Delete.stories';
 import { Callout } from '@/storybook-utils/Callout';
 import { Do, Dont } from '@/storybook-utils/RuleItem';
 import { PageHero } from '@/storybook-utils/PageHero';
 import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
-import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 import deleteFlowImg from '@/assets/delete-flow.png';
 
 <Meta of={DeleteStories} />
@@ -12,12 +11,11 @@ import deleteFlowImg from '@/assets/delete-flow.png';
 <PageHero
   category="UX Patterns"
   title="Delete"
-  badge="Healthy"
+  badge="Done"
   description="Users can delete existing resources. Every destructive action requires an explicit confirmation step to protect against irreversible data loss."
 />
 
-<DocTabs links={
-  <ShortcutTiles>
+<ShortcutTiles>
     <ShortcutTile
       label="ZeroHeight"
       url="https://zeroheight.com/98bb1df01/v/latest/p/97d3e6-delete"
@@ -27,9 +25,6 @@ import deleteFlowImg from '@/assets/delete-flow.png';
       url="https://zeroheight.com/98bb1df01/v/latest/p/2752a5"
     />
   </ShortcutTiles>
-}>
-
-<DocTab label="Design">
 
 ## Core principle
 
@@ -103,95 +98,6 @@ Use the entity's specific name in both the title and the confirm button. "Delete
 - **Use `variant="tertiary"`** for the cancel button — Cancel is a neutral action, not a workflow-extending one.
 - **Don't auto-delete** after a timeout. The user must actively click the confirm button.
 
-</DocTab>
+## Related patterns
 
-<DocTab label="Development">
-
-## Implementation checklist
-
-When building a delete flow, verify each of these:
-
-- [ ] The delete trigger uses `variant="critical"` (Button component) or is placed in an overflow menu.
-- [ ] Clicking the trigger opens a **Modal** — not a popover, not a toast, not an inline confirm.
-- [ ] The modal header includes a warning icon, the entity name in the title, and an X close button.
-- [ ] The modal title includes the specific entity name (dynamic, not hardcoded).
-- [ ] The modal body explains what will be permanently removed.
-- [ ] The confirm button uses `variant="critical"` and its label matches the trigger label.
-- [ ] The cancel button uses `variant="tertiary"`.
-- [ ] Focus moves to the modal when it opens (handled by the Modal component's `initialFocusRef` or default behaviour).
-- [ ] The modal closes and focus returns to the triggering element when cancel is pressed or the modal is dismissed.
-- [ ] After successful deletion, the item is removed from the list and a success toast is shown (via the Feedback pattern).
-
-## Components used
-
-- **`Button variant="critical"`** — Delete trigger in list rows or drawer footer; also the confirm button inside the modal
-- **`Button variant="tertiary"`** — Cancel button inside the modal
-- **`Modal`** — Confirmation dialog container
-
-## Example: calling the delete API
-
-The confirmation button's `onClick` should:
-
-1. Set the button to its loading state (`isLoading={true}`).
-2. Call the delete API.
-3. On success: close the modal, remove the item from state, show a success toast.
-4. On failure: show an error state within the modal (do not close it) — see the [Feedback pattern](https://zeroheight.com/98bb1df01/v/latest/p/2752a5) for error handling guidance.
-
-```tsx
-const [isDeleting, setIsDeleting] = useState(false);
-
-const handleDelete = async () => {
-  setIsDeleting(true);
-  try {
-    await deleteVendor(vendorId);
-    onClose();
-    removeFromList(vendorId);
-    showSuccessToast('Vendor deleted');
-  } catch {
-    setIsDeleting(false);
-    showErrorState('Failed to delete vendor. Please try again.');
-  }
-};
-
-// Inside the modal footer:
-<Button
-  label="Delete vendor"
-  variant="critical"
-  size="medium"
-  isLoading={isDeleting}
-  onClick={handleDelete}
-/>
-```
-
-</DocTab>
-
-<DocTab label="ADA">
-
-## Accessibility
-
-### Keyboard interaction
-
-- **`Tab`** — Moves focus between Cancel and Delete buttons
-- **`Enter` / `Space`** — Activates the focused button
-- **`Escape`** — Closes the modal (equivalent to Cancel — no deletion occurs)
-
-### Focus management
-
-- When the confirmation modal **opens**, focus must move into the modal. By default, the Modal component moves focus to the first focusable element — typically the Cancel button. Consider setting `initialFocusRef` to the Cancel button explicitly so the user does not accidentally confirm by pressing `Enter` immediately after the modal opens.
-- When the modal **closes** (via Cancel or Escape), focus must return to the element that triggered the modal (the delete button in the row or drawer).
-- Focus must be **trapped** inside the modal while it is open — users cannot tab out to the page behind it.
-
-### Semantics
-
-- The trigger button must have a descriptive accessible label that includes the resource name: `aria-label="Delete Acme Corp"` if the visible label is just "Delete" with an icon.
-- The Modal uses `role="dialog"` and `aria-modal="true"`. Its `aria-labelledby` should point to the modal title element.
-- The confirmation button must announce its action clearly. Never use `aria-label="Confirm"` — keep it as "Delete vendor" so screen reader users understand what they are confirming.
-
-### Color
-
-- The `variant="critical"` button uses red fill (`#d80e25`). Do not rely on colour alone to communicate danger — the modal title, body text, and button label must all clearly state this is a permanent, destructive action.
-- The focus ring on both buttons meets WCAG 2.1 AA contrast (`semantic.focus.primary` at 3:1 on white backgrounds).
-
-</DocTab>
-
-</DocTabs>
+<Story of={DeleteStories.RelatedPatternsBlock} />

@@ -1,4 +1,4 @@
-import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import { Canvas, Meta, Story } from '@storybook/addon-docs/blocks';
 import * as ColorTokensStories from './ColorTokens.stories';
 import { Callout } from '@/storybook-utils/Callout';
 import { PageHero } from '@/storybook-utils/PageHero';
@@ -10,7 +10,7 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 <PageHero
   category="Foundations"
   title="Color Tokens"
-  badge="Healthy"
+  badge="Done"
   description="A structured three-level token system that drives consistency, scalability, and white-label theming across the Penny design system."
 />
 
@@ -56,119 +56,9 @@ Browse all three levels interactively. Switch between **Global**, **Semantic**, 
 <h3 id="semantic" style={{margin:0,padding:0,height:0,overflow:'hidden',border:'none'}}>Semantic</h3>
 <h3 id="component" style={{margin:0,padding:0,height:0,overflow:'hidden',border:'none'}}>Component</h3>
 
-</DocTab>
+## Related components
 
-<DocTab label="Development">
-
-## Using tokens in code
-
-### Accessing semantic tokens in a Chakra component theme
-
-In a Penny component theme (`ComponentName.theme.ts`), reference semantic tokens using dot-path strings. Chakra resolves them at render time via the theme provider.
-
-```ts
-// ✅ Correct — reference semantic token by path
-container: {
-  color: 'semantic.text.brand.rest',
-  _hover: { color: 'semantic.text.brand.hover' },
-  _disabled: { color: 'semantic.text.disabled' },
-}
-
-// ❌ Avoid — bypasses the theming layer
-container: {
-  color: '#7849ff',
-}
-```
-
-### Token path format
-
-Tokens are nested objects flattened to dot-separated paths:
-
-```
-semantic.{category}.{variant}.{state}
-global.{palette}.{step}
-component.{componentName}.{variant}.{state}.{part}
-```
-
-**Examples:**
-
-- `semantic.text.primary` → `#18191b` (neutral 1000)
-- `semantic.action.primary.rest` → `#7849ff` (brand 700)
-- `semantic.border.critical` → `#d80e25` (critical 700)
-- `global.brand.700` → `#7849ff`
-- `global.neutral.1000` → `#18191b`
-- `global.neutral.A80` → `rgba(255,255,255,0.80)`
-
-### Accessing token values programmatically
-
-Use `getColorPalettes` from the theme utilities when you need the resolved hex value at runtime:
-
-```ts
-import { getColorPalettes } from '@/theme/foundations/colors/utils';
-
-const palettes = getColorPalettes(undefined); // no custom overrides
-const brandPrimary = palettes.semantic.action.primary.rest; // '#7849ff'
-```
-
-### CSS variable access
-
-Chakra v2 exposes all theme tokens as CSS custom properties. The variable name mirrors the dot-path with hyphens:
-
-```css
-/* semantic.action.primary.rest */
-var(--chakra-colors-semantic-action-primary-rest)
-
-/* global.brand.700 */
-var(--chakra-colors-global-brand-700)
-```
-
-Use CSS variables only in `GlobalStyles` or `preview-head.html` style blocks. Prefer Chakra's `sx` prop or theme definitions for component styling.
-
-## White-label theming
-
-The three-level token system is designed to support Melio's white-label product variants. To customize the palette for a branded tenant:
-
-1. Override `global.*` colors for that tenant's palette.
-2. Semantic tokens automatically inherit the new global values.
-3. Component tokens follow, requiring no per-component changes.
-
-Custom overrides are passed to `getColorPalettes(customColorTokens)` and merged at theme initialization.
-
-</DocTab>
-
-<DocTab label="ADA">
-
-## Accessibility
-
-### Contrast requirements
-
-All color combinations used in Penny components meet WCAG 2.1 AA contrast ratios:
-
-- **Normal text** (< 18px or non-bold < 14px): minimum **4.5:1** contrast against background.
-- **Large text** (≥ 18px or bold ≥ 14px): minimum **3:1** contrast.
-- **UI components and graphics**: minimum **3:1** against adjacent colors.
-
-The standard text color `semantic.text.primary` (`#18191b` on `#ffffff`) achieves **18.1:1** — well above the minimum.
-
-### Don't communicate with color alone
-
-Color should never be the only means of conveying state or information:
-
-- ✅ **Do** — pair a red border with an error message in text.
-- ❌ **Don't** — rely only on a color change (e.g., red fill) to indicate an error state.
-
-Screen readers and users with color vision deficiencies depend on shape, text, and iconography — not color — to understand state.
-
-### Focus colors
-
-- `semantic.focus.primary` (`#0548cf`) — used on light surfaces. Meets 3:1 contrast against white.
-- `semantic.focus.inverse` (`#3798f2`) — used on dark/inverse surfaces. Meets 3:1 contrast against the `neutral.1000` background.
-
-Always preserve focus ring visibility. Never suppress `:focus-visible` without an equivalent accessible replacement.
-
-### Disabled colors
-
-Disabled UI uses `semantic.text.disabled` (`#c3cad5`) and `semantic.fill.disabled` (`#f1f5f8`). These intentionally fall below the contrast threshold — WCAG 2.1 Success Criterion 1.4.3 exempts disabled controls from the contrast requirement, provided the disabled state is communicated through means other than color (e.g., `aria-disabled`, `disabled` attribute).
+<Story of={ColorTokensStories.RelatedComponentsBlock} />
 
 </DocTab>
 

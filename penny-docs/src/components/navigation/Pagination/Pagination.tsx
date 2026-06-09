@@ -70,7 +70,7 @@ export const Pagination = forwardRef<HTMLDivElement, PaginationProps>(
               aria-label={ariaLabels?.chevronLeftLabel ?? 'Previous page'}
               data-testid="chevron-left"
               icon="chevron-left"
-              variant="tertiary"
+              variant="naked"
               size="extra-small"
               onClick={() => onPageChange?.(currentPage - 1)}
               isDisabled={!isPreviousEnabled}
@@ -82,7 +82,7 @@ export const Pagination = forwardRef<HTMLDivElement, PaginationProps>(
               aria-label={ariaLabels?.chevronRightLabel ?? 'Next page'}
               data-testid="chevron-right"
               icon="chevron-right"
-              variant="tertiary"
+              variant="naked"
               size="extra-small"
               onClick={() => onPageChange?.(currentPage + 1)}
               isDisabled={!isNextEnabled}

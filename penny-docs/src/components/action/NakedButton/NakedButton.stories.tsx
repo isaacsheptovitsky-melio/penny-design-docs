@@ -1,4 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { RelatedComponent, RelatedComponents } from '@/storybook-utils/RelatedComponents';
+import { Button } from '@/components/action/Button';
+import { IconButton } from '@/components/action/IconButton';
 
 import { Group } from '@/components/containers/Group';
 import { Icon } from '@/components/foundations/Icon';
@@ -292,5 +295,26 @@ export const NakedButtonAsLink: Story = {
       label="View invoice"
       link={{ href: 'https://example.com', target: '_blank' }}
     />
+  ),
+};
+
+// ─── Related components ──────────────────────────────────────
+
+export const RelatedComponentsBlock: StoryObj = {
+  name: 'Related components',
+  parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
+  render: () => (
+    <RelatedComponents>
+      <RelatedComponent
+        name="Button"
+        url="/?path=/docs/components-action-button--docs"
+        preview={<Button label="Label" variant="primary" />}
+      />
+      <RelatedComponent
+        name="Icon Button"
+        url="/?path=/docs/components-action-icon-button--docs"
+        preview={<IconButton icon="edit" variant="primary" aria-label="Edit" />}
+      />
+    </RelatedComponents>
   ),
 };

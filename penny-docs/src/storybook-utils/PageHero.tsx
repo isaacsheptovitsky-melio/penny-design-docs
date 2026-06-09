@@ -11,6 +11,7 @@ interface PageHeroProps {
 }
 
 const badge_colors: Record<string, { bg: string; text: string }> = {
+  Done:         { bg: '#DCFCE7', text: '#15803D' },
   Healthy:      { bg: '#DCFCE7', text: '#15803D' },
   Beta:         { bg: '#FEF9C3', text: '#A16207' },
   Deprecated:   { bg: '#FEE2E2', text: '#B91C1C' },

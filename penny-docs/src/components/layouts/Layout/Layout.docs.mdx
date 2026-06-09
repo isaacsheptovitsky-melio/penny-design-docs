@@ -1,4 +1,4 @@
-import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import { Canvas, Controls, Meta, Story } from '@storybook/addon-docs/blocks';
 import * as LayoutStories from './Layout.stories';
 import { Callout } from '@/storybook-utils/Callout';
 import { PageHero } from '@/storybook-utils/PageHero';
@@ -57,6 +57,8 @@ The layout is divided into three distinct slots:
 - **Content** — the main body where your primary components live. This is the area constrained by `maxWidth`.
 - **Footer** — a slot at the bottom of the page. Can also be set to `isSticky`.
 
+<Canvas of={LayoutStories.Structure} />
+
 ## Max width
 
 `maxWidth` controls the maximum width of the centered Content section. It supports the fixed widths `480px`, `600px`, `800px`, `900px`, `1200px`, and `1600px`; `full` to span the entire container; or a custom pixel number.
@@ -92,6 +94,10 @@ In its loading state, a Loader is displayed over the Content area. This blocks i
 ## Mobile usage
 
 <Callout variant="note">On mobile, `maxWidth` has little effect — the screen is usually narrower than the available widths. The layout adapts to fit the screen and the content reflows vertically.</Callout>
+
+## Related components
+
+<Story of={LayoutStories.RelatedComponentsBlock} />
 
 </DocTab>
 

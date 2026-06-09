@@ -1,5 +1,8 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { RelatedComponent, RelatedComponents } from '@/storybook-utils/RelatedComponents';
+import { Button } from '@/components/action/Button';
+import { Link } from '@/components/navigation/Link';
 
 import {
   ColorPaletteGroup,
@@ -45,6 +48,12 @@ const G: Record<string, string> = {
   'neutral.A35': 'rgba(255, 255, 255, 0.35)',
   'neutral.A60': 'rgba(255, 255, 255, 0.60)',
   'neutral.A80': 'rgba(255, 255, 255, 0.80)',
+  // Neutral — Alpha Dark (neutral.1000 overlay)
+  'neutral.AD0': 'rgba(24, 25, 27, 0)',
+  'neutral.AD15': 'rgba(24, 25, 27, 0.15)',
+  'neutral.AD35': 'rgba(24, 25, 27, 0.35)',
+  'neutral.AD60': 'rgba(24, 25, 27, 0.60)',
+  'neutral.AD80': 'rgba(24, 25, 27, 0.80)',
   // Brand
   'brand.100': '#f6f2fd',
   'brand.200': '#e4dbff',
@@ -56,6 +65,17 @@ const G: Record<string, string> = {
   'brand.800': '#5f33e6',
   'brand.900': '#4315cb',
   'brand.1000': '#321098',
+  // Brand Secondary
+  'brandSecondary.100': '#f6f2fd',
+  'brandSecondary.200': '#e4dbff',
+  'brandSecondary.300': '#d9ccff',
+  'brandSecondary.400': '#c9b6ff',
+  'brandSecondary.500': '#b79eff',
+  'brandSecondary.600': '#9470ff',
+  'brandSecondary.700': '#7849ff',
+  'brandSecondary.800': '#5f33e6',
+  'brandSecondary.900': '#4315cb',
+  'brandSecondary.1000': '#321098',
   // Critical
   'critical.100': '#fde7e9',
   'critical.200': '#fac4c9',
@@ -123,39 +143,83 @@ function row(token: string, globalRef: string): SemanticTokenRow {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Story: GlobalPalette
+// Global palette — single searchable data model
 // ─────────────────────────────────────────────────────────────────────────────
 
-const neutral10: SwatchData[] = [
-  { step: '100', hex: '#ffffff' },
-  { step: '200', hex: '#f8fafc' },
-  { step: '300', hex: '#f1f5f8' },
-  { step: '400', hex: '#e4e7ec' },
-  { step: '500', hex: '#c3cad5' },
-  { step: '600', hex: '#8b95a9' },
-  { step: '700', hex: '#646f87' },
-  { step: '800', hex: '#475467' },
-  { step: '900', hex: '#344054' },
-  { step: '1000', hex: '#18191b' },
+/** A swatch that also carries its full global token key (e.g. `neutral.100`) for search. */
+interface GlobalSwatch extends SwatchData {
+  /** Full token key used for searching, e.g. `brand.700` or `neutral.AD15`. */
+  key: string;
+}
+
+interface GlobalGroup {
+  name: string;
+  swatches: GlobalSwatch[];
+  /** Render on a dark background (used for white-overlay alpha swatches). */
+  dark?: boolean;
+}
+
+/** Build a numbered scale (`prefix.100 … prefix.1000`) as searchable swatches. */
+function scale(prefix: string, steps: number[]): GlobalSwatch[] {
+  return steps.map((s) => ({
+    step: String(s),
+    hex: G[`${prefix}.${s}`] ?? '#ccc',
+    key: `${prefix}.${s}`,
+  }));
+}
+
+/** Build named swatches (e.g. decorative, focus) as searchable swatches. */
+function named(prefix: string, names: (string | number)[]): GlobalSwatch[] {
+  return names.map((n) => ({
+    step: String(n),
+    hex: G[`${prefix}.${n}`] ?? '#ccc',
+    key: `${prefix}.${n}`,
+  }));
+}
+
+const SCALE_STEPS = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+const ALPHA_STEPS = ['A0', 'A15', 'A35', 'A60', 'A80'];
+const ALPHA_DARK_STEPS = ['AD0', 'AD15', 'AD35', 'AD60', 'AD80'];
+
+const GLOBAL_GROUPS: GlobalGroup[] = [
+  { name: 'Brand', swatches: scale('brand', SCALE_STEPS) },
+  { name: 'Brand Secondary', swatches: scale('brandSecondary', SCALE_STEPS) },
+  { name: 'Neutral', swatches: scale('neutral', SCALE_STEPS) },
+  { name: 'Neutral — Alpha (white overlay)', dark: true, swatches: named('neutral', ALPHA_STEPS) },
+  { name: 'Neutral — Alpha Dark (neutral 1000 overlay)', swatches: named('neutral', ALPHA_DARK_STEPS) },
+  { name: 'Critical', swatches: scale('critical', SCALE_STEPS) },
+  { name: 'Success', swatches: scale('success', SCALE_STEPS) },
+  { name: 'Warning', swatches: scale('warning', SCALE_STEPS) },
+  { name: 'Informative', swatches: scale('informative', SCALE_STEPS) },
+  { name: 'Decorative', swatches: named('decorative', [1, 2, 3, 4, 5]) },
+  { name: 'Focus', swatches: named('focus', ['primary', 'inverse']) },
 ];
 
-const neutralAlpha: SwatchData[] = [
-  { step: 'A0', hex: 'rgba(255, 255, 255, 0)' },
-  { step: 'A15', hex: 'rgba(255, 255, 255, 0.15)' },
-  { step: 'A35', hex: 'rgba(255, 255, 255, 0.35)' },
-  { step: 'A60', hex: 'rgba(255, 255, 255, 0.60)' },
-  { step: 'A80', hex: 'rgba(255, 255, 255, 0.80)' },
-];
+/** True when a swatch matches the query by token key or hex value. */
+function swatchMatches(s: GlobalSwatch, q: string): boolean {
+  return s.key.toLowerCase().includes(q) || s.hex.toLowerCase().includes(q);
+}
 
-function buildScale(
-  prefix: string,
-  steps: number[],
-  extra?: SwatchData[]
-): SwatchData[] {
-  return [
-    ...steps.map((s) => ({ step: String(s), hex: G[`${prefix}.${s}`] ?? '#ccc' })),
-    ...(extra ?? []),
-  ];
+const NoResults: React.FC<{ query: string }> = ({ query }) => (
+  <div style={{ padding: '32px 4px', color: '#6B7280', fontSize: '14px' }}>
+    No tokens match <code style={{ fontFamily: '"SFMono-Regular", Consolas, monospace', color: '#18191b' }}>{query}</code>.
+  </div>
+);
+
+/** Render the global palette groups, filtered by an optional search query. */
+function renderGlobalGroups(query: string): React.ReactNode {
+  const q = query.trim().toLowerCase();
+  const groups = q
+    ? GLOBAL_GROUPS
+        .map((g) => ({ ...g, swatches: g.swatches.filter((s) => swatchMatches(s, q)) }))
+        .filter((g) => g.swatches.length > 0)
+    : GLOBAL_GROUPS;
+
+  if (groups.length === 0) return <NoResults query={query} />;
+
+  return groups.map((g) => (
+    <ColorPaletteGroup key={g.name} name={g.name} dark={g.dark} swatches={g.swatches} />
+  ));
 }
 
 export const GlobalPalette: Story = {
@@ -164,28 +228,7 @@ export const GlobalPalette: Story = {
     controls: { disable: true },
     docs: { canvas: { sourceState: 'none' } },
   },
-  render: () => (
-    <div style={{ padding: '24px 32px' }}>
-      <ColorPaletteGroup name="Brand" swatches={buildScale('brand', [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000])} />
-      <ColorPaletteGroup name="Neutral" swatches={neutral10} />
-      <ColorPaletteGroup name="Neutral — Alpha (white overlay)" swatches={neutralAlpha} dark />
-      <ColorPaletteGroup name="Critical" swatches={buildScale('critical', [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000])} />
-      <ColorPaletteGroup name="Success" swatches={buildScale('success', [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000])} />
-      <ColorPaletteGroup name="Warning" swatches={buildScale('warning', [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000])} />
-      <ColorPaletteGroup name="Informative" swatches={buildScale('informative', [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000])} />
-      <ColorPaletteGroup
-        name="Decorative"
-        swatches={[1, 2, 3, 4, 5].map((n) => ({ step: String(n), hex: G[`decorative.${n}`] }))}
-      />
-      <ColorPaletteGroup
-        name="Focus"
-        swatches={[
-          { step: 'primary', hex: G['focus.primary'] },
-          { step: 'inverse', hex: G['focus.inverse'] },
-        ]}
-      />
-    </div>
-  ),
+  render: () => <div style={{ padding: '24px 32px' }}>{renderGlobalGroups('')}</div>,
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -454,139 +497,161 @@ const LEVEL_DEFS = [
 
 type LevelId = 'global' | 'semantic' | 'component';
 
-const GlobalContent: React.FC = () => (
-  <div style={{ padding: '24px 32px' }}>
-    <ColorPaletteGroup name="Brand" swatches={buildScale('brand', [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000])} />
-    <ColorPaletteGroup name="Neutral" swatches={neutral10} />
-    <ColorPaletteGroup name="Neutral — Alpha (white overlay)" swatches={neutralAlpha} dark />
-    <ColorPaletteGroup name="Critical" swatches={buildScale('critical', [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000])} />
-    <ColorPaletteGroup name="Success" swatches={buildScale('success', [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000])} />
-    <ColorPaletteGroup name="Warning" swatches={buildScale('warning', [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000])} />
-    <ColorPaletteGroup name="Informative" swatches={buildScale('informative', [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000])} />
-    <ColorPaletteGroup
-      name="Decorative"
-      swatches={[1, 2, 3, 4, 5].map((n) => ({ step: String(n), hex: G[`decorative.${n}`] }))}
-    />
-    <ColorPaletteGroup
-      name="Focus"
-      swatches={[
-        { step: 'primary', hex: G['focus.primary'] },
-        { step: 'inverse', hex: G['focus.inverse'] },
-      ]}
-    />
-  </div>
+interface ContentProps {
+  /** Search query — filters swatches/rows by token key, global ref, or hex. */
+  query?: string;
+}
+
+const GlobalContent: React.FC<ContentProps> = ({ query = '' }) => (
+  <div style={{ padding: '24px 32px' }}>{renderGlobalGroups(query)}</div>
 );
 
-const SemanticContent: React.FC = () => (
-  <div style={{ padding: '24px 32px' }}>
-    <SemanticTokenTable title="Action" rows={[
-      row('action.primary.rest',         '{global.brand.700}'),
-      row('action.primary.hover',        '{global.brand.800}'),
-      row('action.primary.pressed',      '{global.brand.900}'),
-      row('action.primary.disabled',     '{global.neutral.300}'),
-      row('action.secondary.rest',       '{global.neutral.100}'),
-      row('action.secondary.hover',      '{global.brand.100}'),
-      row('action.secondary.pressed',    '{global.brand.200}'),
-      row('action.secondary.disabled',   '{global.neutral.300}'),
-      row('action.criticalPrimary.rest',    '{global.critical.700}'),
-      row('action.criticalPrimary.hover',   '{global.critical.800}'),
-      row('action.criticalPrimary.pressed', '{global.critical.900}'),
-      row('action.inversePrimary.rest',     '{global.neutral.100}'),
-      row('action.inversePrimary.hover',    '{global.neutral.A80}'),
-      row('action.inversePrimary.pressed',  '{global.neutral.A60}'),
-    ]} />
-    <SemanticTokenTable title="Text" rows={[
-      row('text.primary',               '{global.neutral.1000}'),
-      row('text.secondary',             '{global.neutral.700}'),
-      row('text.inverse',               '{global.neutral.100}'),
-      row('text.disabled',              '{global.neutral.500}'),
-      row('text.brand.rest',            '{global.brand.700}'),
-      row('text.brand.hover',           '{global.brand.800}'),
-      row('text.brand.pressed',         '{global.brand.900}'),
-      row('text.critical.rest',         '{global.critical.700}'),
-      row('text.informative.rest',      '{global.informative.700}'),
-      row('text.success.rest',          '{global.success.700}'),
-    ]} />
-    <SemanticTokenTable title="Surface" rows={[
-      row('surface.primary.rest',       '{global.neutral.100}'),
-      row('surface.primary.hover',      '{global.neutral.300}'),
-      row('surface.primary.pressed',    '{global.neutral.400}'),
-      row('surface.primary.selected',   '{global.brand.100}'),
-      row('surface.secondary.rest',     '{global.neutral.200}'),
-      row('surface.secondary.hover',    '{global.neutral.400}'),
-      row('surface.inverse',            '{global.neutral.1000}'),
-    ]} />
-    <SemanticTokenTable title="Border" rows={[
-      row('border.static',              '{global.neutral.400}'),
-      row('border.inverse',             '{global.neutral.100}'),
-      row('border.brand',               '{global.brand.700}'),
-      row('border.critical',            '{global.critical.700}'),
-      row('border.success',             '{global.success.700}'),
-      row('border.warning',             '{global.warning.700}'),
-      row('border.informative',         '{global.informative.700}'),
-      row('border.interactive.rest',    '{global.neutral.600}'),
-      row('border.interactive.hover',   '{global.neutral.1000}'),
-      row('border.interactive.selected','{global.brand.700}'),
-    ]} />
-    <SemanticTokenTable title="Fill" rows={[
-      row('fill.primary',               '{global.neutral.100}'),
-      row('fill.secondary',             '{global.neutral.300}'),
-      row('fill.disabled',              '{global.neutral.300}'),
-      row('fill.brand.primary',         '{global.brand.700}'),
-      row('fill.brand.secondary',       '{global.brand.100}'),
-      row('fill.critical.primary',      '{global.critical.700}'),
-      row('fill.success.primary',       '{global.success.700}'),
-      row('fill.warning.primary',       '{global.warning.700}'),
-      row('fill.informative.primary',   '{global.informative.700}'),
-    ]} />
-    <SemanticTokenTable title="Icon" rows={[
-      row('icon.primary',               '{global.neutral.1000}'),
-      row('icon.disabled',              '{global.neutral.500}'),
-      row('icon.inverse',               '{global.neutral.100}'),
-      row('icon.brand',                 '{global.brand.700}'),
-      row('icon.critical',              '{global.critical.700}'),
-      row('icon.success',               '{global.success.700}'),
-      row('icon.warning',               '{global.warning.700}'),
-    ]} />
-    <SemanticTokenTable title="Link" rows={[
-      row('link.primary.rest',          '{global.neutral.1000}'),
-      row('link.primary.disabled',      '{global.neutral.500}'),
-      row('link.secondary.rest',        '{global.brand.700}'),
-      row('link.secondary.hover',       '{global.brand.800}'),
-      row('link.inverse.rest',          '{global.neutral.100}'),
-      row('link.inverse.disabled',      '{global.neutral.A35}'),
-    ]} />
-    <SemanticTokenTable title="Focus" rows={[
-      row('focus.primary',              '{global.focus.primary}'),
-      row('focus.inverse',              '{global.focus.inverse}'),
-    ]} />
-  </div>
+// ─── Semantic + component token tables, as filterable data ───────────────────
+
+interface TokenTableDef {
+  title: string;
+  rows: SemanticTokenRow[];
+}
+
+/** True when a row matches the query by token name, global ref, or resolved hex. */
+function rowMatches(r: SemanticTokenRow, q: string): boolean {
+  return (
+    r.token.toLowerCase().includes(q) ||
+    r.globalRef.toLowerCase().includes(q) ||
+    r.hex.toLowerCase().includes(q)
+  );
+}
+
+/** Render a set of token tables, hiding rows (and empty tables) that don't match the query. */
+function renderTokenTables(tables: TokenTableDef[], query: string): React.ReactNode {
+  const q = query.trim().toLowerCase();
+  const filtered = q
+    ? tables
+        .map((t) => ({ ...t, rows: t.rows.filter((r) => rowMatches(r, q)) }))
+        .filter((t) => t.rows.length > 0)
+    : tables;
+
+  if (filtered.length === 0) return <NoResults query={query} />;
+
+  return filtered.map((t) => (
+    <SemanticTokenTable key={t.title} title={t.title} rows={t.rows} />
+  ));
+}
+
+const SEMANTIC_TABLES: TokenTableDef[] = [
+  { title: 'Action', rows: [
+    row('action.primary.rest',         '{global.brand.700}'),
+    row('action.primary.hover',        '{global.brand.800}'),
+    row('action.primary.pressed',      '{global.brand.900}'),
+    row('action.primary.disabled',     '{global.neutral.300}'),
+    row('action.secondary.rest',       '{global.neutral.100}'),
+    row('action.secondary.hover',      '{global.brand.100}'),
+    row('action.secondary.pressed',    '{global.brand.200}'),
+    row('action.secondary.disabled',   '{global.neutral.300}'),
+    row('action.criticalPrimary.rest',    '{global.critical.700}'),
+    row('action.criticalPrimary.hover',   '{global.critical.800}'),
+    row('action.criticalPrimary.pressed', '{global.critical.900}'),
+    row('action.inversePrimary.rest',     '{global.neutral.100}'),
+    row('action.inversePrimary.hover',    '{global.neutral.A80}'),
+    row('action.inversePrimary.pressed',  '{global.neutral.A60}'),
+  ] },
+  { title: 'Text', rows: [
+    row('text.primary',               '{global.neutral.1000}'),
+    row('text.secondary',             '{global.neutral.700}'),
+    row('text.inverse',               '{global.neutral.100}'),
+    row('text.disabled',              '{global.neutral.500}'),
+    row('text.brand.rest',            '{global.brand.700}'),
+    row('text.brand.hover',           '{global.brand.800}'),
+    row('text.brand.pressed',         '{global.brand.900}'),
+    row('text.critical.rest',         '{global.critical.700}'),
+    row('text.informative.rest',      '{global.informative.700}'),
+    row('text.success.rest',          '{global.success.700}'),
+  ] },
+  { title: 'Surface', rows: [
+    row('surface.primary.rest',       '{global.neutral.100}'),
+    row('surface.primary.hover',      '{global.neutral.300}'),
+    row('surface.primary.pressed',    '{global.neutral.400}'),
+    row('surface.primary.selected',   '{global.brand.100}'),
+    row('surface.secondary.rest',     '{global.neutral.200}'),
+    row('surface.secondary.hover',    '{global.neutral.400}'),
+    row('surface.inverse',            '{global.neutral.1000}'),
+  ] },
+  { title: 'Border', rows: [
+    row('border.static',              '{global.neutral.400}'),
+    row('border.inverse',             '{global.neutral.100}'),
+    row('border.brand',               '{global.brand.700}'),
+    row('border.critical',            '{global.critical.700}'),
+    row('border.success',             '{global.success.700}'),
+    row('border.warning',             '{global.warning.700}'),
+    row('border.informative',         '{global.informative.700}'),
+    row('border.interactive.rest',    '{global.neutral.600}'),
+    row('border.interactive.hover',   '{global.neutral.1000}'),
+    row('border.interactive.selected','{global.brand.700}'),
+  ] },
+  { title: 'Fill', rows: [
+    row('fill.primary',               '{global.neutral.100}'),
+    row('fill.secondary',             '{global.neutral.300}'),
+    row('fill.disabled',              '{global.neutral.300}'),
+    row('fill.brand.primary',         '{global.brand.700}'),
+    row('fill.brand.secondary',       '{global.brand.100}'),
+    row('fill.critical.primary',      '{global.critical.700}'),
+    row('fill.success.primary',       '{global.success.700}'),
+    row('fill.warning.primary',       '{global.warning.700}'),
+    row('fill.informative.primary',   '{global.informative.700}'),
+  ] },
+  { title: 'Icon', rows: [
+    row('icon.primary',               '{global.neutral.1000}'),
+    row('icon.disabled',              '{global.neutral.500}'),
+    row('icon.inverse',               '{global.neutral.100}'),
+    row('icon.brand',                 '{global.brand.700}'),
+    row('icon.critical',              '{global.critical.700}'),
+    row('icon.success',               '{global.success.700}'),
+    row('icon.warning',               '{global.warning.700}'),
+  ] },
+  { title: 'Link', rows: [
+    row('link.primary.rest',          '{global.neutral.1000}'),
+    row('link.primary.disabled',      '{global.neutral.500}'),
+    row('link.secondary.rest',        '{global.brand.700}'),
+    row('link.secondary.hover',       '{global.brand.800}'),
+    row('link.inverse.rest',          '{global.neutral.100}'),
+    row('link.inverse.disabled',      '{global.neutral.A35}'),
+  ] },
+  { title: 'Focus', rows: [
+    row('focus.primary',              '{global.focus.primary}'),
+    row('focus.inverse',              '{global.focus.inverse}'),
+  ] },
+];
+
+const COMPONENT_TABLES: TokenTableDef[] = [
+  { title: 'Text Button (NakedButton)', rows: [
+    row('component.button.textPrimary.rest.label',     '{global.neutral.1000}'),
+    row('component.button.textPrimary.hover.label',    '{global.brand.700}'),
+    row('component.button.textPrimary.pressed.label',  '{global.brand.800}'),
+    row('component.button.textPrimary.disabled.label', '{global.neutral.500}'),
+    row('component.button.textSecondary.rest.label',   '{global.brand.700}'),
+    row('component.button.textSecondary.hover.label',  '{global.brand.800}'),
+    row('component.button.textSecondary.pressed.label','{global.brand.900}'),
+    row('component.button.textInverse.rest.label',     '{global.neutral.100}'),
+    row('component.button.textInverse.hover.label',    '{global.neutral.A80}'),
+    row('component.button.textCritical.rest.label',    '{global.critical.700}'),
+    row('component.button.textCritical.hover.label',   '{global.critical.800}'),
+  ] },
+  { title: 'Tabs', rows: [
+    row('component.tabs.default.rest',     '{global.neutral.700}'),
+    row('component.tabs.default.hover',    '{global.brand.800}'),
+    row('component.tabs.default.selected', '{global.brand.700}'),
+    row('component.tabs.neutral.rest',     '{global.neutral.700}'),
+    row('component.tabs.neutral.hover',    '{global.neutral.1000}'),
+    row('component.tabs.neutral.selected', '{global.neutral.1000}'),
+  ] },
+];
+
+const SemanticContent: React.FC<ContentProps> = ({ query = '' }) => (
+  <div style={{ padding: '24px 32px' }}>{renderTokenTables(SEMANTIC_TABLES, query)}</div>
 );
 
-const ComponentContent: React.FC = () => (
-  <div style={{ padding: '24px 32px' }}>
-    <SemanticTokenTable title="Text Button (NakedButton)" rows={[
-      row('component.button.textPrimary.rest.label',     '{global.neutral.1000}'),
-      row('component.button.textPrimary.hover.label',    '{global.brand.700}'),
-      row('component.button.textPrimary.pressed.label',  '{global.brand.800}'),
-      row('component.button.textPrimary.disabled.label', '{global.neutral.500}'),
-      row('component.button.textSecondary.rest.label',   '{global.brand.700}'),
-      row('component.button.textSecondary.hover.label',  '{global.brand.800}'),
-      row('component.button.textSecondary.pressed.label','{global.brand.900}'),
-      row('component.button.textInverse.rest.label',     '{global.neutral.100}'),
-      row('component.button.textInverse.hover.label',    '{global.neutral.A80}'),
-      row('component.button.textCritical.rest.label',    '{global.critical.700}'),
-      row('component.button.textCritical.hover.label',   '{global.critical.800}'),
-    ]} />
-    <SemanticTokenTable title="Tabs" rows={[
-      row('component.tabs.default.rest',     '{global.neutral.700}'),
-      row('component.tabs.default.hover',    '{global.brand.800}'),
-      row('component.tabs.default.selected', '{global.brand.700}'),
-      row('component.tabs.neutral.rest',     '{global.neutral.700}'),
-      row('component.tabs.neutral.hover',    '{global.neutral.1000}'),
-      row('component.tabs.neutral.selected', '{global.neutral.1000}'),
-    ]} />
-  </div>
+const ComponentContent: React.FC<ContentProps> = ({ query = '' }) => (
+  <div style={{ padding: '24px 32px' }}>{renderTokenTables(COMPONENT_TABLES, query)}</div>
 );
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -685,6 +750,7 @@ export const TokenLevels: Story = {
     };
 
     const [active, setActive] = React.useState<LevelId>(hashLevel);
+    const [query, setQuery] = React.useState('');
 
     React.useEffect(() => {
       const onHashChange = () => setActive(hashLevel());
@@ -751,10 +817,60 @@ export const TokenLevels: Story = {
           {LEVEL_DEFS.find((l) => l.id === active)?.description}
         </div>
 
+        {/* Search bar — filter by token key (e.g. neutral.100) or hex (e.g. #ffffff) */}
+        <div
+          style={{
+            padding: '12px 24px',
+            background: '#F8FAFC',
+            borderBottom: '1px solid #E2E8F0',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+          }}
+        >
+          <span aria-hidden style={{ fontSize: '14px', color: '#94A3B8' }}>🔍</span>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder='Search by token or hex — e.g. "neutral.100" or "#ffffff"'
+            aria-label="Search color tokens by key or hex value"
+            style={{
+              flex: 1,
+              border: '1px solid #E2E8F0',
+              borderRadius: '6px',
+              padding: '7px 12px',
+              fontSize: '13px',
+              fontFamily: '"SFMono-Regular", Consolas, monospace',
+              color: '#18191b',
+              background: '#fff',
+              outline: 'none',
+            }}
+          />
+          {query && (
+            <button
+              onClick={() => setQuery('')}
+              style={{
+                border: '1px solid #E2E8F0',
+                borderRadius: '6px',
+                padding: '7px 12px',
+                fontSize: '13px',
+                background: '#fff',
+                color: '#475569',
+                cursor: 'pointer',
+                fontFamily: "'Nunito Sans', sans-serif",
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Clear
+            </button>
+          )}
+        </div>
+
         {/* Content */}
-        {active === 'global' && <GlobalContent />}
-        {active === 'semantic' && <SemanticContent />}
-        {active === 'component' && <ComponentContent />}
+        {active === 'global' && <GlobalContent query={query} />}
+        {active === 'semantic' && <SemanticContent query={query} />}
+        {active === 'component' && <ComponentContent query={query} />}
       </div>
     );
   },
@@ -835,4 +951,25 @@ export const SemanticSwatchGrid: Story = {
       </div>
     );
   },
+};
+
+// ─── Related components ──────────────────────────────────────
+
+export const RelatedComponentsBlock: StoryObj = {
+  name: 'Related components',
+  parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
+  render: () => (
+    <RelatedComponents>
+      <RelatedComponent
+        name="Button"
+        url="/?path=/docs/components-action-button--docs"
+        preview={<Button label="Label" variant="primary" />}
+      />
+      <RelatedComponent
+        name="Link"
+        url="/?path=/docs/components-navigation-link--docs"
+        preview={<Link href="#" label="View invoice" variant="standalone" />}
+      />
+    </RelatedComponents>
+  ),
 };

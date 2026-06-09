@@ -1,4 +1,4 @@
-import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import { Canvas, Controls, Meta, Story } from '@storybook/addon-docs/blocks';
 import * as ActionBarStories from './ActionBar.stories';
 import { Callout } from '@/storybook-utils/Callout';
 import { PageHero } from '@/storybook-utils/PageHero';
@@ -10,7 +10,7 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 <PageHero
   category="Action"
   title="Action Bar"
-  badge="Healthy"
+  badge="Done"
   description="The Action Bar is a pattern, based on the Panel component, used for managing bulk actions. It appears at the bottom of the screen when items are selected, showing a summary on the left and actions on the right."
 />
 
@@ -72,6 +72,10 @@ The background defaults to `semantic.surface.inverse` (near-black) and accepts a
 ## Mobile usage
 
 <Callout variant="note">The Action Bar is **not available on mobile** — bulk actions are not supported in mobile views, so the pattern is desktop-only.</Callout>
+
+## Related components
+
+<Story of={ActionBarStories.RelatedComponentsBlock} />
 
 </DocTab>
 

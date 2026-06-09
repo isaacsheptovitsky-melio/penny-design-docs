@@ -187,35 +187,27 @@ export const CustomContent: Story = {
 // ─── Full width ───────────────────────────────────────────────────────────────
 
 /**
- * `isFullWidth` stretches the item to fill its container — useful inside a vertical
- * navigation list.
+ * `isFullWidth` stretches the item to fill the width of its container — useful
+ * inside a vertical navigation list.
  */
 export const FullWidth: Story = {
   render: () => (
-    <div style={{ padding: '32px', background: '#F3F5F7', borderRadius: '8px', display: 'flex', justifyContent: 'flex-start', fontFamily: 'Poppins, sans-serif' }}>
-      {/* inner container — the full-width items stretch to fill its width */}
-      <div style={{ width: '240px', background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '8px' }}>
-        <Group variant="vertical" spacing="xxs">
-          <NavigationItem isFullWidth isSelected>Dashboard</NavigationItem>
-          <NavigationItem isFullWidth>Payments</NavigationItem>
-          <NavigationItem isFullWidth>Vendors</NavigationItem>
-        </Group>
+    <NavigationItem isFullWidth>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '8px 16px',
+          borderRadius: '8px',
+          background: '#e4dbff',
+          color: '#1A1A2E',
+          fontFamily: 'Poppins, sans-serif',
+        }}
+      >
+        Slot
       </div>
-    </div>
-  ),
-  parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
-};
-
-// ─── As link ──────────────────────────────────────────────────────────────────
-
-/**
- * Pass a `link` prop to render the item as an `<a>` tag. Any item that navigates
- * to a URL must be a link so screen readers announce it correctly.
- */
-export const AsLink: Story = {
-  render: () => (
-    <NavigationItem link={{ href: 'https://www.google.com', target: '_blank' }}>
-      Open Google
     </NavigationItem>
   ),
   parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },

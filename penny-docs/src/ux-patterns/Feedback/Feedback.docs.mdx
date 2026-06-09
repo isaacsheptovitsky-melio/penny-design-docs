@@ -1,22 +1,20 @@
-import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import { Canvas, Meta, Story } from '@storybook/addon-docs/blocks';
 import * as FeedbackStories from './Feedback.stories';
 import { Callout } from '@/storybook-utils/Callout';
 import { Do, Dont } from '@/storybook-utils/RuleItem';
 import { PageHero } from '@/storybook-utils/PageHero';
 import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
-import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 
 <Meta of={FeedbackStories} />
 
 <PageHero
   category="UX Patterns"
   title="Feedback"
-  badge="Healthy"
+  badge="Done"
   description="Feedback messages communicate system status or response to user actions. Every error and confirmation message in Melio follows this pattern to keep feedback timely, discoverable, and actionable."
 />
 
-<DocTabs links={
-  <ShortcutTiles>
+<ShortcutTiles>
     <ShortcutTile
       label="ZeroHeight"
       url="https://zeroheight.com/98bb1df01/v/latest/p/2752a5-feedback"
@@ -26,9 +24,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
       url="https://zeroheight.com/98bb1df01/v/latest/p/46d766"
     />
   </ShortcutTiles>
-}>
-
-<DocTab label="Design">
 
 ## Overview
 
@@ -111,93 +106,6 @@ Follow this order of operations on every form submission:
 - **Always include an action or explanation** when the user must resolve the error — the banner should tell them what to do next.
 - **Do not allow dismissal** for critical errors or when an action is required. Dismissal is appropriate only when the message is informational and no action is needed.
 
-</DocTab>
+## Related patterns
 
-<DocTab label="Development">
-
-## Implementation checklist
-
-When adding feedback to a flow, verify each of these:
-
-- [ ] Is the error **page-level** (affects the whole screen)? → use Global placement — Section Banner at the top of the page.
-- [ ] Is the error **section-level** (affects one isolated area)? → use Local placement — Section Banner above that section's heading.
-- [ ] Is the error a **client-side format issue** (empty required field, bad format)? → use the Form Field's `status="critical"` inline, not a banner.
-- [ ] Is the error a **server-side data issue** (vendor exists, limit exceeded)? → use Section Banner above the form heading.
-- [ ] Are there multiple server-side issues? → consolidate into **one** Section Banner with a bullet list. Never stack multiple banners.
-- [ ] Does the error require user action? → include a clear CTA in the banner. Do not allow dismissal.
-- [ ] Is the error informational with no required action? → dismissal may be allowed.
-- [ ] After the user resolves the error and resubmits successfully → remove the banner and show a success Toast.
-
-## Components used
-
-- **`SectionBanner` (`variant="critical"`, `size="compact"`)** — Global and local error banners
-- **Form Field `status="critical"`** — Client-side field-level validation errors
-- **`Toast` (`variant="success"`)** — Post-action success confirmation
-
-## Error handling in API calls
-
-When a form submission fails:
-
-1. **Set loading state** on the submit button (`isLoading={true}`).
-2. **Call the API.**
-3. **On success:** clear the form, close the modal/flow, show a success Toast.
-4. **On failure:** set `isLoading={false}`, display a Section Banner above the form heading with the error message. Do not close the modal.
-
-```tsx
-const [isSubmitting, setIsSubmitting] = useState(false);
-const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-const handleSubmit = async () => {
-  setIsSubmitting(true);
-  setErrorMessage(null);
-  try {
-    await submitPayment(formData);
-    onClose();
-    showSuccessToast('Payment scheduled');
-  } catch (err) {
-    setIsSubmitting(false);
-    setErrorMessage('Payment failed. Please check your account balance and try again.');
-  }
-};
-
-// In the render:
-{errorMessage && (
-  <SectionBanner
-    variant="critical"
-    size="compact"
-    description={errorMessage}
-  />
-)}
-```
-
-</DocTab>
-
-<DocTab label="ADA">
-
-## Accessibility
-
-### Error announcement
-
-- **Role:** Section Banner uses `role="alert"` internally, which causes screen readers to announce the message immediately when it is injected into the DOM — no focus management required for the banner itself.
-- **Timing:** Inject the banner into the DOM **after** the API response resolves, not before. Pre-rendering a hidden banner and toggling visibility prevents the `alert` role from firing.
-
-### Form field errors (client-side)
-
-- Each Form Field in error state must have `aria-invalid="true"` and `aria-describedby` pointing to the error message element.
-- The error message must be programmatically associated — not just visually adjacent.
-- Do not rely on color alone to indicate an error. The field border, icon, and text message must all change.
-
-### Focus management
-
-- After client-side validation fires, move focus to the **first invalid field** so keyboard users know where to begin correcting.
-- After server-side errors appear, move focus to the **Section Banner** so the error is announced immediately.
-- After successful submission, move focus to the **main content region** or the newly loaded page heading.
-
-### Color contrast
-
-- Critical Section Banner: text and icon colors meet WCAG 2.1 AA (4.5:1 for body text, 3:1 for large text / icons) against the `semantic.fill.critical.secondary` background.
-- Do not use color alone to distinguish error from success states — always pair color with an icon and text label.
-
-</DocTab>
-
-</DocTabs>
+<Story of={FeedbackStories.RelatedComponentsBlock} />

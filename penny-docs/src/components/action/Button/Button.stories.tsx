@@ -1,5 +1,9 @@
 import { Box } from '@chakra-ui/react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { RelatedComponent, RelatedComponents } from '@/storybook-utils/RelatedComponents';
+import { IconButton } from '@/components/action/IconButton';
+import { NakedButton } from '@/components/action/NakedButton';
+import { ButtonGroup } from '@/components/action/ButtonGroup';
 
 import { Group } from '@/components/containers/Group';
 import { Icon } from '@/components/foundations/Icon';
@@ -604,4 +608,30 @@ export const ButtonStates: Story = {
     controls: { disable: true },
     docs: { canvas: { sourceState: 'none' } },
   },
+};
+
+// ─── Related components ──────────────────────────────────────
+
+export const RelatedComponentsBlock: StoryObj = {
+  name: 'Related components',
+  parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
+  render: () => (
+    <RelatedComponents>
+      <RelatedComponent
+        name="Icon Button"
+        url="/?path=/docs/components-action-icon-button--docs"
+        preview={<IconButton icon="edit" variant="primary" aria-label="Edit" />}
+      />
+      <RelatedComponent
+        name="Naked Button"
+        url="/?path=/docs/components-action-naked-button--docs"
+        preview={<NakedButton label="Label" variant="primary" />}
+      />
+      <RelatedComponent
+        name="Button Group"
+        url="/?path=/docs/components-action-button-group--docs"
+        preview={<ButtonGroup><Button label="Copy" /><Button label="Paste" /></ButtonGroup>}
+      />
+    </RelatedComponents>
+  ),
 };
