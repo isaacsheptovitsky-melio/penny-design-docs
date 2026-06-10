@@ -1,0 +1,95 @@
+import { Canvas, Controls, Meta, Story } from '@storybook/addon-docs/blocks';
+import * as ContainerStories from './Container.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={ContainerStories} />
+
+<PageHero
+  category="Containers"
+  title="Container"
+  badge="Healthy"
+  description="Wraps content to control spacing, alignment, and layout boundaries — a flexible structural building block."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="DS Components"
+      url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=17786-53670"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/499555-container"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={ContainerStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={ContainerStories.Playground} />
+</div>
+
+## Usage
+
+Use a Container to:
+
+- Create sections or blocks of content.
+- Apply consistent spacing and alignment.
+- Apply background color and borders to differentiate sections.
+- Control dimensions and overflow behavior.
+
+<Callout variant="note">Need an interactive component? Use the Card component instead. The Container is a non-interactive structural element.</Callout>
+
+## Key features
+
+- Flexible padding on all sides (`paddingX`/`paddingY` or per-side `paddingTop`/`paddingBottom`/`paddingLeft`/`paddingRight`).
+- Optional borders and background colors.
+- Layout control via `width`, `height`, `alignItems`, `justifyContent`.
+- Sticky positioning support (`isSticky`), plus `position` / `maxWidth` for finer control.
+
+## Variants
+
+### Background colors
+
+- **default** — transparent.
+- **light** — the `semantic.surface.secondary` color.
+- **white** — a white background.
+
+<Canvas of={ContainerStories.Backgrounds} />
+
+### Border
+
+`none`, `regular` (1px solid), or `dashed`.
+
+<Canvas of={ContainerStories.Borders} />
+
+## Positioning
+
+Set `position` to control placement — `static` (default), `relative`, `absolute`, `fixed`, or `sticky`. Use `isSticky` as a shorthand for a sticky container (it overrides `position` and `top`). For finer width control, set `maxWidth` (any CSS max-width value).
+
+## Related components
+
+<Story of={ContainerStories.RelatedComponentsBlock} />
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>
