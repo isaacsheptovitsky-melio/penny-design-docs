@@ -1,0 +1,53 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs/blocks';
+import * as BordersStories from './Borders.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={BordersStories} />
+
+<PageHero
+  category="Foundations"
+  title="Borders"
+  badge="Healthy"
+  description="Borders define the edges of components, surfaces, and inputs across the system."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/72d4df-borders"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+## Global tokens
+
+The base border-weight scale. Tokens pair a width with the `solid` style.
+
+<Canvas of={BordersStories.GlobalTokens} />
+
+## Semantic tokens
+
+Semantic tokens map a category to a global weight — use these in component themes.
+
+- **`border.action.default`**, **`border.container.default`**, **`border.input.default`** → `global.25` (1px) — the standard component border.
+- **`border.focus`** → `global.50` (2px) — the focus ring.
+
+<Callout variant="note">Border color is set separately via color tokens (e.g. `semantic.border.static`); these tokens define the **weight and style** only.</Callout>
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>

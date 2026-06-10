@@ -1,0 +1,97 @@
+import { Canvas, Controls, Meta, Story } from '@storybook/addon-docs/blocks';
+import * as PillStories from './Pill.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={PillStories} />
+
+<PageHero
+  category="Data display"
+  title="Pill"
+  badge="Healthy"
+  description="A small, rounded element for indicating status, categorizing content, or highlighting key details."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="DS Components"
+      url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=2-54"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/68afcb-pill"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={PillStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={PillStories.Playground} />
+</div>
+
+## Usage
+
+- **Show status** — warnings, errors, success, or general info.
+- **Label content** — users, companies, transactions.
+- **Add recognition** — highlight key details without clutter.
+- **Use icons** — add logos, avatars, or symbols for clarity.
+
+## Variants
+
+### Types
+
+Three types vary the visual emphasis while keeping the same semantic status color.
+
+<Story of={PillStories.Types} />
+
+### Statuses
+
+Six semantic statuses cover warnings, errors, success, and general info.
+
+<Story of={PillStories.Statuses} />
+
+### Left and right elements
+
+Left and right elements are custom (icons, logos, avatars) but must fit within the 20px pill height.
+
+<Story of={PillStories.LeftAndRightElements} />
+
+## Do's and don'ts
+
+- **Do** use concise, clear labels.
+- **Do** use icons to add meaning or context.
+- **Don't** overuse pills in dense layouts.
+- **Don't** use long text strings that break the design.
+
+<Callout variant="note">On mobile, avoid long text to maintain readability.</Callout>
+
+## Accessibility
+
+Don't rely on color alone — use icons and text so the meaning is clear for everyone, including users with color blindness.
+
+## Related components
+
+<Story of={PillStories.RelatedComponentsBlock} />
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>

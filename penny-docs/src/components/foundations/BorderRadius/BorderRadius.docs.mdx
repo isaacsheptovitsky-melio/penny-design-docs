@@ -1,0 +1,57 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs/blocks';
+import * as BorderRadiusStories from './BorderRadius.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={BorderRadiusStories} />
+
+<PageHero
+  category="Foundations"
+  title="Border Radius"
+  badge="Healthy"
+  description="A structured, three-level border-radius token system (global, semantic, component) for consistent, themeable corners."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/8733f6-border-radius"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+## Global tokens
+
+The base radius scale applied across components for consistent corners.
+
+<Canvas of={BorderRadiusStories.GlobalTokens} />
+
+## Semantic tokens
+
+Semantic tokens define the default radius for a category of components — reach for these in component themes rather than a global value.
+
+- **`border-radius.action.default`** → `border-radius.200` (8px) — most action components (Button, Icon Button, Date picker).
+- **`border-radius.input.default`** → `border-radius.200` (8px) — most input components (Text field, Select, Search bar, …).
+
+## Component tokens
+
+- **`border-radius.pill.default`** → `border-radius.full` — the Pill component's fully-rounded corners.
+
+<Callout variant="note">Always reach for the highest-level token available — component or semantic over a raw global value — so theming stays consistent.</Callout>
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>

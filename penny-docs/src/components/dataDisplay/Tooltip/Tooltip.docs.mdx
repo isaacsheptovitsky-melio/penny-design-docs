@@ -1,0 +1,113 @@
+import { Canvas, Controls, Meta, Story } from '@storybook/addon-docs/blocks';
+import * as TooltipStories from './Tooltip.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={TooltipStories} />
+
+<PageHero
+  category="Data display"
+  title="Tooltip"
+  badge="Beta"
+  description="Tooltip displays brief helper text on hover or focus to clarify an element's purpose without cluttering the UI."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="DS Components"
+      url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=2-104"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/60e8d6-tooltip"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<Callout variant="warning">The local `Tooltip` is currently a pass-through stub — it renders its children without the floating bubble. The previews below are static design mocks that show the intended appearance until the full component is vendored.</Callout>
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={TooltipStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={TooltipStories.Playground} />
+</div>
+
+## Usage
+
+- Explain **icon-only buttons** or otherwise ambiguous UI elements.
+- Provide **extra information** on hover (e.g. "Scheduled to send on May 2").
+- Clarify **disabled states or restricted access** (e.g. "Only admins can edit roles").
+
+<Callout variant="tip">Tooltips are for hints, not full explanations. If it needs a sentence or more, consider a popover or modal.</Callout>
+
+## Variants
+
+### With title
+
+A tooltip can pair a bold title with a short supporting line.
+
+<Story of={TooltipStories.WithTitle} />
+
+### Label with line break
+
+There's no character limit, but the tooltip's max width is 296px — long text wraps onto multiple lines.
+
+<Story of={TooltipStories.LabelWithLineBreak} />
+
+### Placement
+
+The tooltip can sit on any side of the triggering element.
+
+<Story of={TooltipStories.Placement} />
+
+### Label with icon
+
+Pair the helper text with a small icon for extra context.
+
+<Story of={TooltipStories.LabelWithIcon} />
+
+## Current behavior
+
+Until the full component is vendored, the local `Tooltip` simply renders its children:
+
+<Story of={TooltipStories.CurrentBehavior} />
+
+## Mobile use
+
+Tooltips do **not** appear on hover on touch devices. For mobile:
+
+- Use alternative UI — help icons, modals, or inline text.
+- Don't rely on hover-only interactions; ensure all info is reachable another way.
+
+## Accessibility
+
+- Ensure tooltips can be triggered by both **hover** and **keyboard focus**.
+- **Disabled elements** should still expose their tooltip content.
+- Keep tooltip text **short, clear, and supportive** — it must never replace essential information.
+- Tooltips assist; they should never block task completion or hide important actions.
+
+## Related components
+
+<Story of={TooltipStories.RelatedComponentsBlock} />
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>

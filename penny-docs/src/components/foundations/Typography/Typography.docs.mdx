@@ -1,0 +1,78 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs/blocks';
+import * as TypographyStories from './Typography.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={TypographyStories} />
+
+<PageHero
+  category="Foundations"
+  title="Typography"
+  badge="Healthy"
+  description="Typography defines the visual appearance of text elements across the product."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/9875e1-typograpghy"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+## Font family
+
+We use **Poppins** in two weights: Regular (400) and SemiBold (600).
+
+<Canvas of={TypographyStories.FontFamily} />
+
+<Callout variant="note">Currently we only have tokens for the font family. Apply text styles with the `textStyle` prop (e.g. `<Text textStyle="body2" />`).</Callout>
+
+## Display & headings
+
+Use display and heading styles for page and section titles.
+
+<Canvas of={TypographyStories.DisplayAndHeadings} />
+
+## Metrics
+
+Metric styles are used for prominent numeric values (e.g. amounts and KPIs).
+
+<Canvas of={TypographyStories.Metrics} />
+
+## Body
+
+Body styles cover the bulk of UI text. `body2` is the default for most content.
+
+<Canvas of={TypographyStories.Body} />
+
+## Captions
+
+Captions are the smallest styles — for metadata, labels, and supporting detail.
+
+<Canvas of={TypographyStories.Captions} />
+
+## Accessibility & DOM structure
+
+Visual hierarchy is not the same as document structure — a style that *looks* like a headline doesn't have to be an `<h1>`.
+
+- Each page has **only one** `<h1>` (its main title); subsequent headings follow a logical `<h2>`, `<h3>`… order.
+- Treat typography as the **visual layer** and semantic HTML tags as the **structural layer** — pick the tag from content order, not appearance.
+- This keeps screen-reader navigation correct and avoids out-of-order heading levels.
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>

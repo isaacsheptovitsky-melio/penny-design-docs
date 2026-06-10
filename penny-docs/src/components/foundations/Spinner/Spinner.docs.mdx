@@ -1,0 +1,92 @@
+import { Canvas, Controls, Meta, Story } from '@storybook/addon-docs/blocks';
+import * as SpinnerStories from './Spinner.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={SpinnerStories} />
+
+<PageHero
+  category="Foundations"
+  title="Spinner"
+  badge="Healthy"
+  description="A circular loading indicator that communicates an in-progress or indeterminate wait state."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="DS Components"
+      url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=34120-26807"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/121a10-spinner"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={SpinnerStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={SpinnerStories.Playground} />
+</div>
+
+## Usage
+
+Use the Spinner when:
+
+- A page or section is awaiting data.
+- A user-initiated action triggers a delay (submitting a form, fetching data).
+- An inline element is loading inside a button, input, or container.
+
+<Callout variant="note">The Spinner is meant to sit inside other components, paired with a live region so assistive tech announces the wait — not used standalone.</Callout>
+
+## Types
+
+- **Neutral** (default) — loading on white or light-grey backgrounds; the default for most contexts.
+- **Brand** — ties the loading moment to brand identity (initial app load, payment confirmation).
+
+<Canvas of={SpinnerStories.Variants} />
+
+### Inverse
+
+For dark or colored surfaces where the neutral color would disappear — filled buttons, dark overlays, colored banners.
+
+<Canvas of={SpinnerStories.Inverse} />
+
+## Sizes
+
+Use **Small** inside inputs, compact buttons, or tight table cells; **Medium** elsewhere.
+
+<Canvas of={SpinnerStories.Sizes} />
+
+## States
+
+When `disabled`, all types collapse to the same muted palette to signal unavailability — the animation still runs.
+
+<Canvas of={SpinnerStories.Disabled} />
+
+## Related components
+
+<Story of={SpinnerStories.RelatedComponentsBlock} />
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>

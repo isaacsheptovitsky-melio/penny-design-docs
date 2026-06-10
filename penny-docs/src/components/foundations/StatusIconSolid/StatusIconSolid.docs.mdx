@@ -1,0 +1,85 @@
+import { Canvas, Controls, Meta, Story } from '@storybook/addon-docs/blocks';
+import * as StatusIconSolidStories from './StatusIconSolid.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={StatusIconSolidStories} />
+
+<PageHero
+  category="Foundations"
+  title="Status Icon Solid"
+  badge="Healthy"
+  description="Provides a prominent visual status (like success or warning) within a modal header to frame its content."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="DS Foundations"
+      url="https://www.figma.com/design/G6zl0KicUc7ZOA4euH5VEs/%F0%9F%A4%8D-DS-Foundations-%F0%9F%A4%8D?node-id=5043-3246"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/9965e2-status-icon-solid"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={StatusIconSolidStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={StatusIconSolidStories.Playground} />
+</div>
+
+## Usage
+
+- Use in the **header of a modal** to immediately communicate the outcome or nature of the content.
+- Use **`success`** for modals confirming a completed action, like "Payment sent" or "Vendor added".
+- Use **`warning`** or **`issues`** for modals reporting an error or a problem requiring attention, like "Payment failed" or "Bank account disconnected".
+- Use **`informative`** or **`help`** for standard confirmation dialogues or modals that require user input, like "Confirm payment details".
+
+## Variants
+
+### Status variant
+
+The `variant` prop sets the icon's glyph and color to a semantic meaning. Warning and pending share the warning color; informative and scheduled share the informative color; processing, help, and issues use the primary (neutral) color; alert, decline, and cancel use the critical color.
+
+<Canvas of={StatusIconSolidStories.Variants} />
+
+### Sizes
+
+The icon comes in four sizes.
+
+<Canvas of={StatusIconSolidStories.Sizes} />
+
+### States
+
+<Canvas of={StatusIconSolidStories.States} />
+
+- **Read-only** — prevents interaction.
+- **Disabled** — indicates the status is not currently relevant or active, and makes it non-interactive.
+
+## Related components
+
+<Story of={StatusIconSolidStories.RelatedComponentsBlock} />
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>

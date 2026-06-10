@@ -19,17 +19,33 @@ const preview: Preview = {
   decorators: [withPennyTheme],
   parameters: {
     options: {
-      storySort: {
-        order: [
-          '✦ Design Guidelines',
-          'Foundations',
-          ['Color Tokens', '*'],
-          'UX Patterns',
-          ['Buttons vs. Links', 'Delete', 'Feedback', '*'],
-          'Components',
-          ['Action', ['Button', 'Icon Button', 'Naked Button', '*'], 'Navigation', ['Link', '*'], '*'],
-          '*',
-        ],
+      // Sort the category/group/component hierarchy alphabetically, but keep the intro pages and
+      // category order pinned at the top level, and preserve each page's authored story order.
+      // NOTE: Storybook statically extracts this function, so it must be inline and self-contained
+      // (no references to module-scope variables).
+      storySort: (a, b) => {
+        const TOP_LEVEL_ORDER = ['✦ Design Guidelines', 'Welcome', 'Foundations', 'UX Patterns', 'Components'];
+        const rank = (segment) => {
+          const index = TOP_LEVEL_ORDER.indexOf(segment);
+          return index === -1 ? TOP_LEVEL_ORDER.length : index;
+        };
+        const aTitle = a.title ?? '';
+        const bTitle = b.title ?? '';
+        // Same page (component) — preserve the authored story order (Docs, Playground, sections…).
+        if (aTitle === bTitle) return 0;
+        const aSegments = aTitle.split('/');
+        const bSegments = bTitle.split('/');
+        for (let i = 0; i < Math.max(aSegments.length, bSegments.length); i += 1) {
+          const aSeg = aSegments[i] ?? '';
+          const bSeg = bSegments[i] ?? '';
+          if (aSeg === bSeg) continue;
+          if (i === 0) {
+            const rankDiff = rank(aSeg) - rank(bSeg);
+            if (rankDiff !== 0) return rankDiff;
+          }
+          return aSeg.localeCompare(bSeg, undefined, { numeric: true, sensitivity: 'base' });
+        }
+        return 0;
       },
     },
     controls: {

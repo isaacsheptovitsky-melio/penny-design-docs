@@ -1,0 +1,134 @@
+import { Canvas, Controls, Meta, Story } from '@storybook/addon-docs/blocks';
+import * as SectionBannerStories from './SectionBanner.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={SectionBannerStories} />
+
+<PageHero
+  category="Data display"
+  title="Section Banner"
+  badge="Healthy"
+  description="The Section Banner surfaces key information and status changes within a page section."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="DS Components"
+      url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=2-93"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/46d766-section-banner"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={SectionBannerStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={SectionBannerStories.Playground} />
+</div>
+
+## Usage
+
+Section banners provide key information or alerts within a specific part of a page. Use them to call attention to:
+
+- **Additional information** relevant to the current context.
+- **Critical messages** that need to be seen before the user continues.
+- **Actions** the user can take to resolve an issue or improve their experience.
+
+<Callout variant="tip">Replace toasts with section banners for short, dismissible system notifications — toasts are transient, easily missed, and often inaccessible to assistive technologies.</Callout>
+
+## Variants
+
+Seven variants set the background, border, and default icon to a semantic intent. Pick based on the **meaning** of the message, not the color.
+
+- **`secondary`** — outline; subtle separation without strong color association.
+- **`neutral`** — standard, contextual information.
+- **`informative`** — highlights key information and draws attention.
+- **`warning`** — potential issues or cautionary information.
+- **`critical`** — severe problems or errors that demand immediate action.
+- **`success`** — confirms a successful action or positive outcome.
+- **`brand`** — a branded feel for general information or promotions.
+
+<Story of={SectionBannerStories.Variants} />
+
+## Sizes
+
+Section banners come in two sizes.
+
+<Story of={SectionBannerStories.Sizes} />
+
+<Callout variant="note">On mobile, use the Large variant — the action button sits at the bottom of the banner rather than the right, preserving horizontal space.</Callout>
+
+## Banner asset
+
+The banner asset can be any of the following assets:
+
+<Story of={SectionBannerStories.BannerAssets} />
+
+### Illustration asset
+
+<Story of={SectionBannerStories.IllustrationAsset} />
+
+### When to use an icon
+
+Use an icon when it adds clarity to the message (e.g. status or attention). Avoid icons when the message is already clear and additional visual cues would be redundant.
+
+<Story of={SectionBannerStories.IconUsage} />
+
+<Callout variant="note">**Important** — use only icons provided by Penny.</Callout>
+
+## Action
+
+Include an action when the user must resolve an issue or follow a contextual shortcut relevant to the message.
+
+<Story of={SectionBannerStories.WithAction} />
+
+## Dismiss
+
+Allow dismissing the banner when the message is not critical and the user isn’t required to act.
+
+<Story of={SectionBannerStories.Dismissible} />
+
+## Stacking
+
+When placing section banners on top of each other, keep a **12px gap** between them and place the **newest alert on top**.
+
+<Story of={SectionBannerStories.Stacking} />
+
+## Layout
+
+Placement depends on the message:
+
+- **Global placement** — for issues that impact the whole screen or process, position the banner at the top of the screen to demand immediate attention.
+- **Local placement** — for an issue scoped to a section, field, or action, position the banner directly above that area.
+
+<Callout variant="tip">For account- or organization-level messages, use the Panel component instead.</Callout>
+
+## Related components
+
+<Story of={SectionBannerStories.RelatedComponentsBlock} />
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>

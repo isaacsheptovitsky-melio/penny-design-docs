@@ -1,0 +1,46 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs/blocks';
+import * as BreakpointsStories from './Breakpoints.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={BreakpointsStories} />
+
+<PageHero
+  category="Foundations"
+  title="Breakpoints"
+  badge="Healthy"
+  description="The responsive breakpoints that drive how layouts and components adapt across screen sizes."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/23fa40"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+## Breakpoint tokens
+
+Each breakpoint is a min-width. Responsive values resolve at the breakpoint that's currently active, so styles set at a smaller key apply until the next key is reached.
+
+<Canvas of={BreakpointsStories.BreakpointTokens} />
+
+<Callout variant="note">Components read these via Chakra's responsive value syntax (objects keyed by breakpoint, e.g. `xs` → `m`) and the `useBreakpointValue` / `useBreakpoint` hooks.</Callout>
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>

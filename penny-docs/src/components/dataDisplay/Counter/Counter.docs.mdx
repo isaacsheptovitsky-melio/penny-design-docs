@@ -1,0 +1,86 @@
+import { Canvas, Controls, Meta, Story } from '@storybook/addon-docs/blocks';
+import * as CounterStories from './Counter.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { Do, Dont } from '@/storybook-utils/RuleItem';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={CounterStories} />
+
+<PageHero
+  category="Data display"
+  title="Counter"
+  badge="Healthy"
+  description="The Counter displays small numerical values to indicate quantities."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="DS Components"
+      url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=26352-37149"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/597fd1-counter"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={CounterStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={CounterStories.Playground} />
+</div>
+
+## Usage
+
+- **Show how many items** belong to a category (e.g. "Invoices (4)").
+- **Indicate filtered or selected** item counts.
+- **Display totals** in tabs, pills, or section headers.
+
+<Callout variant="tip">Pair counters with a clear label to avoid confusion — context is key.</Callout>
+
+## Variants
+
+### Statuses
+
+Six semantic statuses are available. Choose the color that matches the meaning of the count.
+
+<Story of={CounterStories.Statuses} />
+
+### Large number
+
+Values above 99 are rendered as `+99`, keeping the counter at a consistent size.
+
+<Story of={CounterStories.LargeNumber} />
+
+## Do's and don'ts
+
+<Do>pair the counter with a clear label or UI element (e.g. "Archived (2)") so the number has context.</Do>
+
+<Dont>use a counter for critical alerts — it communicates quantity, not urgency. Reach for a Section Banner or status messaging when the user must act.</Dont>
+
+## Related components
+
+<Story of={CounterStories.RelatedComponentsBlock} />
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>

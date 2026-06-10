@@ -1,0 +1,51 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs/blocks';
+import * as SpacesStories from './Spaces.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={SpacesStories} />
+
+<PageHero
+  category="Foundations"
+  title="Spaces"
+  badge="Healthy"
+  description="Size tokens used throughout the design system for consistent spacing — padding, margin, gaps, and more."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/82d9c9-spaces"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+## Usage
+
+- **Apply spacing tokens** for margins, paddings, layout gaps, and grid gutters.
+- **Avoid arbitrary pixel values** unless a special case justifies it.
+- Use **larger tokens** to separate sections and create breathing room.
+- Use **smaller tokens** inside compact components or dense UI areas.
+
+## Space tokens
+
+<Canvas of={SpacesStories.SpaceTokens} />
+
+<Callout variant="note">Spacing values are exposed as theme tokens (e.g. `spacing.s`) and via component props that accept space keys.</Callout>
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>

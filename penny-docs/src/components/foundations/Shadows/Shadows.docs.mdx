@@ -1,0 +1,52 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs/blocks';
+import * as ShadowsStories from './Shadows.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={ShadowsStories} />
+
+<PageHero
+  category="Foundations"
+  title="Shadows"
+  badge="Healthy"
+  description="Shadows convey depth and hierarchy in the UI by indicating elevation."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/7624eb-shadows"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+## Usage
+
+- Shadows indicate **elevation**, not decoration.
+- Use them meaningfully — when elements need to stand out due to interaction, layering, or context.
+- Avoid shadows purely for aesthetics; they should help users understand interface structure.
+
+## Shadow tokens
+
+Each level offers increasing visual weight; pick one based on how elevated an element needs to appear.
+
+<Canvas of={ShadowsStories.ShadowTokens} />
+
+<Callout variant="note">Menus and other floating surfaces that open over content use `shadow-500` for a clear floating effect.</Callout>
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>
