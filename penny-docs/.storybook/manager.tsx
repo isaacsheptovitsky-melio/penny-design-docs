@@ -31,6 +31,7 @@ const NEEDS_REVIEW = new Set<string>([
   // Containers
   'components-containers-group',
   'components-containers-container',
+  'components-containers-panel',
   // Data display
   'components-data-display-section-banner',
   'components-data-display-divider',
