@@ -157,3 +157,14 @@ export const useDelayMount = ({ isOpen, delay = 0 }: { isOpen: boolean; delay?: 
   }, [isOpen, delay]);
   return mounted;
 };
+
+// ─── Intl ────────────────────────────────────────────────────────────────────
+// Minimal stub of the real `useIntl` — only the subset used by vendored components.
+export type Currency = string;
+
+export const useIntl = () => ({
+  formatNumberToParts: (value: number, options?: Intl.NumberFormatOptions) =>
+    new Intl.NumberFormat('en-US', options).formatToParts(value),
+  formatNumber: (value: number, options?: Intl.NumberFormatOptions) =>
+    new Intl.NumberFormat('en-US', options).format(value),
+});

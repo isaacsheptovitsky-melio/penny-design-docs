@@ -28,7 +28,9 @@ import {
   navigationItemTheme,
   panelTheme,
   sectionBannerTheme,
+  currencyTheme,
   splitScreenTheme,
+  statusIndicatorTheme,
   tabsTheme,
   tagTheme,
   textTheme,
@@ -75,6 +77,8 @@ const MultiStyleComponents = {
   Tabs: tabsTheme,
   // Data display
   SectionBanner: sectionBannerTheme,
+  Currency: currencyTheme,
+  StatusIndicator: statusIndicatorTheme,
   // Layout components
   Layout: layoutTheme,
   SplitScreen: splitScreenTheme,

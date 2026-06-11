@@ -38,6 +38,8 @@ const NEEDS_REVIEW = new Set<string>([
   'components-data-display-counter',
   'components-data-display-pill',
   'components-data-display-tooltip',
+  'components-data-display-currency',
+  'components-data-display-status-indicator',
   // Foundations
   'foundations-typography',
   'foundations-spaces',
