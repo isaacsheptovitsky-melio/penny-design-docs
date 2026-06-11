@@ -95,41 +95,42 @@ const Field = ({ label }: { label: string }) => (
   </div>
 );
 
-// ── Overlay annotation primitives (mirrors the Design Guidelines example) ──────
-const DOT: React.CSSProperties = {
-  width: '3px',
-  height: '3px',
-  borderRadius: '50%',
-  background: '#9CA3AF',
-  border: '1px solid white',
-  flexShrink: 0,
-};
-const LINE: React.CSSProperties = { width: '28px', height: '1px', background: '#D1D5DB', flexShrink: 0 };
+// ── Spacing dimension annotation ───────────────────────────────────────────────
+const RULE = '#D80E25';
 const MONO_LABEL: React.CSSProperties = {
   fontFamily: '"SFMono-Regular", Consolas, monospace',
   fontSize: '10px',
-  color: '#6B7280',
+  color: RULE,
   whiteSpace: 'nowrap',
+  lineHeight: 1,
 };
 
-/** A vertical gap of exactly `px`, with a label→line→dot annotation centred in it on the left. */
+/**
+ * A vertical gap of exactly `px`. A dimension bracket (vertical line with top/bottom ticks)
+ * spans the real gap height in the left gutter, with the measurement beside it — so it indicates
+ * the spacing *between* the elements rather than just labelling a row.
+ */
 const VGap = ({ px }: { px: number }) => (
   <div style={{ position: 'relative', height: `${px}px` }}>
     <div
       style={{
         position: 'absolute',
-        top: '50%',
-        right: 'calc(100% + 12px)',
-        transform: 'translateY(-50%)',
+        top: 0,
+        bottom: 0,
+        right: 'calc(100% + 10px)',
         display: 'flex',
         alignItems: 'center',
-        gap: '4px',
+        gap: '6px',
         pointerEvents: 'none',
       }}
     >
       <span style={MONO_LABEL}>{px}px</span>
-      <div style={LINE} />
-      <div style={DOT} />
+      {/* dimension bracket: vertical line spanning the gap + a tick at each end */}
+      <div style={{ position: 'relative', width: '5px', alignSelf: 'stretch' }}>
+        <div style={{ position: 'absolute', left: '2px', top: 0, bottom: 0, width: '1px', background: RULE }} />
+        <div style={{ position: 'absolute', left: 0, right: 0, top: 0, height: '1px', background: RULE }} />
+        <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: '1px', background: RULE }} />
+      </div>
     </div>
   </div>
 );
@@ -145,7 +146,7 @@ const UseCaseRow = ({ token, value, description, children }: { token: string; va
       borderBottom: '1px solid #E2E8F0',
     }}
   >
-    <div style={{ background: '#F8F9FA', borderRadius: '8px', padding: '24px 28px 24px 72px', display: 'flex', justifyContent: 'flex-start' }}>
+    <div style={{ background: '#F8F9FA', borderRadius: '8px', padding: '24px 28px 24px 64px', display: 'flex', justifyContent: 'flex-start' }}>
       {children}
     </div>
     <div>
@@ -168,17 +169,22 @@ export const UseCases: Story = {
             <span
               style={{
                 position: 'absolute',
-                top: 'calc(100% + 4px)',
+                top: 'calc(100% + 6px)',
                 left: '50%',
                 transform: 'translateX(-50%)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: '3px',
+                gap: '4px',
                 pointerEvents: 'none',
               }}
             >
-              <span style={{ width: '1px', height: '14px', background: '#D1D5DB' }} />
+              {/* horizontal dimension bracket spanning the 4px gap */}
+              <span style={{ position: 'relative', display: 'block', width: '4px', height: '5px' }}>
+                <span style={{ position: 'absolute', top: '2px', left: 0, right: 0, height: '1px', background: RULE }} />
+                <span style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '1px', background: RULE }} />
+                <span style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '1px', background: RULE }} />
+              </span>
               <span style={MONO_LABEL}>4px</span>
             </span>
           </span>
