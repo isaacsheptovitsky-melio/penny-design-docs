@@ -49,6 +49,8 @@ const NEEDS_REVIEW = new Set<string>([
   'foundations-loader',
   'foundations-icons',
   'foundations-illustrations',
+  // Selection & Inputs
+  'components-selection-inputs-tag',
 ]);
 
 const APPROVED_COLOR = '#028838'; // Melio success green

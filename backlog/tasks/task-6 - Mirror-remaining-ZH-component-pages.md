@@ -4,7 +4,7 @@ title: Mirror remaining ZH component pages
 status: In Progress
 assignee: []
 created_date: '2026-06-10 13:15'
-updated_date: '2026-06-10 13:30'
+updated_date: '2026-06-10 14:38'
 labels:
   - docs
   - storybook
@@ -26,4 +26,6 @@ Progress: Built Group + Container (Containers category) — already-vendored, no
 Remaining already-vendored (no snapshot vendoring): Panel, Base Sheet (compound), Blanket (simple overlay).
 
 Remaining requiring snapshot vendoring (penny--melio-penny-57.0.2) with dependency-closure analysis per the skill: Containers (Modal, Drawer, Card, Popover, Menus, Floating, Stacked Container); Data display (Avatar, Avatar group, Badge, Tag, Currency, Status indicator, Tracker, Virtual card, Brand, Brand Symbol, Flag icon, Tourtip); Action (Split Button); Feedback (Linear/Circular Progress, Skeletons); Media (Image, Video, Lottie); Selection & Inputs (~20 inputs); Form/Table.
+
+Built + committed Panel (Containers) — placement/position + batch-action use case; verified live (6 instances, orange dot). Containers now: Container, Group, Panel done. Remaining local: Base Sheet (compound), Blanket (private overlay). Next: vendor low-risk Data display (Badge, Tag — note Tag needs a close-mini Icon glyph added; Badge needs ConditionalWrapper vendored).
 <!-- SECTION:NOTES:END -->

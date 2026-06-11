@@ -30,6 +30,7 @@ import {
   sectionBannerTheme,
   splitScreenTheme,
   tabsTheme,
+  tagTheme,
   textTheme,
 } from '../components/components.theme';
 import { type ComponentMultiStyleConfig, type ComponentSingleStyleConfig } from './component-style-config-types';
@@ -52,6 +53,8 @@ const SingleStyleComponents = {
   NavigationItem: navigationItemTheme,
   Counter: counterTheme,
   _BaseBadge: _baseBadgeTheme,
+  // Selection & inputs
+  Tag: tagTheme,
 };
 export type SingleStyleConfigComponents = typeof SingleStyleComponents;
 

@@ -1,0 +1,103 @@
+import { Canvas, Controls, Meta, Story } from '@storybook/addon-docs/blocks';
+import * as TagStories from './Tag.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={TagStories} />
+
+<PageHero
+  category="Selection & Inputs"
+  title="Tag"
+  badge="Healthy"
+  description="A compact, styled element for displaying labels, categories, or metadata — optionally clickable or removable."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="DS Components"
+      url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=16751-105413"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/98c253-tag"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={TagStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={TagStories.Playground} />
+</div>
+
+## Usage
+
+- Use tags to categorize or label content clearly.
+- Keep tag text short and concise — ideally two words or fewer.
+- Use the remove button only when the user needs to dismiss a tag dynamically.
+
+<Callout variant="note">A plain Tag is a static label. Add `onClick` to make it interactive, or `removeButtonProps` to make it removable.</Callout>
+
+## Anatomy
+
+Content is a slot, so you can compose a left element, label, and right element. Tags have a fixed height.
+
+<Canvas of={TagStories.Default} />
+
+## Variants
+
+### Removable
+
+Pass `removeButtonProps` to render a remove (close) button.
+
+<Canvas of={TagStories.Removable} />
+
+### Clickable
+
+Pass `onClick` to make the whole tag an interactive trigger.
+
+<Canvas of={TagStories.Clickable} />
+
+### With a left element
+
+Compose an icon (or avatar, flag, etc.) before the label.
+
+<Canvas of={TagStories.WithLeftElement} />
+
+### Disabled
+
+<Canvas of={TagStories.Disabled} />
+
+### Grouped tags
+
+In a Group, tags space evenly and rearrange when one is removed — the common pattern for applied filters.
+
+<Canvas of={TagStories.GroupOfTags} />
+
+<Callout variant="warning">Don't mix removable and non-removable tags in the same group — separate them to keep the pattern clear.</Callout>
+
+## Related components
+
+<Story of={TagStories.RelatedComponentsBlock} />
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>
