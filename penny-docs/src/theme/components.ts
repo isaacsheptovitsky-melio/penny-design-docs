@@ -1,6 +1,7 @@
 // Pruned theme component registry — only registers themes for components vendored into this project.
 import {
   _baseBadgeTheme,
+  badgeTheme,
   _menuFooterTheme,
   _menuTitleTheme,
   _sectionLabelTheme,
@@ -79,6 +80,7 @@ const MultiStyleComponents = {
   SectionBanner: sectionBannerTheme,
   Currency: currencyTheme,
   StatusIndicator: statusIndicatorTheme,
+  Badge: badgeTheme,
   // Layout components
   Layout: layoutTheme,
   SplitScreen: splitScreenTheme,

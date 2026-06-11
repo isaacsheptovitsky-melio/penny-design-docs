@@ -8,6 +8,7 @@ export { textTheme } from './dataDisplay/Text/Text.theme';
 export { sectionBannerTheme } from './dataDisplay/SectionBanner/SectionBanner.theme';
 export { tagTheme } from './selectionAndInputs/tags/Tag/Tag.theme';
 export { currencyTheme } from './dataDisplay/Currency/Currency.theme';
+export { badgeTheme } from './dataDisplay/Badge/Badge.theme';
 export { statusIndicatorTheme } from './dataDisplay/StatusIndicator/StatusIndicator.theme';
 export { iconButtonTheme } from './action/IconButton/IconButton.theme';
 export { loaderTheme } from './foundations/Loader/Loader.theme';

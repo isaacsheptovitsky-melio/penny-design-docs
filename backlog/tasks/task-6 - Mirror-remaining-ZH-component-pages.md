@@ -4,7 +4,7 @@ title: Mirror remaining ZH component pages
 status: In Progress
 assignee: []
 created_date: '2026-06-10 13:15'
-updated_date: '2026-06-11 06:19'
+updated_date: '2026-06-11 06:30'
 labels:
   - docs
   - storybook
@@ -30,4 +30,10 @@ Remaining requiring snapshot vendoring (penny--melio-penny-57.0.2) with dependen
 Built + committed Panel (Containers) — placement/position + batch-action use case; verified live (6 instances, orange dot). Containers now: Container, Group, Panel done. Remaining local: Base Sheet (compound), Blanket (private overlay). Next: vendor low-risk Data display (Badge, Tag — note Tag needs a close-mini Icon glyph added; Badge needs ConditionalWrapper vendored).
 
 Vendored + built Tag (Selection & Inputs) — opened the Selection & Inputs category. Added close-mini glyph to local Icon; registered tagTheme. Verified live (19 tags, 9 remove buttons via close-mini, no crash; orange dot). Committed ff326fe. Pages done so far: Containers (Container, Group, Panel) + Tag. Base Sheet deferred (portal/Blanket-override risk). Next candidates: Data display Badge (needs ConditionalWrapper vendored) / Avatar / Currency / Status indicator; Action Split Button.
+
+Committed 826bd3b: Currency + Status Indicator (Data display) vendored + documented; added useIntl/Currency to penny-utils stub, STATUS_INDICATOR/ILLUSTRATION test-ids, registered currencyTheme/statusIndicatorTheme. Verified live (Currency renders $1,234 superscript-50; StatusIndicator 16 dots correct colors; both orange).
+
+Component pages done this session: Containers (Container, Group, Panel), Tag (Selection & Inputs), Currency, Status Indicator.
+
+Next candidates (increasing cost): Tracker (compound: TrackerStep + 2 themes + contexts, deps local), Badge (needs ConditionalWrapper + BadgeMarkBorder vendored), Avatar (needs Image + ConditionalWrapper). Heavy/deferred: Modal/Drawer/Popover/Menus/Floating/BaseSheet (portal+overlay, large closures), FlagIcon/BrandSymbol (react-inlinesvg), Select/Combobox/DatePicker & the Selection&Inputs form set, Media, Form/Table. 'Complete' remains a multi-session effort.
 <!-- SECTION:NOTES:END -->

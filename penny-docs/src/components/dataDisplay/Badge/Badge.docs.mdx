@@ -1,0 +1,82 @@
+import { Canvas, Controls, Meta, Story } from '@storybook/addon-docs/blocks';
+import * as BadgeStories from './Badge.stories';
+import { Callout } from '@/storybook-utils/Callout';
+import { PageHero } from '@/storybook-utils/PageHero';
+import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
+import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
+
+<Meta of={BadgeStories} />
+
+<PageHero
+  category="Data display"
+  title="Badge"
+  badge="Healthy"
+  description="Positions a compact mark — an icon, counter, or status — on top of another element, like an avatar."
+/>
+
+<DocTabs links={
+  <ShortcutTiles>
+    <ShortcutTile
+      label="DS Components"
+      url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=26255-47877"
+    />
+    <ShortcutTile
+      label="ZeroHeight"
+      url="https://zeroheight.com/98bb1df01/v/latest/p/1887ca-badge"
+    />
+  </ShortcutTiles>
+}>
+
+<DocTab label="Design">
+
+<div className="component-canvas-wrapper" style={{ marginTop: '16px' }}>
+  <style>{`.component-canvas-wrapper .sbdocs-preview { margin-top: 0 !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; border-top: none !important; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px !important; } .component-canvas-wrapper .sbdocs-preview-actions { margin-bottom: 4px !important; }`}</style>
+  <div style={{ fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', padding: '10px 16px', background: '#F7FAFC', border: '1px solid #E2E8F0', borderRadius: '8px 8px 0 0', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 8px 0px', clipPath: 'inset(-8px -8px 0px -8px)' }}>Component</div>
+  <Canvas of={BadgeStories.Playground} />
+</div>
+
+<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
+  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
+  <Controls of={BadgeStories.Playground} />
+</div>
+
+## Usage
+
+Use a Badge to communicate sync status, vendor verification, an unread count, or other relevant detail layered on top of an element. The `mark` prop holds the overlay; `children` is the element it sits on.
+
+## Variants
+
+### Positioning
+
+The mark can sit at any of the four corners via `placement`.
+
+<Canvas of={BadgeStories.Placement} />
+
+### Custom content
+
+The mark accepts any element — a Counter, a Status Indicator, or a custom logo/icon.
+
+<Canvas of={BadgeStories.CustomContent} />
+
+## Do's and don'ts
+
+- **Do** add a border (`hasBorder`) when the mark's color matches the underlying component, so it stays distinct.
+- **Don't** use color alone for critical information — always include a clarifying icon or text.
+
+<Callout variant="note">Ensure sufficient color contrast between the mark and its background, and don't rely on color alone to convey meaning.</Callout>
+
+## Related components
+
+<Story of={BadgeStories.RelatedComponentsBlock} />
+
+</DocTab>
+
+<DocTab label="Development">
+
+</DocTab>
+
+<DocTab label="ADA">
+
+</DocTab>
+
+</DocTabs>
