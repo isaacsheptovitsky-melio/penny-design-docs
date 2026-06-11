@@ -25,22 +25,15 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 
 <DocTab label="Design">
 
-## Global tokens
+## Token explorer
 
-The base radius scale applied across components for consistent corners.
+Browse the radius tokens across the three levels. **Semantic** tokens set the default radius for a whole component category; **component** tokens pin a specific component part.
 
-<Canvas of={BorderRadiusStories.GlobalTokens} />
+<Canvas of={BorderRadiusStories.TokenExplorer} />
 
-## Semantic tokens
-
-Semantic tokens define the default radius for a category of components — reach for these in component themes rather than a global value.
-
-- **`border-radius.action.default`** → `border-radius.200` (8px) — most action components (Button, Icon Button, Date picker).
-- **`border-radius.input.default`** → `border-radius.200` (8px) — most input components (Text field, Select, Search bar, …).
-
-## Component tokens
-
-- **`border-radius.pill.default`** → `border-radius.full` — the Pill component's fully-rounded corners.
+- **`border-radius.action.default`** (semantic) → drives **action** components: Button, Icon Button, Date picker.
+- **`border-radius.input.default`** (semantic) → drives **input** components: Text field, Select, Search bar, Combobox, and the rest of Selection & Inputs.
+- **`border-radius.pill.default`** (component) → the **Pill** component's fully-rounded corners.
 
 <Callout variant="note">Always reach for the highest-level token available — component or semantic over a raw global value — so theming stays consistent.</Callout>
 

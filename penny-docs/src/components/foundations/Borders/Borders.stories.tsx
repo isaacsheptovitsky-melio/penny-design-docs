@@ -16,6 +16,49 @@ const USE_CASE: Record<string, string> = {
   50: 'Heavier weight — used for the focus ring.',
 };
 
+const Card = ({ selected, label }: { selected?: boolean; label: string }) => (
+  <div
+    style={{
+      width: '180px',
+      padding: '16px',
+      borderRadius: '8px',
+      background: '#fff',
+      // 1px (global.25) static border by default; brand-colored border when selected.
+      border: `1px solid ${selected ? '#7849ff' : '#e4e7ec'}`,
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      fontFamily: 'Poppins, sans-serif',
+    }}
+  >
+    <span
+      style={{
+        width: '16px',
+        height: '16px',
+        borderRadius: '50%',
+        flexShrink: 0,
+        border: `1px solid ${selected ? '#7849ff' : '#c7ccd6'}`,
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      {selected ? <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#7849ff' }} /> : null}
+    </span>
+    <span style={{ fontSize: '14px', color: '#18191b' }}>{label}</span>
+  </div>
+);
+
+export const Selected: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: '16px', padding: '16px 8px' }}>
+      <Card label="Default" />
+      <Card label="Selected" selected />
+    </div>
+  ),
+  parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
+};
+
 export const GlobalTokens: Story = {
   render: () => (
     <div style={{ fontFamily: 'Poppins, sans-serif', padding: '8px 4px' }}>

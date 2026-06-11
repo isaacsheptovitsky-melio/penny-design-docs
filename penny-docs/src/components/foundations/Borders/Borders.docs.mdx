@@ -38,7 +38,13 @@ Semantic tokens map a category to a global weight — use these in component the
 - **`border.action.default`**, **`border.container.default`**, **`border.input.default`** → `global.25` (1px) — the standard component border.
 - **`border.focus`** → `global.50` (2px) — the focus ring.
 
-<Callout variant="note">Border color is set separately via color tokens (e.g. `semantic.border.static`); these tokens define the **weight and style** only.</Callout>
+<Callout variant="note">Border weight and color are separate tokens. These define the **weight and style**; the **color** comes from a color token like `semantic.border.static` or `semantic.border.brand`.</Callout>
+
+## Selected state
+
+To indicate a selected element (a chosen option, an active card), keep the `global.25` weight but swap the border color from `semantic.border.static` to **`semantic.border.brand`** — the brand color signals selection.
+
+<Canvas of={BordersStories.Selected} />
 
 </DocTab>
 

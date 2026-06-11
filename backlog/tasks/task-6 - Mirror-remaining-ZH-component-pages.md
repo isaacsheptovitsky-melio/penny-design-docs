@@ -4,7 +4,7 @@ title: Mirror remaining ZH component pages
 status: In Progress
 assignee: []
 created_date: '2026-06-10 13:15'
-updated_date: '2026-06-11 06:30'
+updated_date: '2026-06-11 06:39'
 labels:
   - docs
   - storybook
@@ -36,4 +36,12 @@ Committed 826bd3b: Currency + Status Indicator (Data display) vendored + documen
 Component pages done this session: Containers (Container, Group, Panel), Tag (Selection & Inputs), Currency, Status Indicator.
 
 Next candidates (increasing cost): Tracker (compound: TrackerStep + 2 themes + contexts, deps local), Badge (needs ConditionalWrapper + BadgeMarkBorder vendored), Avatar (needs Image + ConditionalWrapper). Heavy/deferred: Modal/Drawer/Popover/Menus/Floating/BaseSheet (portal+overlay, large closures), FlagIcon/BrandSymbol (react-inlinesvg), Select/Combobox/DatePicker & the Selection&Inputs form set, Media, Form/Table. 'Complete' remains a multi-session effort.
+
+Committed eea9c66: Badge (Data display) — vendored Badge + BadgeMarkBorder + ConditionalWrapper (now available for Avatar etc.); registered badgeTheme; switched Badge off the internal barrel import. Verified live (placement story: green status mark at all 4 avatar corners; orange dot).
+
+This turn committed: Currency, Status Indicator, Badge.
+
+Tracker re-assessed = HEAVY (its TrackerStep pulls Avatar + BrandSymbol[react-inlinesvg] + RadioGroup + Typography) — deferred unless trimmed.
+
+Next cheap batch: vendor Image (media — themed img + FallbackImage, no react-inlinesvg; its own ZH Media/Image page) which then unlocks Avatar (deps now all local: ConditionalWrapper+Image+Badge). So Image + Avatar = 2 pages next. Then Feedback (Skeletons/Progress) and Action Split Button. Still deferred/heavy: Modal/Drawer/Popover/Menus/Floating/BaseSheet, FlagIcon/BrandSymbol, Select/Combobox/DatePicker & inputs, Form/Table, Tracker.
 <!-- SECTION:NOTES:END -->
