@@ -387,6 +387,30 @@ Props: `label` (string), `lineHeight` (number, default 16), `panelBg` (string, d
 
 ---
 
+#### `<MeasuredGap>` — spacing dimension annotation
+
+A reusable block (`@/storybook-utils/MeasuredGap`) for **"spacing in context" examples** — it renders a spacer of an exact `size` (px) with a red dimension bracket measuring the gap and the px value beside it, so it indicates the space *between* elements rather than labelling a row. Extracted from the Spaces foundation page; also demonstrated on the **Doc Blocks** page.
+
+```tsx
+import { MeasuredGap } from '@/storybook-utils/MeasuredGap';
+
+// vertical (default) — between stacked elements; bracket sits in a LEFT gutter, so give the
+// example container left padding (~64px) so the label stays inside the box.
+<div style={{ paddingLeft: '64px' }}>
+  <Element />
+  <MeasuredGap size={16} />
+  <Element />
+</div>
+
+// horizontal — between inline elements; bracket drops below the gap.
+<MeasuredGap size={8} orientation="horizontal" />
+```
+
+Rules:
+- Render the gap as an **explicit `MeasuredGap` element**, not a flex `gap` — the bracket is anchored to the gap element, so it stays exactly on the gap with no pixel math.
+- The vertical bracket overflows left; **always pad the container's left** (≈64px) so the label doesn't spill out of the example box.
+- Reach for this whenever a page needs to show what a spacing token looks like between real elements (e.g. a Spaces/Layout "Use cases" section).
+
 #### Inline Overlay Annotations
 
 A pure-CSS positioning pattern — not a React component — for annotating specific points inside a rendered UI mockup (prop values, placement rules, visual states) **without distorting the layout**. The visual is the back layer; the annotation is a transparent front layer.
@@ -1048,7 +1072,7 @@ Prefer a real asset from here over inventing markup or leaving a placeholder, bu
 - **Component with no ZeroHeight page of its own.** Some components (e.g. `Button Group`) have no dedicated ZH page, but a *pattern built on them* does (e.g. `Split Button`, an instance of `ButtonGroup`). Source the docs from the component's source API (`.types.ts`) for the props/Controls, and from the related pattern's ZH page for usage/variants/mobile guidance. Badge it `Healthy` and frame the page around the component, folding the pattern in as a section.
 - **Pasted images aren't files.** An image pasted into chat is NOT written to disk and can't be `import`ed. Ask the user to save it into `penny-docs/src/assets/<name>.png` (give the exact path), confirm it exists (`ls`/`file`), then add the `import … from '@/assets/<name>.png'` and render it. Don't add the import before the file exists — the running Vite dev server will fail to resolve it.
 - **Import `<Story>` before using it.** If you reference a story with `<Story of={…} />` in MDX (e.g. for a `VariantCards`/`RelatedComponents` block), add `Story` to the `@storybook/addon-docs/blocks` import. Forgetting it throws "Expected component `Story` to be defined: you likely forgot to import, pass, or provide it." — the page error-boundaries out.
-- **Story id ≠ display `name`.** A story's URL id derives from its **export name**, not its `name` parameter. `export const DisabledLinks` with `name: 'Disabled'` is at `…--disabled-links`, not `…--disabled`. Use the export name (camelCase → kebab-case) when navigating to a story; `--docs` is the auto-generated docs page id. Titles with symbols keep them — `<Meta title="✦ Design Guidelines" />` has the sidebar node id `✦-design-guidelines`, so its docs path is `/?path=/docs/✦-design-guidelines--docs` and the `✦` must be `encodeURIComponent`'d. When unsure of an id, read the sidebar node's `id` attribute in the manager DOM.
+- **Story id ≠ display `name`.** A story's URL id derives from its **export name**, not its `name` parameter. `export const DisabledLinks` with `name: 'Disabled'` is at `…--disabled-links`, not `…--disabled`. Use the export name (camelCase → kebab-case) when navigating to a story; `--docs` is the auto-generated docs page id. Titles with symbols keep them — `<Meta title="✦ Doc Blocks" />` (the reusable-blocks reference page) has the sidebar node id `✦-doc-blocks`, so its docs path is `/?path=/docs/✦-doc-blocks--docs` and the `✦` must be `encodeURIComponent`'d. When unsure of an id, read the sidebar node's `id` attribute in the manager DOM.
 - **Verifying a fix in the live preview — trust the DOM, not the console.** `preview_console_logs` is **cumulative across reloads**: a crash from *before* your fix stays in the buffer and reads as current (you can see hundreds of stale `Element type is invalid` lines after the bug is already gone). To confirm a fix actually took, query the live iframe: `/Element type is invalid/.test(doc.body.textContent)` for the error-boundary fallback, and `getComputedStyle(el)` for the real visual (bg, border, etc.). A screenshot confirms layout but won't prove an earlier runtime error is resolved. Also: a full reload can drop the preview to the landing page and a non-Design tab — re-navigate to `…--docs` and click **Design** before asserting.
 - **Compound components — omit `component` in the meta.** For a multi-part component you compose by hand (Section Banner = `SectionBannerRoot` + `Icon`/`Content`/`Title`/`Description`/`CloseButton`), don't set `component:` in the `Meta`. It forces a `children`-required prop type that conflicts with a custom Playground args type and throws `TS2322` on the meta object. Instead define a `PlaygroundArgs` type, type the meta as `Meta<PlaygroundArgs>`, and drive everything through `render`. The compound parts render fine inside the story; only the meta-level `component` field is the problem.
 - **`StatusIconSolid` glyphs/colors.** The docs reimplementation draws each variant as a filled circle with a white glyph **except `warning`, which is a black (`#18191b`) rounded triangle** with a white exclamation — that's the Penny warning status icon, so don't "fix" it to an amber circle. Its variant set is limited and `SectionBannerIcon` maps `neutral`/`brand`/`secondary` → `help` (a "?"), `informative` → the blue "i", etc.; if a ZH mock shows a different glyph/color (e.g. an info "i" on a neutral banner, or a purple brand icon) that's a real component-vs-mock gap — flag it rather than silently re-mapping, since the mapping is component behavior.

@@ -13,13 +13,13 @@ import { PageHero } from '@/storybook-utils/PageHero';
 import { PartCallout } from '@/storybook-utils/PartCallout';
 import { CascadeDiagram } from '@/storybook-utils/CascadeDiagram';
 
-<Meta title="✦ Design Guidelines" />
+<Meta title="✦ Doc Blocks" />
 
 <PageHero
   category="Internal"
-  title="Design Guidelines"
+  title="Doc Blocks"
   badge="Design Only"
-  description="Visual language, component patterns, and UI conventions for this Storybook documentation site. Use this page as a reference when building new component docs."
+  description="The reusable doc blocks, patterns, and UI conventions for this Storybook documentation site. Use this page as a reference when building new component docs."
 />
 
 ---
@@ -695,6 +695,30 @@ Common reference heights for Penny components:
     ))}
   </tbody>
 </table>
+
+---
+
+## Measured gap
+
+`<MeasuredGap>` renders a spacer of an exact pixel size with a dimension bracket measuring it — for "spacing in context" examples (see the Spaces foundation page). It indicates the space *between* elements rather than labelling a row.
+
+- **`vertical`** (default) — drop between stacked elements. The bracket sits in a left gutter, so give the example container left padding (~64px) so the label stays inside.
+- **`horizontal`** — drop between inline elements; the bracket appears below the gap.
+
+```tsx
+import { MeasuredGap } from '@/storybook-utils/MeasuredGap';
+
+<div style={{ paddingLeft: '64px' }}>
+  <Element />
+  <MeasuredGap size={16} />
+  <Element />
+</div>
+
+// inline
+<MeasuredGap size={8} orientation="horizontal" />
+```
+
+<Canvas of={DesignGuidelinesStories.MeasuredGapExample} />
 
 ---
 

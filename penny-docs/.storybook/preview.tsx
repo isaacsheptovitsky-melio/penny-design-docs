@@ -24,7 +24,7 @@ const preview: Preview = {
       // NOTE: Storybook statically extracts this function, so it must be inline and self-contained
       // (no references to module-scope variables).
       storySort: (a, b) => {
-        const TOP_LEVEL_ORDER = ['✦ Design Guidelines', 'Welcome', 'Foundations', 'UX Patterns', 'Components'];
+        const TOP_LEVEL_ORDER = ['✦ Doc Blocks', 'Welcome', 'Foundations', 'UX Patterns', 'Components'];
         const rank = (segment) => {
           const index = TOP_LEVEL_ORDER.indexOf(segment);
           return index === -1 ? TOP_LEVEL_ORDER.length : index;

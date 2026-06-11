@@ -4,6 +4,7 @@ import Lottie from 'lottie-react';
 
 import { Button } from '@/components/action/Button/Button';
 import { PartCallout } from '@/storybook-utils/PartCallout';
+import { MeasuredGap } from '@/storybook-utils/MeasuredGap';
 
 // ─── Illustrations — loaded via Vite glob ────────────────────────────────────
 const _animationModules = import.meta.glob<object>(
@@ -41,7 +42,7 @@ import melioAppSymbolWhite from '@/assets/melio-app-symbol-white.png';
 const PlaceholderDoc: React.FC = () => null;
 
 const meta: Meta = {
-  title: '✦ Design Guidelines',
+  title: '✦ Doc Blocks',
   component: PlaceholderDoc,
 };
 
@@ -296,6 +297,51 @@ export const OverlayAnnotationExample: Story = {
           </div>
         </div>
 
+      </div>
+    );
+  },
+};
+
+// ─── Measured-gap (spacing annotation) example ────────────────────────────────
+
+export const MeasuredGapExample: Story = {
+  name: 'Measured gap example',
+  parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
+  render: () => {
+    const SECTION_LABEL: React.CSSProperties = {
+      fontSize: '11px', fontWeight: 700, textTransform: 'uppercase',
+      letterSpacing: '0.07em', color: '#8B95A9', marginBottom: '8px',
+    };
+    const BOX: React.CSSProperties = {
+      width: '220px', height: '40px', borderRadius: '8px',
+      background: '#EEF2F7', border: '1px solid #E2E8F0',
+    };
+    const TILE: React.CSSProperties = {
+      padding: '10px 16px', borderRadius: '8px', background: '#EEF2F7',
+      border: '1px solid #E2E8F0', fontFamily: 'Poppins, sans-serif',
+      fontSize: '13px', fontWeight: 600, color: '#475569',
+    };
+    return (
+      <div style={{ padding: '40px 60px', display: 'flex', flexDirection: 'column', gap: '48px', alignItems: 'flex-start', background: '#F8F9FA', fontFamily: "'Nunito Sans', sans-serif" }}>
+        {/* Vertical — bracket spans the gap in a left gutter (give the container left padding) */}
+        <div>
+          <div style={SECTION_LABEL}>Vertical — measure a gap between stacked elements</div>
+          <div style={{ paddingLeft: '64px' }}>
+            <div style={BOX} />
+            <MeasuredGap size={16} />
+            <div style={BOX} />
+          </div>
+        </div>
+
+        {/* Horizontal — bracket drops below an inline gap */}
+        <div>
+          <div style={SECTION_LABEL}>Horizontal — measure a gap between inline elements</div>
+          <div style={{ display: 'inline-flex', alignItems: 'center' }}>
+            <span style={TILE}>One</span>
+            <MeasuredGap size={8} orientation="horizontal" />
+            <span style={TILE}>Two</span>
+          </div>
+        </div>
       </div>
     );
   },
