@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Group } from '@/components/containers/Group';
 import { StatusIndicator } from '@/components/dataDisplay/StatusIndicator';
 import {
   SectionBannerContent,
@@ -96,18 +95,57 @@ const Field = ({ label }: { label: string }) => (
   </div>
 );
 
+// ── Overlay annotation primitives (mirrors the Design Guidelines example) ──────
+const DOT: React.CSSProperties = {
+  width: '3px',
+  height: '3px',
+  borderRadius: '50%',
+  background: '#9CA3AF',
+  border: '1px solid white',
+  flexShrink: 0,
+};
+const LINE: React.CSSProperties = { width: '28px', height: '1px', background: '#D1D5DB', flexShrink: 0 };
+const MONO_LABEL: React.CSSProperties = {
+  fontFamily: '"SFMono-Regular", Consolas, monospace',
+  fontSize: '10px',
+  color: '#6B7280',
+  whiteSpace: 'nowrap',
+};
+
+/** A vertical gap of exactly `px`, with a label→line→dot annotation centred in it on the left. */
+const VGap = ({ px }: { px: number }) => (
+  <div style={{ position: 'relative', height: `${px}px` }}>
+    <div
+      style={{
+        position: 'absolute',
+        top: '50%',
+        right: 'calc(100% + 12px)',
+        transform: 'translateY(-50%)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '4px',
+        pointerEvents: 'none',
+      }}
+    >
+      <span style={MONO_LABEL}>{px}px</span>
+      <div style={LINE} />
+      <div style={DOT} />
+    </div>
+  </div>
+);
+
 const UseCaseRow = ({ token, value, description, children }: { token: string; value: string; description: string; children: React.ReactNode }) => (
   <div
     style={{
       display: 'grid',
-      gridTemplateColumns: '1fr 280px',
-      gap: '32px',
+      gridTemplateColumns: '1fr 260px',
+      gap: '24px',
       alignItems: 'center',
       padding: '24px 0',
       borderBottom: '1px solid #E2E8F0',
     }}
   >
-    <div style={{ background: '#F8F9FA', borderRadius: '8px', padding: '24px', display: 'flex', justifyContent: 'center' }}>
+    <div style={{ background: '#F8F9FA', borderRadius: '8px', padding: '24px 28px 24px 72px', display: 'flex', justifyContent: 'flex-start' }}>
       {children}
     </div>
     <div>
@@ -123,47 +161,64 @@ export const UseCases: Story = {
   render: () => (
     <div style={{ fontFamily: 'Poppins, sans-serif', padding: '4px' }}>
       <UseCaseRow token="spacing.xxs" value="4px" description="Divide small, related elements — e.g. a status indicator and its label.">
-        <div style={{ display: 'inline-flex', alignItems: 'center', background: '#f1f5f8', borderRadius: '9999px', padding: '6px 14px' }}>
-          <Group variant="horizontal" spacing="xxs" alignItems="center">
-            <StatusIndicator status="brand" />
-            <span style={{ fontSize: '14px', fontWeight: 600, color: '#18191b' }}>Brand</span>
-          </Group>
+        {/* The 4px gap sits inside the pill; the annotation points to it from below. */}
+        <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', background: '#f1f5f8', borderRadius: '9999px', padding: '6px 14px' }}>
+          <StatusIndicator status="brand" />
+          <span style={{ position: 'relative', display: 'inline-block', width: '4px', alignSelf: 'stretch' }}>
+            <span
+              style={{
+                position: 'absolute',
+                top: 'calc(100% + 4px)',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '3px',
+                pointerEvents: 'none',
+              }}
+            >
+              <span style={{ width: '1px', height: '14px', background: '#D1D5DB' }} />
+              <span style={MONO_LABEL}>4px</span>
+            </span>
+          </span>
+          <span style={{ fontSize: '14px', fontWeight: 600, color: '#18191b' }}>Brand</span>
         </div>
       </UseCaseRow>
 
       <UseCaseRow token="spacing.xs" value="8px" description="Gap between small, related elements — e.g. options in a radio group.">
-        <Group variant="vertical" spacing="xs" alignItems="flex-start">
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
           <Radio label="Option 1" checked />
+          <VGap px={8} />
           <Radio label="Option 2" />
+          <VGap px={8} />
           <Radio label="Option 3" />
-        </Group>
+        </div>
       </UseCaseRow>
 
       <UseCaseRow token="spacing.s" value="16px" description="Gap between medium-sized elements — e.g. stacked Section Banners.">
-        <div style={{ width: '320px', maxWidth: '100%' }}>
-          <Group variant="vertical" spacing="s" alignItems="stretch">
-            <SectionBannerRoot variant="success" isCompact>
-              <SectionBannerIcon />
-              <SectionBannerContent>
-                <SectionBannerTitle>Payment scheduled</SectionBannerTitle>
-              </SectionBannerContent>
-            </SectionBannerRoot>
-            <SectionBannerRoot variant="informative" isCompact>
-              <SectionBannerIcon />
-              <SectionBannerContent>
-                <SectionBannerTitle>Vendor updated</SectionBannerTitle>
-              </SectionBannerContent>
-            </SectionBannerRoot>
-          </Group>
+        <div style={{ width: '280px' }}>
+          <SectionBannerRoot variant="success" isCompact>
+            <SectionBannerIcon />
+            <SectionBannerContent>
+              <SectionBannerTitle>Payment scheduled</SectionBannerTitle>
+            </SectionBannerContent>
+          </SectionBannerRoot>
+          <VGap px={16} />
+          <SectionBannerRoot variant="informative" isCompact>
+            <SectionBannerIcon />
+            <SectionBannerContent>
+              <SectionBannerTitle>Vendor updated</SectionBannerTitle>
+            </SectionBannerContent>
+          </SectionBannerRoot>
         </div>
       </UseCaseRow>
 
       <UseCaseRow token="spacing.m" value="24px" description="Gap between form fields.">
-        <div style={{ width: '320px', maxWidth: '100%' }}>
-          <Group variant="vertical" spacing="m" alignItems="stretch">
-            <Field label="Label" />
-            <Field label="Label" />
-          </Group>
+        <div style={{ width: '280px' }}>
+          <Field label="Label" />
+          <VGap px={24} />
+          <Field label="Label" />
         </div>
       </UseCaseRow>
     </div>
