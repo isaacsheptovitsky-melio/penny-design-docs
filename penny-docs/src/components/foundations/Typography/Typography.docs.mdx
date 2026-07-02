@@ -2,7 +2,6 @@ import { Canvas, Meta, Story } from '@storybook/addon-docs/blocks';
 import * as TypographyStories from './Typography.stories';
 import { Callout } from '@/storybook-utils/Callout';
 import { PageHero } from '@/storybook-utils/PageHero';
-import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
 import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 
 <Meta of={TypographyStories} />
@@ -10,18 +9,10 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 <PageHero
   category="Foundations"
   title="Typography"
-  badge="Healthy"
   description="Typography defines the visual appearance of text elements across the product."
 />
 
-<DocTabs links={
-  <ShortcutTiles>
-    <ShortcutTile
-      label="ZeroHeight"
-      url="https://zeroheight.com/98bb1df01/v/latest/p/9875e1-typograpghy"
-    />
-  </ShortcutTiles>
-}>
+<DocTabs>
 
 <DocTab label="Design">
 
@@ -56,6 +47,26 @@ Body styles cover the bulk of UI text. `body2` is the default for most content.
 Captions are the smallest styles — for metadata, labels, and supporting detail.
 
 <Canvas of={TypographyStories.Captions} />
+
+## Links
+
+Link typography uses the `standalone` or `inline` variant, with two sizes:
+
+- **Large** (`size="large"`) — **body2** / **body2Semi** · 16px / 24px
+- **Medium** (`size="medium"`) — **body3** / **body3Semi** · 14px / 24px _(line-height bumped from 20→24px for a11y click area)_
+- **Inline** (`variant="inline"`) — inherits the text style of the surrounding text
+
+The `isBold` prop switches from Regular to SemiBold within the same size. Color is applied via `semantic.link.primary.rest` with a transition to `semantic.link.primary.hover` on hover.
+
+## Naked Buttons
+
+Naked button labels use **body2Semi** (16px/24px) for the large size and **body3Semi** (14px/20px) for the medium size — no dedicated text-style token; they map directly to the body equivalents.
+
+## Recommendations
+
+### Subtitle text
+
+Subtitle text follows an `<h1>` and adds context or elaboration beneath it. Use `body2` in `semantic.text.primary` color.
 
 ## Accessibility & DOM structure
 

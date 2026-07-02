@@ -10,7 +10,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 <PageHero
   category="Navigation"
   title="Navigation Item"
-  badge="Healthy"
   description="Handles navigation, making it ideal for use in navigation bars and navigation lists."
 />
 
@@ -19,10 +18,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
     <ShortcutTile
       label="DS Components"
       url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=16784-190834"
-    />
-    <ShortcutTile
-      label="ZeroHeight"
-      url="https://zeroheight.com/98bb1df01/v/latest/p/271b02-navigation-item"
     />
   </ShortcutTiles>
 }>
@@ -35,10 +30,7 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
   <Canvas of={NavigationItemStories.Playground} />
 </div>
 
-<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
-  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
-  <Controls of={NavigationItemStories.Playground} />
-</div>
+<Controls of={NavigationItemStories.Playground} />
 
 ## Usage
 
@@ -78,7 +70,7 @@ A layout option where the item expands to occupy the entire width of its parent 
 
 <Story of={NavigationItemStories.DosAndDonts} />
 
-## Related components
+## Related
 
 <Story of={NavigationItemStories.RelatedComponentsBlock} />
 

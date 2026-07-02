@@ -10,7 +10,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 <PageHero
   category="Data display"
   title="Pill"
-  badge="Healthy"
   description="A small, rounded element for indicating status, categorizing content, or highlighting key details."
 />
 
@@ -19,10 +18,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
     <ShortcutTile
       label="DS Components"
       url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=2-54"
-    />
-    <ShortcutTile
-      label="ZeroHeight"
-      url="https://zeroheight.com/98bb1df01/v/latest/p/68afcb-pill"
     />
   </ShortcutTiles>
 }>
@@ -35,10 +30,7 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
   <Canvas of={PillStories.Playground} />
 </div>
 
-<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
-  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
-  <Controls of={PillStories.Playground} />
-</div>
+<Controls of={PillStories.Playground} />
 
 ## Usage
 
@@ -80,7 +72,7 @@ Left and right elements are custom (icons, logos, avatars) but must fit within t
 
 Don't rely on color alone — use icons and text so the meaning is clear for everyone, including users with color blindness.
 
-## Related components
+## Related
 
 <Story of={PillStories.RelatedComponentsBlock} />
 

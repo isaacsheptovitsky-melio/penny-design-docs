@@ -4,6 +4,9 @@ import { RelatedComponent, RelatedComponents } from '@/storybook-utils/RelatedCo
 import { VariantGrid, VariantGridItem } from '@/storybook-utils/VariantGrid';
 
 import { Loader } from './Loader';
+import { Spinner } from '../Spinner';
+import loaderImage1 from './loader-image-1.gif';
+import loaderImage2 from './loader-image-2.gif';
 
 const colorOptions = [
   'semantic.icon.brand',
@@ -70,12 +73,53 @@ export const Colors: Story = {
   parameters: { controls: { disable: true } },
 };
 
+export const UseCaseScreenLoading: Story = {
+  name: 'Use case — Screen data loading',
+  parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
+  render: () => (
+    <div style={{ padding: '32px', display: 'flex', flexDirection: 'column', alignItems: 'center', fontFamily: 'Poppins, sans-serif', gap: '12px' }}>
+      <div style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#8B95A9', alignSelf: 'flex-start' }}>
+        Screen data loading
+      </div>
+      <img
+        src={loaderImage1}
+        alt="Loader used while a screen is waiting for data"
+        style={{ maxWidth: '100%', borderRadius: '8px', border: '1px solid #E2E8F0' }}
+      />
+    </div>
+  ),
+};
+
+export const UseCaseAsyncAction: Story = {
+  name: 'Use case — Async action',
+  parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
+  render: () => (
+    <div style={{ padding: '32px', display: 'flex', flexDirection: 'column', alignItems: 'center', fontFamily: 'Poppins, sans-serif', gap: '12px' }}>
+      <div style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#8B95A9', alignSelf: 'flex-start' }}>
+        Async action in progress
+      </div>
+      <img
+        src={loaderImage2}
+        alt="Loader used while an asynchronous action is in progress"
+        style={{ maxWidth: '100%', borderRadius: '8px', border: '1px solid #E2E8F0' }}
+      />
+    </div>
+  ),
+};
+
 export const RelatedComponentsBlock: StoryObj = {
-  name: 'Related components',
+  name: 'Related',
   parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
   render: () => (
     <RelatedComponents>
-      <RelatedComponent name="Spinner" url="/?path=/docs/foundations-spinner--docs" preview={<Loader />} />
+      <RelatedComponent name="Spinner" url="/?path=/docs/foundations-spinner--docs" preview={<Spinner />} />
+      <RelatedComponent name="Skeleton" url="/?path=/docs/foundations-skeleton--docs" preview={
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '4px' }}>
+          {[100, 80, 60].map((w) => (
+            <div key={w} style={{ width: w, height: 12, borderRadius: 4, background: 'linear-gradient(90deg, #E2E8F0 25%, #EDF2F7 50%, #E2E8F0 75%)', backgroundSize: '200% 100%' }} />
+          ))}
+        </div>
+      } />
     </RelatedComponents>
   ),
 };

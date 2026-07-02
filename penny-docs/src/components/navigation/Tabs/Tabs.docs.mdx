@@ -10,7 +10,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 <PageHero
   category="Navigation"
   title="Tabs"
-  badge="Healthy"
   description="Tabs let users switch between related content sections that are on the same level, helping organize information within a single view."
 />
 
@@ -19,10 +18,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
     <ShortcutTile
       label="DS Components"
       url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=2-100"
-    />
-    <ShortcutTile
-      label="ZeroHeight"
-      url="https://zeroheight.com/98bb1df01/v/latest/p/795906-tabs"
     />
   </ShortcutTiles>
 }>
@@ -35,10 +30,7 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
   <Canvas of={TabsStories.Playground} />
 </div>
 
-<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
-  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
-  <Controls of={TabsStories.Playground} />
-</div>
+<Controls of={TabsStories.Playground} />
 
 ## Usage
 
@@ -93,7 +85,7 @@ Avoid using too many tabs on mobile; consider collapsing into a dropdown if spac
 
 <Story of={TabsStories.DosAndDonts} />
 
-## Related components
+## Related
 
 <Story of={TabsStories.RelatedComponentsBlock} />
 

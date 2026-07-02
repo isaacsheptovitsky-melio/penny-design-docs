@@ -30,8 +30,8 @@ export function DocTabs({ children, links }: { children: React.ReactNode; links?
 
   return (
     <div style={{ marginTop: '32px' }}>
-      {/* Tab strip */}
-      <div
+      {/* Tab strip — temporarily hidden */}
+      {/* <div
         style={{
           display: 'flex',
           borderBottom: '2px solid #E2E8F0',
@@ -58,9 +58,9 @@ export function DocTabs({ children, links }: { children: React.ReactNode; links?
             {tab.props.label}
           </button>
         ))}
-      </div>
+      </div> */}
 
-      {/* Links bar — Design tab only */}
+      {/* Links bar */}
       {links && active === 0 && (
         <div
           style={{

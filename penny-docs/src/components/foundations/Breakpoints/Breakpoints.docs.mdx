@@ -1,5 +1,6 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs/blocks';
 import * as BreakpointsStories from './Breakpoints.stories';
+import breakpointsImage1 from './assets/breakpoints-image-1.gif';
 import { Callout } from '@/storybook-utils/Callout';
 import { PageHero } from '@/storybook-utils/PageHero';
 import { ShortcutTiles, ShortcutTile } from '@/storybook-utils/ShortcutTiles';
@@ -10,16 +11,11 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 <PageHero
   category="Foundations"
   title="Breakpoints"
-  badge="Healthy"
   description="The responsive breakpoints that drive how layouts and components adapt across screen sizes."
 />
 
 <DocTabs links={
   <ShortcutTiles>
-    <ShortcutTile
-      label="ZeroHeight"
-      url="https://zeroheight.com/98bb1df01/v/latest/p/23fa40"
-    />
   </ShortcutTiles>
 }>
 
@@ -29,9 +25,44 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 
 Each breakpoint is a min-width. Responsive values resolve at the breakpoint that's currently active, so styles set at a smaller key apply until the next key is reached.
 
-<Canvas of={BreakpointsStories.BreakpointTokens} />
+<table style={{ borderCollapse: 'separate', borderSpacing: 0, width: '100%', fontSize: '13px', border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden', marginTop: '8px' }}>
+  <thead>
+    <tr>
+      <th style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC', borderRight: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0' }}>Token</th>
+      <th style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC', borderRight: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0' }}>Min-width</th>
+      <th style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC', borderRight: '1px solid #E2E8F0', borderBottom: '1px solid #E2E8F0' }}>Viewport range</th>
+      <th style={{ padding: '8px 16px', textAlign: 'left', fontWeight: 700, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#6B7280', background: '#F7FAFC', borderBottom: '1px solid #E2E8F0' }}>Device</th>
+    </tr>
+  </thead>
+  <tbody>
+    {[
+      { token: 'xs', value: '0px',    range: '0 – 599px',      device: 'Mobile' },
+      { token: 's',  value: '600px',  range: '600 – 904px',    device: 'Large mobile / small tablet' },
+      { token: 'm',  value: '905px',  range: '905 – 1239px',   device: 'Tablet / small desktop' },
+      { token: 'l',  value: '1240px', range: '1240 – 1439px',  device: 'Desktop' },
+      { token: 'xl', value: '1440px', range: '1440px and up',  device: 'Large desktop' },
+    ].map(({ token, value, range, device }, i, arr) => (
+      <tr key={token}>
+        <td style={{ padding: '10px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : 'none', fontFamily: '"SFMono-Regular", Consolas, monospace', color: '#475569' }}>{token}</td>
+        <td style={{ padding: '10px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : 'none', color: '#18191b', fontWeight: 500 }}>{value}</td>
+        <td style={{ padding: '10px 16px', borderRight: '1px solid #E2E8F0', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : 'none', color: '#64748B' }}>{range}</td>
+        <td style={{ padding: '10px 16px', borderBottom: i < arr.length - 1 ? '1px solid #E2E8F0' : 'none', color: '#94A3B8' }}>{device}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
 
-<Callout variant="note">Components read these via Chakra's responsive value syntax (objects keyed by breakpoint, e.g. `xs` → `m`) and the `useBreakpointValue` / `useBreakpoint` hooks.</Callout>
+<Callout variant="note">We primarily design for two device types: **mobile** and **desktop**. The main breakpoint is **1240px** — at 1239px and below, components and layouts adapt to a mobile-friendly format.</Callout>
+
+## Container width
+
+A container's `max-width` controls how wide it can grow before capping — it expands to fill available space but stops at the specified limit. Penny defines five container width variants; choose based on the task density and layout complexity of the screen.
+
+<img src={breakpointsImage1} alt="Container width variants" style={{ width: '100%', borderRadius: '8px', border: '1px solid #E2E8F0' }} />
+
+## Related
+
+<Story of={BreakpointsStories.RelatedComponentsBlock} />
 
 </DocTab>
 

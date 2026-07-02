@@ -10,7 +10,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 <PageHero
   category="Action"
   title="Icon Button"
-  badge="Healthy"
   description="A compact button that displays only an icon, without a text label. Typically used for secondary or inline actions where space is limited."
 />
 
@@ -19,10 +18,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
     <ShortcutTile
       label="DS Components"
       url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=31552-113935"
-    />
-    <ShortcutTile
-      label="ZeroHeight"
-      url="https://zeroheight.com/98bb1df01/v/latest/p/42635f-icon-button"
     />
   </ShortcutTiles>
 }>
@@ -35,10 +30,7 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
   <Canvas of={IconButtonStories.Playground} />
 </div>
 
-<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
-  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
-  <Controls of={IconButtonStories.Playground} />
-</div>
+<Controls of={IconButtonStories.Playground} />
 
 ## Usage
 
@@ -69,7 +61,7 @@ Four sizes are available — `medium` is the default. All sizes meet the WCAG 2.
 
 <Canvas of={IconButtonStories.Sizes} />
 
-## Related components
+## Related
 
 <Story of={IconButtonStories.RelatedComponentsBlock} />
 

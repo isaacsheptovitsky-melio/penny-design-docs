@@ -490,6 +490,15 @@ export const RelatedPatternsBlock: Story = {
         url="/?path=/docs/components-navigation-link--docs"
         preview={<Link href="#" label="View roles" variant="inline" color="default" />}
       />
+      <RelatedComponent
+        name="Feedback"
+        url="/?path=/docs/ux-patterns-feedback--docs"
+        preview={
+          <div style={{ background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: '6px', padding: '8px 12px', fontSize: '12px', color: '#7F1D1D', fontFamily: 'Poppins, sans-serif', display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}>
+            <span style={{ fontWeight: 700 }}>!</span> Something went wrong
+          </div>
+        }
+      />
     </RelatedComponents>
   ),
 };

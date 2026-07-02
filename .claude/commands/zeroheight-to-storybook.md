@@ -879,6 +879,9 @@ Use this pattern for any story whose purpose is "show where/how the trigger appe
 
 ---
 
+- **Empty ShortcutTiles renders the Links bar**: An empty `<ShortcutTiles></ShortcutTiles>` passed to `<DocTabs links={…}>` is a truthy React element, so `DocTabs` still renders the "LINKS" header bar even with no tiles inside. When a page has no external links (no Figma URL, etc.), omit the `links` prop entirely — use `<DocTabs>` with no prop — to suppress the bar.
+- **Foundation token tables**: Use a proper `<table>` element (matching the `SemanticTokenTable` pattern in `@/storybook-utils/ColorPalette.tsx`) rather than a CSS grid of rows. Columns: TOKEN (monospace name + proportional purple bar swatch) | VALUE (px) | USE CASE (description). The bar width equals the raw px value; for 0px use a 2px light-gray bar as a placeholder. Wrap the table in a `border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden'` container.
+- **MeasuredGap spacing annotations**: `@/storybook-utils/MeasuredGap` renders dimension brackets inline. Vertical mode (default) renders in a left gutter — the container needs `padding-left: 64px` to hold the label+bracket. Horizontal mode drops the bracket below the gap inline. Always verify the token name against ZH before coding the use case.
 - **Loader bug**: `isLoading` on `Button` crashes in Storybook (pre-existing). Omit Loading state from states grids; it's shown in a separate `LoadingState` story instead.
 - **ZeroHeight MCP**: Must be called via direct `curl` with `Accept: application/json, text/event-stream` header. Response is SSE — strip `data: ` prefix. `pageId` must be a **number** (not string).
 - **Figma screenshots**: Anatomy images are not yet embedded. Use `<Callout variant="note">Image to be added…</Callout>`.

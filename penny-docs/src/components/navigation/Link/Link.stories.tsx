@@ -251,7 +251,7 @@ export const Colors: Story = {
 // ─── Related components ───────────────────────────────────────────────────────
 
 export const RelatedComponentsBlock: Story = {
-  name: 'Related components',
+  name: 'Related',
   parameters: {
     controls: { disable: true },
     docs: { canvas: { sourceState: 'none' } },
@@ -278,6 +278,16 @@ export const RelatedComponentsBlock: Story = {
               <Text textStyle="inline">Nav item label</Text>
             </Group>
           </NavigationItem>
+        }
+      />
+      <RelatedComponent
+        name="Buttons vs. Links"
+        url="/?path=/docs/ux-patterns-buttons-vs-links--docs"
+        preview={
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-start' }}>
+            <Link href="#" label="View history" variant="inline" color="default" />
+            <Button label="Pay now" variant="primary" size="small" />
+          </div>
         }
       />
     </RelatedComponents>

@@ -10,19 +10,14 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 <PageHero
   category="Foundations"
   title="Spinner"
-  badge="Healthy"
   description="A circular loading indicator that communicates an in-progress or indeterminate wait state."
 />
 
 <DocTabs links={
   <ShortcutTiles>
     <ShortcutTile
-      label="DS Components"
+      label="Figma"
       url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=34120-26807"
-    />
-    <ShortcutTile
-      label="ZeroHeight"
-      url="https://zeroheight.com/98bb1df01/v/latest/p/121a10-spinner"
     />
   </ShortcutTiles>
 }>
@@ -35,10 +30,7 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
   <Canvas of={SpinnerStories.Playground} />
 </div>
 
-<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
-  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
-  <Controls of={SpinnerStories.Playground} />
-</div>
+<Controls of={SpinnerStories.Playground} />
 
 ## Usage
 
@@ -52,30 +44,45 @@ Use the Spinner when:
 
 ## Types
 
-- **Neutral** (default) — loading on white or light-grey backgrounds; the default for most contexts.
-- **Brand** — ties the loading moment to brand identity (initial app load, payment confirmation).
-
 <Canvas of={SpinnerStories.Variants} />
+
+**Neutral** — The default for most contexts. Use on white or light-grey backgrounds.
+
+**Brand** — Ties the loading moment to brand identity. Use for first-time experiences or screens where brand presence is intentional (e.g. initial app load, payment confirmation).
 
 ### Inverse
 
-For dark or colored surfaces where the neutral color would disappear — filled buttons, dark overlays, colored banners.
+For dark or colored surfaces where the neutral color would disappear.
 
 <Canvas of={SpinnerStories.Inverse} />
 
-## Sizes
+**When to use:** Inside filled buttons, on dark overlays, on colored banners or panels.
 
-Use **Small** inside inputs, compact buttons, or tight table cells; **Medium** elsewhere.
+## Sizes
 
 <Canvas of={SpinnerStories.Sizes} />
 
+**When to use Small:**
+
+- Inside text fields or inputs (loading a validation state)
+- Inside compact action buttons
+- In table cells or list items where vertical rhythm is tight
+
+For one-off cases, `size` also accepts a number (px) — e.g. `size={20}` — when neither preset fits.
+
 ## States
 
-When `disabled`, all types collapse to the same muted palette to signal unavailability — the animation still runs.
+### Enabled
+
+The spinner animates continuously. Arc color follows the `variant` prop.
+
+### Disabled
+
+When `disabled`, all variants collapse to the same muted palette to signal unavailability — the animation still runs.
 
 <Canvas of={SpinnerStories.Disabled} />
 
-## Related components
+## Related
 
 <Story of={SpinnerStories.RelatedComponentsBlock} />
 

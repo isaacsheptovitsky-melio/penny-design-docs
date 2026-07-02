@@ -24,6 +24,12 @@ const APPROVED = new Set<string>([
   'components-navigation-navigation-item', // Navigation Item
   'components-navigation-pagination', // Pagination
   'components-navigation-tabs', // Tabs
+  // Foundations
+  'foundations-border-radius', // Border Radius
+  'foundations-borders', // Borders
+  'foundations-breakpoints', // Breakpoints
+  'foundations-icons', // Icons
+  'foundations-illustrations', // Illustrations
 ]);
 
 // Pages built but not yet signed off — awaiting review.
@@ -45,13 +51,8 @@ const NEEDS_REVIEW = new Set<string>([
   'foundations-typography',
   'foundations-spaces',
   'foundations-shadows',
-  'foundations-breakpoints',
-  'foundations-border-radius',
-  'foundations-borders',
   'foundations-spinner',
   'foundations-loader',
-  'foundations-icons',
-  'foundations-illustrations',
   // Selection & Inputs
   'components-selection-inputs-tag',
 ]);

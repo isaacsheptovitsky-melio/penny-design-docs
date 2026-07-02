@@ -4,8 +4,9 @@
     {
       "name": "storybook",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["-C", "penny-docs", "storybook"],
-      "port": 6006
+      "runtimeArgs": ["-C", "penny-docs", "exec", "storybook", "dev"],
+      "port": 6006,
+      "autoPort": true
     }
   ]
 }

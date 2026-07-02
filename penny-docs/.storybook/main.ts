@@ -53,6 +53,11 @@ const config: StorybookConfig = {
     config.resolve = config.resolve ?? {};
     config.resolve.dedupe = ['react', 'react-dom', 'react-dom/client'];
 
+    // GitHub Pages serves from /penny-docs/ — set base so all assets resolve correctly.
+    if (process.env.GITHUB_ACTIONS) {
+      config.base = '/penny-design-docs/';
+    }
+
     return config;
   },
 };

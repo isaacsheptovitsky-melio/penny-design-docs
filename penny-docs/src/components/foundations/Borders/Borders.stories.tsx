@@ -23,8 +23,7 @@ const Card = ({ selected, label }: { selected?: boolean; label: string }) => (
       padding: '16px',
       borderRadius: '8px',
       background: '#fff',
-      // 1px (global.25) static border by default; brand-colored border when selected.
-      border: `1px solid ${selected ? '#7849ff' : '#e4e7ec'}`,
+      border: `${selected ? '2px' : '1px'} solid ${selected ? '#7849ff' : '#e4e7ec'}`,
       display: 'flex',
       alignItems: 'center',
       gap: '10px',
@@ -37,7 +36,7 @@ const Card = ({ selected, label }: { selected?: boolean; label: string }) => (
         height: '16px',
         borderRadius: '50%',
         flexShrink: 0,
-        border: `1px solid ${selected ? '#7849ff' : '#c7ccd6'}`,
+        border: `${selected ? '2px' : '1px'} solid ${selected ? '#7849ff' : '#c7ccd6'}`,
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',

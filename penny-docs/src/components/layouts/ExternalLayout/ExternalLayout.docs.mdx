@@ -10,7 +10,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 <PageHero
   category="Layouts"
   title="External Layout"
-  badge="Healthy"
   description="A layout for pages viewed by external users, such as vendors or guest payers — a fixed branded header above a centered content column."
 />
 
@@ -19,10 +18,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
     <ShortcutTile
       label="DS Layouts"
       url="https://www.figma.com/file/GiHqIZlAdki88gha423JZ7/%F0%9F%A4%8D-DS-Layouts-%F0%9F%A4%8D?node-id=1502-64"
-    />
-    <ShortcutTile
-      label="ZeroHeight"
-      url="https://zeroheight.com/98bb1df01/v/latest/p/9850c0-extrenal-layout"
     />
   </ShortcutTiles>
 }>
@@ -35,10 +30,7 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
   <Canvas of={ExternalLayoutStories.Playground} />
 </div>
 
-<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
-  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
-  <Controls of={ExternalLayoutStories.Playground} />
-</div>
+<Controls of={ExternalLayoutStories.Playground} />
 
 ## Usage
 
@@ -84,7 +76,7 @@ Set `isLoading` to overlay the layout with a centered Loader, preventing interac
 
 <Callout variant="note">The layout is fully responsive. On mobile, the internal padding tightens to maximize screen space, and the content and footer stack vertically while remaining legible on small touchscreens.</Callout>
 
-## Related components
+## Related
 
 <Story of={ExternalLayoutStories.RelatedComponentsBlock} />
 

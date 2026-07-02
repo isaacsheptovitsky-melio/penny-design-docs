@@ -141,7 +141,7 @@ export const HorizontalScroll: Story = {
 };
 
 export const RelatedComponentsBlock: StoryObj = {
-  name: 'Related components',
+  name: 'Related',
   parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
   render: () => (
     <RelatedComponents>

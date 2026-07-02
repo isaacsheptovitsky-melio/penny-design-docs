@@ -18,43 +18,57 @@ const mobile = (v: Size) => (v && typeof v === 'object' ? String(v.xs ?? v.s ?? 
 
 const weightLabel = (w: unknown) => (w === 600 ? 'SemiBold 600' : w === 400 ? 'Regular 400' : String(w));
 
+const MONO = '"SFMono-Regular", Consolas, monospace';
+const TH = {
+  padding: '8px 14px',
+  textAlign: 'left' as const,
+  fontSize: '11px',
+  fontWeight: 700,
+  textTransform: 'uppercase' as const,
+  letterSpacing: '0.07em',
+  color: '#6B7280',
+};
+
 const Specimen = ({ items }: { items: [string, string][] }) => (
-  <div style={{ fontFamily: 'Poppins, sans-serif', padding: '8px 4px' }}>
-    {items.map(([key, label]) => {
-      const t = (textStyles as Record<string, { fontSize?: Size; lineHeight?: Size; fontWeight?: unknown }>)[key] ?? {};
-      const dSize = desktop(t.fontSize);
-      const dLh = desktop(t.lineHeight);
-      const responsive =
-        t.fontSize && typeof t.fontSize === 'object' && (t.fontSize.xs ?? '') !== (t.fontSize.s ?? '');
-      return (
-        <div
-          key={key}
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 280px',
-            alignItems: 'baseline',
-            gap: '24px',
-            padding: '16px 0',
-            borderBottom: '1px solid #E2E8F0',
-          }}
-        >
-          <Text textStyle={key} as="div">
-            {label}
-          </Text>
-          <div style={{ fontSize: '12px', color: '#64748B', lineHeight: 1.7 }}>
-            <div style={{ fontFamily: '"SFMono-Regular", Consolas, monospace', color: '#475569' }}>{key}</div>
-            <div>
-              {dSize}/{dLh} · {weightLabel(t.fontWeight)}
-            </div>
-            {responsive ? (
-              <div>
-                mobile {mobile(t.fontSize)}/{mobile(t.lineHeight)}
-              </div>
-            ) : null}
-          </div>
-        </div>
-      );
-    })}
+  <div style={{ border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden' }}>
+    <table style={{ borderCollapse: 'collapse', width: '100%', fontFamily: 'Poppins, sans-serif', fontSize: '12px' }}>
+      <thead>
+        <tr style={{ background: '#EDF2F7' }}>
+          <th style={{ ...TH, borderRight: '1px solid #E2E8F0' }}>Style</th>
+          <th style={{ ...TH, borderRight: '1px solid #E2E8F0', width: '150px' }}>Token</th>
+          <th style={{ ...TH, borderRight: '1px solid #E2E8F0', width: '130px' }}>Size / Line height</th>
+          <th style={{ ...TH, width: '120px' }}>Weight</th>
+        </tr>
+      </thead>
+      <tbody>
+        {items.map(([key, label], i, arr) => {
+          const t = (textStyles as Record<string, { fontSize?: Size; lineHeight?: Size; fontWeight?: unknown }>)[key] ?? {};
+          const dSize = desktop(t.fontSize);
+          const dLh = desktop(t.lineHeight);
+          const responsive =
+            t.fontSize && typeof t.fontSize === 'object' && (t.fontSize.xs ?? '') !== (t.fontSize.s ?? '');
+          const isLast = i === arr.length - 1;
+          const border = isLast ? 'none' : '1px solid #E2E8F0';
+          return (
+            <tr key={key}>
+              <td style={{ padding: '12px 14px', borderRight: '1px solid #E2E8F0', borderBottom: border }}>
+                <Text textStyle={key} as="div" color="#18191b">{label}</Text>
+              </td>
+              <td style={{ padding: '12px 14px', borderRight: '1px solid #E2E8F0', borderBottom: border, fontFamily: MONO, color: '#475569', verticalAlign: 'middle' }}>{key}</td>
+              <td style={{ padding: '12px 14px', borderRight: '1px solid #E2E8F0', borderBottom: border, color: '#18191b', verticalAlign: 'middle' }}>
+                <div>{dSize} / {dLh}</div>
+                {responsive ? (
+                  <div style={{ color: '#94A3B8', fontSize: '11px', marginTop: '2px' }}>
+                    mobile {mobile(t.fontSize)} / {mobile(t.lineHeight)}
+                  </div>
+                ) : null}
+              </td>
+              <td style={{ padding: '12px 14px', borderBottom: border, color: '#18191b', verticalAlign: 'middle' }}>{weightLabel(t.fontWeight)}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   </div>
 );
 

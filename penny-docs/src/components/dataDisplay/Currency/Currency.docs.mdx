@@ -10,16 +10,11 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 <PageHero
   category="Data display"
   title="Currency"
-  badge="Healthy"
   description="Displays monetary values with proper formatting and localization."
 />
 
 <DocTabs links={
   <ShortcutTiles>
-    <ShortcutTile
-      label="ZeroHeight"
-      url="https://zeroheight.com/98bb1df01/v/latest/p/73d53b-currency"
-    />
   </ShortcutTiles>
 }>
 
@@ -31,10 +26,7 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
   <Canvas of={CurrencyStories.Playground} />
 </div>
 
-<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
-  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
-  <Controls of={CurrencyStories.Playground} />
-</div>
+<Controls of={CurrencyStories.Playground} />
 
 ## Usage
 
@@ -61,7 +53,7 @@ The component formats any ISO currency code.
 
 <Callout variant="note">Formatting uses the browser's `Intl` number formatter with a narrow currency symbol.</Callout>
 
-## Related components
+## Related
 
 <Story of={CurrencyStories.RelatedComponentsBlock} />
 

@@ -11,7 +11,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 <PageHero
   category="Data display"
   title="Counter"
-  badge="Healthy"
   description="The Counter displays small numerical values to indicate quantities."
 />
 
@@ -20,10 +19,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
     <ShortcutTile
       label="DS Components"
       url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=26352-37149"
-    />
-    <ShortcutTile
-      label="ZeroHeight"
-      url="https://zeroheight.com/98bb1df01/v/latest/p/597fd1-counter"
     />
   </ShortcutTiles>
 }>
@@ -36,10 +31,7 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
   <Canvas of={CounterStories.Playground} />
 </div>
 
-<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
-  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
-  <Controls of={CounterStories.Playground} />
-</div>
+<Controls of={CounterStories.Playground} />
 
 ## Usage
 
@@ -69,7 +61,7 @@ Values above 99 are rendered as `+99`, keeping the counter at a consistent size.
 
 <Dont>use a counter for critical alerts — it communicates quantity, not urgency. Reach for a Section Banner or status messaging when the user must act.</Dont>
 
-## Related components
+## Related
 
 <Story of={CounterStories.RelatedComponentsBlock} />
 

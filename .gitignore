@@ -7,3 +7,6 @@ node_modules/
 # Build output
 dist/
 storybook-static/
+
+# Stray archives
+penny-docs.zip

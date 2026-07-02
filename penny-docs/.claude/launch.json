@@ -4,8 +4,9 @@
     {
       "name": "storybook",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["storybook"],
-      "port": 6006
+      "runtimeArgs": ["exec", "storybook", "dev"],
+      "port": 6006,
+      "autoPort": true
     }
   ]
 }

@@ -259,7 +259,7 @@ export const MobileStacking: Story = {
 // ─── Related components ──────────────────────────────────────
 
 export const RelatedComponentsBlock: StoryObj = {
-  name: 'Related components',
+  name: 'Related',
   parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
   render: () => (
     <RelatedComponents>
@@ -279,6 +279,17 @@ export const RelatedComponentsBlock: StoryObj = {
           </div>
         </div>
       )}
+      />
+      <RelatedComponent
+        name="Breakpoints"
+        url="/?path=/docs/foundations-breakpoints--docs"
+        preview={
+          <div style={{ display: 'flex', gap: '3px', alignItems: 'flex-end' }}>
+            {[18, 34, 50, 66, 82].map((w, i) => (
+              <div key={i} style={{ width: w, height: 8, background: '#7849ff', borderRadius: '2px' }} />
+            ))}
+          </div>
+        }
       />
       <RelatedComponent
         name="External Layout"

@@ -10,7 +10,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 <PageHero
   category="Data display"
   title="Tooltip"
-  badge="Beta"
   description="Tooltip displays brief helper text on hover or focus to clarify an element's purpose without cluttering the UI."
 />
 
@@ -19,10 +18,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
     <ShortcutTile
       label="DS Components"
       url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=2-104"
-    />
-    <ShortcutTile
-      label="ZeroHeight"
-      url="https://zeroheight.com/98bb1df01/v/latest/p/60e8d6-tooltip"
     />
   </ShortcutTiles>
 }>
@@ -37,10 +32,7 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
   <Canvas of={TooltipStories.Playground} />
 </div>
 
-<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
-  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
-  <Controls of={TooltipStories.Playground} />
-</div>
+<Controls of={TooltipStories.Playground} />
 
 ## Usage
 
@@ -96,7 +88,7 @@ Tooltips do **not** appear on hover on touch devices. For mobile:
 - Keep tooltip text **short, clear, and supportive** — it must never replace essential information.
 - Tooltips assist; they should never block task completion or hide important actions.
 
-## Related components
+## Related
 
 <Story of={TooltipStories.RelatedComponentsBlock} />
 

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { RelatedComponent, RelatedComponents } from '@/storybook-utils/RelatedComponents';
 import { VariantGrid, VariantGridItem } from '@/storybook-utils/VariantGrid';
+import { Loader } from '@/components/foundations/Loader';
 
 import { Spinner } from './Spinner';
 
@@ -113,14 +114,14 @@ export const Disabled: Story = {
 };
 
 export const RelatedComponentsBlock: StoryObj = {
-  name: 'Related components',
+  name: 'Related',
   parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
   render: () => (
     <RelatedComponents>
       <RelatedComponent
         name="Loader"
         url="/?path=/docs/foundations-loader--docs"
-        preview={<Spinner variant="brand" />}
+        preview={<Loader />}
       />
     </RelatedComponents>
   ),

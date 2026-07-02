@@ -240,7 +240,7 @@ export const DosAndDonts: StoryObj<typeof Tabs> = {
 // ─── Related components ───────────────────────────────────────────────────────
 
 export const RelatedComponentsBlock: StoryObj<typeof Tabs> = {
-  name: 'Related components',
+  name: 'Related',
   parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
   render: () => (
     <RelatedComponents>

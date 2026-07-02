@@ -10,7 +10,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 <PageHero
   category="Action"
   title="Action Bar"
-  badge="Healthy"
   description="The Action Bar is a pattern, based on the Panel component, used for managing bulk actions. It appears at the bottom of the screen when items are selected, showing a summary on the left and actions on the right."
 />
 
@@ -19,10 +18,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
     <ShortcutTile
       label="DS Components"
       url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=2-88"
-    />
-    <ShortcutTile
-      label="ZeroHeight"
-      url="https://zeroheight.com/98bb1df01/v/latest/p/722aae-action-bar"
     />
   </ShortcutTiles>
 }>
@@ -35,10 +30,7 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
   <Canvas of={ActionBarStories.Playground} />
 </div>
 
-<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
-  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
-  <Controls of={ActionBarStories.Playground} />
-</div>
+<Controls of={ActionBarStories.Playground} />
 
 ## Usage
 
@@ -73,7 +65,7 @@ The background defaults to `semantic.surface.inverse` (near-black) and accepts a
 
 <Callout variant="note">The Action Bar is **not available on mobile** — bulk actions are not supported in mobile views, so the pattern is desktop-only.</Callout>
 
-## Related components
+## Related
 
 <Story of={ActionBarStories.RelatedComponentsBlock} />
 

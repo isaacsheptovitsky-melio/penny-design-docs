@@ -10,7 +10,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 <PageHero
   category="Navigation"
   title="Link"
-  badge="Healthy"
   description="The Link component navigates users to another page or location. It renders a semantic anchor element and comes in two types — standalone for prominent navigation, and inline for links embedded in body text."
 />
 
@@ -19,10 +18,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
     <ShortcutTile
       label="Figma"
       url="https://www.figma.com/design/X7oG85653Gwwg7eDTrDUYW/%F0%9F%A4%8D-DS-Components-%F0%9F%A4%8D?node-id=1793-147447"
-    />
-    <ShortcutTile
-      label="ZeroHeight"
-      url="https://zeroheight.com/98bb1df01/v/latest/p/921cd5-link"
     />
     <ShortcutTile
       label="Buttons vs. Links"
@@ -39,10 +34,7 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
   <Canvas of={LinkStories.Playground} />
 </div>
 
-<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
-  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
-  <Controls of={LinkStories.Playground} />
-</div>
+<Controls of={LinkStories.Playground} />
 
 ## Usage
 
@@ -103,7 +95,7 @@ Use the `shouldSupportEllipsis` style when the link text might be too long for i
 
 <Callout variant="warning">Truncated links can pose an accessibility challenge. Prioritize clear and concise link labels that fit the available space whenever possible.</Callout>
 
-## Related components
+## Related
 
 <Story of={LinkStories.RelatedComponentsBlock} />
 

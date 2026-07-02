@@ -10,7 +10,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 <PageHero
   category="Layouts"
   title="Layout"
-  badge="Healthy"
   description="The Layout component creates the foundational structure for a page, defining Header, Content, and Footer areas. Use it to control the main content's maximum width."
 />
 
@@ -19,10 +18,6 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
     <ShortcutTile
       label="DS Layouts"
       url="https://www.figma.com/file/GiHqIZlAdki88gha423JZ7/%F0%9F%A4%8D-DS-Layouts-%F0%9F%A4%8D?node-id=1150-11053"
-    />
-    <ShortcutTile
-      label="ZeroHeight"
-      url="https://zeroheight.com/98bb1df01/v/latest/p/77e418-layout"
     />
   </ShortcutTiles>
 }>
@@ -35,10 +30,7 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
   <Canvas of={LayoutStories.Playground} />
 </div>
 
-<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
-  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
-  <Controls of={LayoutStories.Playground} />
-</div>
+<Controls of={LayoutStories.Playground} />
 
 ## Usage
 
@@ -95,7 +87,7 @@ In its loading state, a Loader is displayed over the Content area. This blocks i
 
 <Callout variant="note">On mobile, `maxWidth` has little effect — the screen is usually narrower than the available widths. The layout adapts to fit the screen and the content reflows vertically.</Callout>
 
-## Related components
+## Related
 
 <Story of={LayoutStories.RelatedComponentsBlock} />
 

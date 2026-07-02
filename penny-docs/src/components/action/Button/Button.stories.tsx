@@ -613,7 +613,7 @@ export const ButtonStates: Story = {
 // ─── Related components ──────────────────────────────────────
 
 export const RelatedComponentsBlock: StoryObj = {
-  name: 'Related components',
+  name: 'Related',
   parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
   render: () => (
     <RelatedComponents>
@@ -631,6 +631,16 @@ export const RelatedComponentsBlock: StoryObj = {
         name="Button Group"
         url="/?path=/docs/components-action-button-group--docs"
         preview={<ButtonGroup><Button label="Copy" /><Button label="Paste" /></ButtonGroup>}
+      />
+      <RelatedComponent
+        name="Buttons vs. Links"
+        url="/?path=/docs/ux-patterns-buttons-vs-links--docs"
+        preview={
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-start' }}>
+            <Button label="Pay now" variant="primary" size="small" />
+            <a href="#" onClick={(e) => e.preventDefault()} style={{ color: '#7849ff', textDecoration: 'underline', fontSize: '13px', fontFamily: 'Poppins, sans-serif' }}>View history</a>
+          </div>
+        }
       />
     </RelatedComponents>
   ),

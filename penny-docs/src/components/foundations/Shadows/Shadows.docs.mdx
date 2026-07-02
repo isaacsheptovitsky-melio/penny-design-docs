@@ -10,16 +10,11 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 <PageHero
   category="Foundations"
   title="Shadows"
-  badge="Healthy"
   description="Shadows convey depth and hierarchy in the UI by indicating elevation."
 />
 
 <DocTabs links={
   <ShortcutTiles>
-    <ShortcutTile
-      label="ZeroHeight"
-      url="https://zeroheight.com/98bb1df01/v/latest/p/7624eb-shadows"
-    />
   </ShortcutTiles>
 }>
 
@@ -38,6 +33,14 @@ Each level offers increasing visual weight; pick one based on how elevated an el
 <Canvas of={ShadowsStories.ShadowTokens} />
 
 <Callout variant="note">Menus and other floating surfaces that open over content use `shadow-500` for a clear floating effect.</Callout>
+
+## Use cases
+
+<Canvas of={ShadowsStories.UseCases} />
+
+## Related
+
+<Story of={ShadowsStories.RelatedComponentsBlock} />
 
 </DocTab>
 

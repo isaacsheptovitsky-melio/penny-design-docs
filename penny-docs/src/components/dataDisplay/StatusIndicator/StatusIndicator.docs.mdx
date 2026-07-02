@@ -10,16 +10,11 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
 <PageHero
   category="Data display"
   title="Status Indicator"
-  badge="Healthy"
   description="A small, colored dot applied to a component to visually communicate a status, such as 'paid' or 'active'."
 />
 
 <DocTabs links={
   <ShortcutTiles>
-    <ShortcutTile
-      label="ZeroHeight"
-      url="https://zeroheight.com/98bb1df01/v/latest/p/182563-status-indicator"
-    />
   </ShortcutTiles>
 }>
 
@@ -31,10 +26,7 @@ import { DocTabs, DocTab } from '@/storybook-utils/DocTabs';
   <Canvas of={StatusIndicatorStories.Playground} />
 </div>
 
-<div className="playground-wrapper" style={{ background: '#F7FAFC', borderRadius: '8px', marginTop: '8px', padding: '8px 24px 24px' }}>
-  <style>{`.playground-wrapper .docblock-argstable { margin-bottom: 0 !important; }`}</style>
-  <Controls of={StatusIndicatorStories.Playground} />
-</div>
+<Controls of={StatusIndicatorStories.Playground} />
 
 ## Usage
 
@@ -70,7 +62,7 @@ The indicator can sit beside text.
 
 <Canvas of={StatusIndicatorStories.WithLabel} />
 
-## Related components
+## Related
 
 <Story of={StatusIndicatorStories.RelatedComponentsBlock} />
 

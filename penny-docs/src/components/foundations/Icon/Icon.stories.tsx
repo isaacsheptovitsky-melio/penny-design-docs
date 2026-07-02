@@ -1,6 +1,20 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+import { getDefaultIconsMap } from '@/theme/icons/icons.generated';
+import { RelatedComponent, RelatedComponents } from '@/storybook-utils/RelatedComponents';
+import { VariantGrid, VariantGridItem } from '@/storybook-utils/VariantGrid';
+import { Illustration } from '@/components/foundations/Illustration/Illustration';
 import { Icon, type IconColor, type IconProps, type IconSize } from './Icon';
+
+import iconsHero from '@/assets/icons-hero.png';
+import iconsGridSizes from '@/assets/icons-grid-sizes.png';
+import iconsLarge24px from '@/assets/icons-large-24px.png';
+import iconsSmall16px from '@/assets/icons-small-16px.png';
+import iconsGridComparison from '@/assets/icons-grid-comparison.png';
+import iconsColors from '@/assets/icons-colors.png';
+import iconsFigmaStructure from '@/assets/icons-figma-structure.png';
+import iconsLibrary from '@/assets/icons-library.png';
 
 const ICON_KEYS: IconProps['type'][] = [
   'add',
@@ -9,6 +23,7 @@ const ICON_KEYS: IconProps['type'][] = [
   'chevron-left',
   'chevron-right',
   'close',
+  'close-mini',
   'delete',
   'edit',
   'filter',
@@ -70,69 +85,182 @@ export const Playground: Story = {
   },
 };
 
+const CDN_URL = (import.meta.env.VITE_ASSETS_CDN as string) || '';
+const ALL_ICON_KEYS = Object.keys(getDefaultIconsMap(CDN_URL)).sort();
+
 export const Gallery: Story = {
-  render: () => (
-    <div
-      style={{
-        fontFamily: 'Poppins, sans-serif',
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))',
-        gap: '16px',
-        padding: '16px 8px',
-      }}
-    >
-      {ICON_KEYS.map((type) => (
-        <div
-          key={type}
+  render: () => {
+    const [query, setQuery] = useState('');
+    const filtered = query
+      ? ALL_ICON_KEYS.filter((k) => k.includes(query.toLowerCase()))
+      : ALL_ICON_KEYS;
+
+    return (
+      <div style={{ background: '#fff', padding: '20px 16px', fontFamily: 'Poppins, sans-serif' }}>
+        <input
+          type="text"
+          placeholder="Search icons…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '10px',
-            padding: '18px 8px',
+            width: '100%',
+            boxSizing: 'border-box',
+            padding: '8px 12px',
             border: '1px solid #E2E8F0',
             borderRadius: '8px',
+            fontSize: '14px',
+            fontFamily: 'Poppins, sans-serif',
+            outline: 'none',
+            marginBottom: '16px',
+            color: '#18191b',
           }}
-        >
-          <Icon type={type} size="large" />
-          <span style={{ fontFamily: '"SFMono-Regular", Consolas, monospace', fontSize: '11px', color: '#64748B' }}>
-            {type}
-          </span>
-        </div>
-      ))}
-    </div>
-  ),
-  parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
+        />
+        {filtered.length === 0 ? (
+          <div style={{ padding: '32px', textAlign: 'center', color: '#94A3B8', fontSize: '14px' }}>
+            No icons match &ldquo;{query}&rdquo;
+          </div>
+        ) : (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))',
+              gap: '12px',
+            }}
+          >
+            {filtered.map((key) => {
+              const mediumUrl = `${CDN_URL}/assets/1.0.0/icons/medium/${key}.svg`;
+              return (
+                <div
+                  key={key}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '10px',
+                    padding: '18px 8px',
+                    border: '1px solid #E2E8F0',
+                    borderRadius: '8px',
+                    background: '#fff',
+                  }}
+                >
+                  <img src={mediumUrl} alt={key} width={24} height={24} style={{ display: 'block' }} />
+                  <span style={{ fontFamily: '"SFMono-Regular", Consolas, monospace', fontSize: '11px', color: '#64748B', textAlign: 'center', wordBreak: 'break-all' }}>
+                    {key}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  },
+  parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } }, layout: 'fullscreen' },
 };
 
 export const Sizes: Story = {
   render: () => (
-    <div style={{ display: 'flex', alignItems: 'flex-end', gap: '28px', padding: '24px 8px' }}>
+    <VariantGrid minItemWidth={100}>
       {(['extra-small', 'small', 'large'] as IconSize[]).map((size) => (
-        <div key={size} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+        <VariantGridItem key={size} label={size}>
           <Icon type="wallet" size={size} />
-          <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '11px', color: '#64748B' }}>{size}</span>
-        </div>
+        </VariantGridItem>
       ))}
-    </div>
+    </VariantGrid>
   ),
   parameters: { controls: { disable: true } },
 };
 
 export const Colors: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: '24px', padding: '24px 8px', alignItems: 'center', flexWrap: 'wrap' }}>
+    <VariantGrid minItemWidth={100}>
       {(['default', 'brand', 'critical', 'success', 'informative'] as IconColor[]).map((color) => (
-        <div key={color} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+        <VariantGridItem key={color} label={color}>
           <Icon type="info" size="large" color={color} />
-          <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '11px', color: '#64748B' }}>{color}</span>
-        </div>
+        </VariantGridItem>
       ))}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', padding: '12px', background: '#0F0728', borderRadius: '8px' }}>
-        <Icon type="info" size="large" color="inverse" />
-        <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '11px', color: '#CBD5E1' }}>inverse</span>
-      </div>
-    </div>
+      <VariantGridItem label="inverse">
+        <div style={{ background: '#0F0728', padding: '10px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Icon type="info" size="large" color="inverse" />
+        </div>
+      </VariantGridItem>
+    </VariantGrid>
   ),
   parameters: { controls: { disable: true } },
+};
+
+const IMG_STORY_PARAMS = {
+  controls: { disable: true },
+  docs: { canvas: { sourceState: 'none' } },
+};
+
+const ZhImage = ({ src, alt }: { src: string; alt: string }) => (
+  <div style={{ padding: '16px 8px', fontFamily: 'Poppins, sans-serif' }}>
+    <img src={src} alt={alt} style={{ maxWidth: '100%', borderRadius: '8px', border: '1px solid #E2E8F0', display: 'block' }} />
+  </div>
+);
+
+export const HeroImage: Story = {
+  name: 'Icon bank',
+  render: () => <ZhImage src={iconsHero} alt="Sample of Melio's custom icon bank" />,
+  parameters: IMG_STORY_PARAMS,
+};
+
+export const GridSizes: Story = {
+  name: 'Grid sizes',
+  render: () => <ZhImage src={iconsGridSizes} alt="24px and 16px pixel grids side by side" />,
+  parameters: IMG_STORY_PARAMS,
+};
+
+export const LargeGrid: Story = {
+  name: 'Large 24px grid',
+  render: () => <ZhImage src={iconsLarge24px} alt="Large 24px grid anatomy: 2px stroke, 2px corners, 1px frame" />,
+  parameters: IMG_STORY_PARAMS,
+};
+
+export const SmallGrid: Story = {
+  name: 'Small 16px grid',
+  render: () => <ZhImage src={iconsSmall16px} alt="Small 16px grid anatomy: 1.5px stroke, 1.5px corners, 1px frame" />,
+  parameters: IMG_STORY_PARAMS,
+};
+
+export const GridComparison: Story = {
+  name: 'Grid comparison',
+  render: () => <ZhImage src={iconsGridComparison} alt="Large 24px vs Small 16px grid side-by-side comparison" />,
+  parameters: IMG_STORY_PARAMS,
+};
+
+export const ColorImage: Story = {
+  name: 'Icon colors',
+  render: () => <ZhImage src={iconsColors} alt="The same icon rendered in brand, primary and inverse colors" />,
+  parameters: IMG_STORY_PARAMS,
+};
+
+export const FigmaStructure: Story = {
+  name: 'Figma structure',
+  render: () => <ZhImage src={iconsFigmaStructure} alt="Figma layer structure for an icon: outer frame, wrapper, Vector" />,
+  parameters: IMG_STORY_PARAMS,
+};
+
+export const Library: Story = {
+  name: 'Full library',
+  render: () => <ZhImage src={iconsLibrary} alt="Overview of the full Melio icon library (~300 icons)" />,
+  parameters: IMG_STORY_PARAMS,
+};
+
+export const RelatedComponentsBlock: Story = {
+  name: 'Related',
+  parameters: {
+    controls: { disable: true },
+    docs: { canvas: { sourceState: 'none' } },
+  },
+  render: () => (
+    <RelatedComponents>
+      <RelatedComponent
+        name="Illustrations"
+        url="/?path=/docs/foundations-illustrations--docs"
+        preview={<Illustration type="celebration" size="small" />}
+      />
+    </RelatedComponents>
+  ),
 };

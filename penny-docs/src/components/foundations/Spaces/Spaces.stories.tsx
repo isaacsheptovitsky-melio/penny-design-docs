@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { RelatedComponent, RelatedComponents } from '@/storybook-utils/RelatedComponents';
 
 import { StatusIndicator } from '@/components/dataDisplay/StatusIndicator';
 import { MeasuredGap } from '@/storybook-utils/MeasuredGap';
@@ -33,35 +34,49 @@ const USE_CASE: Record<string, string> = {
   xxxl: '—',
 };
 
+const MONO = '"SFMono-Regular", Consolas, monospace';
+const TH = {
+  padding: '8px 14px',
+  textAlign: 'left' as const,
+  fontSize: '11px',
+  fontWeight: 700,
+  textTransform: 'uppercase' as const,
+  letterSpacing: '0.07em',
+  color: '#6B7280',
+};
+
 export const SpaceTokens: Story = {
   render: () => (
-    <div style={{ fontFamily: 'Poppins, sans-serif', padding: '8px 4px' }}>
-      {(Object.keys(themeSpaces) as (keyof typeof themeSpaces)[]).map((key) => {
-        const value = themeSpaces[key];
-        const px = parseInt(value, 10) || 0;
-        return (
-          <div
-            key={key}
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '180px 64px 1fr',
-              alignItems: 'center',
-              gap: '20px',
-              padding: '12px 0',
-              borderBottom: '1px solid #E2E8F0',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ width: `${px}px`, height: '16px', background: '#7849ff', borderRadius: '2px', flexShrink: 0 }} />
-              <span style={{ fontFamily: '"SFMono-Regular", Consolas, monospace', fontSize: '12px', color: '#475569' }}>
-                {key}
-              </span>
-            </div>
-            <span style={{ fontSize: '13px', color: '#18191b' }}>{value}</span>
-            <span style={{ fontSize: '12px', color: '#64748B', lineHeight: 1.5 }}>{USE_CASE[key]}</span>
-          </div>
-        );
-      })}
+    <div style={{ border: '1px solid #E2E8F0', borderRadius: '8px', overflow: 'hidden' }}>
+      <table style={{ borderCollapse: 'collapse', width: '100%', fontFamily: 'Poppins, sans-serif', fontSize: '12px' }}>
+        <thead>
+          <tr style={{ background: '#EDF2F7' }}>
+            <th style={{ ...TH, borderRight: '1px solid #E2E8F0' }}>Token</th>
+            <th style={{ ...TH, borderRight: '1px solid #E2E8F0', width: '72px' }}>Value</th>
+            <th style={TH}>Use case</th>
+          </tr>
+        </thead>
+        <tbody>
+          {(Object.keys(themeSpaces) as (keyof typeof themeSpaces)[]).map((key, i, arr) => {
+            const value = themeSpaces[key];
+            const px = parseInt(value, 10) || 0;
+            const isLast = i === arr.length - 1;
+            const border = isLast ? 'none' : '1px solid #E2E8F0';
+            return (
+              <tr key={key}>
+                <td style={{ padding: '8px 14px', borderRight: '1px solid #E2E8F0', borderBottom: border }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ width: `${Math.max(px, 2)}px`, height: '12px', background: px === 0 ? '#E2E8F0' : '#7849ff', borderRadius: '2px', flexShrink: 0 }} />
+                    <span style={{ fontFamily: MONO, color: '#475569' }}>spacing.{key}</span>
+                  </div>
+                </td>
+                <td style={{ padding: '8px 14px', borderRight: '1px solid #E2E8F0', borderBottom: border, fontFamily: MONO, color: '#18191b' }}>{value}</td>
+                <td style={{ padding: '8px 14px', borderBottom: border, color: '#64748B', lineHeight: 1.5 }}>{USE_CASE[key]}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   ),
   parameters: { docs: { canvas: { sourceState: 'none' } } },
@@ -122,11 +137,10 @@ const UseCaseRow = ({ token, value, description, children }: { token: string; va
 export const UseCases: Story = {
   render: () => (
     <div style={{ fontFamily: 'Poppins, sans-serif', padding: '4px' }}>
-      <UseCaseRow token="spacing.xxs" value="4px" description="Divide small, related elements — e.g. a status indicator and its label.">
-        {/* The 4px gap sits inside the pill; the annotation points to it from below. */}
-        <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', background: '#f1f5f8', borderRadius: '9999px', padding: '6px 14px' }}>
+      <UseCaseRow token="spacing.xxxs" value="2px" description="Divide small, related elements — e.g. a status indicator and its label.">
+        <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', background: '#fff', borderRadius: '9999px', padding: '6px 14px' }}>
           <StatusIndicator status="brand" />
-          <MeasuredGap size={4} orientation="horizontal" />
+          <MeasuredGap size={2} orientation="horizontal" />
           <span style={{ fontSize: '14px', fontWeight: 600, color: '#18191b' }}>Brand</span>
         </div>
       </UseCaseRow>
@@ -169,4 +183,33 @@ export const UseCases: Story = {
     </div>
   ),
   parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
+};
+
+export const RelatedComponentsBlock: StoryObj = {
+  name: 'Related',
+  parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
+  render: () => (
+    <RelatedComponents>
+      <RelatedComponent
+        name="Breakpoints"
+        url="/?path=/docs/foundations-breakpoints--docs"
+        preview={
+          <div style={{ display: 'flex', gap: '3px', alignItems: 'flex-end' }}>
+            {[
+              { w: 18, label: 'xs' },
+              { w: 34, label: 's' },
+              { w: 50, label: 'm' },
+              { w: 66, label: 'l' },
+              { w: 82, label: 'xl' },
+            ].map(({ w, label }) => (
+              <div key={label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px' }}>
+                <div style={{ width: w, height: 8, background: '#7849ff', borderRadius: '2px' }} />
+                <span style={{ fontSize: '8px', color: '#94A3B8', fontFamily: 'monospace' }}>{label}</span>
+              </div>
+            ))}
+          </div>
+        }
+      />
+    </RelatedComponents>
+  ),
 };
